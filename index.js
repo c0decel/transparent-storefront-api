@@ -46,7 +46,7 @@ app.get('/', (req, res) => {
 });
 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080'];
+let allowedOrigins = ['http://localhost:8080', 'https://transparent-storefront-api-7a631c0a8a92.herokuapp.com'];
 
 app.use(cors({
     origin: (origin, callback) => {
