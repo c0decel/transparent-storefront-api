@@ -7,9 +7,7 @@ const reviewSchema = mongoose.Schema({
 })
 
 const productSchema = mongoose.Schema({
-    _id: {
-        $oid: {type: mongoose.Schema.Types.ObjectId, ref: 'Product'}
-    },
+    ProductID: String,
     Name: {type: String, required: true},
     Price: {type: Number, required: true},
     Description: {type: String, required: true},
@@ -24,7 +22,7 @@ const userSchema = mongoose.Schema({
     Password: {type: String, required: true},
     Email: {type: String, required: true},
     Birthday: {type: Date, required: true},
-    Cart: {type: Array, default: []},
+    Cart: { type: Array, default: []},
     Wishlist: {type: Array, default: []},
     Purchases: [{
         ProductID: String,

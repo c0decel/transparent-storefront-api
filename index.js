@@ -24,20 +24,25 @@ require('./passport');
 
 const mongoURI = process.env.CONNECTION_URI;
 
+//For local testing
+// const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
+
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    console.log('connected to mongodb');
+    console.log('Connected to MongoDB');
   })
   .catch((err) => {
-    console.error('failed to connect :(', err);
+    console.error('Failed to connect ', err);
   });
 
-  const port = process.env.PORT || 8080;
-  app.listen(port, '0.0.0.0',() => {
-    console.log('Listening on Port ' + port);
- });
+const port = process.env.PORT || 8080;
 
-//  app.listen(8080, () => {
+app.listen(port, '0.0.0.0',() => {
+console.log('Listening on Port ' + port);
+});
+
+//For local testing
+//app.listen(8080, () => {
 //   console.log('Listening on port 8080.');
 //})
 
@@ -46,7 +51,7 @@ app.get('/', (req, res) => {
 });
 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'https://transparent-storefront-api-7a631c0a8a92.herokuapp.com'];
+let allowedOrigins = ['http://localhost:8080', 'https://transparent-storefront-api-7a631c0a8a92.herokuapp.com'];
 
 app.use(cors({
     origin: (origin, callback) => {
@@ -59,6 +64,14 @@ app.use(cors({
     }
   }));
 
+//Get documentation
+app.get('/documentation', (req, res) => {
+    res.sendFile('public/documentation.html', {root: __dirname});
+});
+
+/**
+ * Product logic
+ */
 
 //Get all products
 app.get('/products', (req, res) => {
@@ -73,8 +86,8 @@ app.get('/products', (req, res) => {
 });
 
 //Get one product
-app.get('/products/:Name', (req, res) => {
-    Product.findOne({ Name: req.params.Name })
+app.get('/products/:id', (req, res) => {
+    Product.findOne({ id: req.params.ProductID })
     .then((Product) => {
         if (!Product) {
             return res.status(404).send('Product does not exist.');
@@ -111,8 +124,8 @@ app.post('/products', passport.authenticate('jwt', { session: false }), (req, re
 });
 
 //Delete product
-app.delete('/products/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
-    Product.findOneAndDelete({ Name: req.params.Name })
+app.delete('/products/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Product.findOneAndDelete({ id: req.params.ProductID })
     .then((existingProduct) => {
         if (!existingProduct) {
             res.status(404).send(req.params.Name + ' does not exist.')
@@ -126,6 +139,9 @@ app.delete('/products/:Name', passport.authenticate('jwt', { session: false }), 
     });
 });
 
+/**
+ * User logic
+ */
 //Get all users
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
     User.find()
@@ -190,4 +206,90 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
         console.error(err);
         res.status(500).send('Error: ' + err);
     });
+});
+
+//Add product to cart
+app.put('/users/:Username/cart/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const updatedCart = await User.findOneAndUpdate(
+            { Username: req.params.Username },
+            {
+                $addToSet: { Cart: req.params.id }
+            },
+            { new: true }
+        );
+
+        if (!updatedCart) {
+            return res.status(404).send('User not found.');
+        }
+        res.json(updatedCart);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err)
+    }
+});
+
+//Remove product from cart
+app.delete('/users/:Username/cart/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const updatedCart = await User.findOneAndUpdate(
+            { Username: req.params.Username },
+            {
+                $pull: { Cart: req.params.id }
+            },
+            { new: true }
+        );
+
+        if (!updatedCart) {
+            return res.status(404).send('User not found.');
+        }
+        res.json(updatedCart);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err)
+    }
+});
+
+//Add product to wishlist
+app.put('/users/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const updatedWishlist = await User.findOneAndUpdate(
+            { Username: req.params.Username },
+            {
+                $addToSet: { Wishlist: req.params.id }
+            },
+            { new: true }
+        );
+
+        if (!updatedWishlist) {
+            return res.status(404).send('User not found.');
+        }
+        res.json(updatedWishlist);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err)
+    }
+});
+
+//Remove product from wishlist
+app.delete('/users/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const updatedWishlist = await User.findOneAndUpdate(
+            { Username: req.params.Username },
+            {
+                $pull: { Wishlist: req.params.id }
+            },
+            { new: true }
+        );
+
+        if (!updatedWishlist) {
+            return res.status(404).send('User not found.');
+        }
+        res.json(updatedWishlist);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err)
+    }
 });
