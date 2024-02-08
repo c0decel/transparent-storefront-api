@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Documentation</title>
+    </head>
+    <body>
+        <h1>Documentation</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Business Logic</th>
+                    <th>URL</th>
+                    <th>Method</th>
+                    <th>Query Params</th>
+                    <th>Response</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <td>Get all products</td>
+                <td>/products</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>JSON of all products</td>
+            </tbody>
+
+            <tbody>
+                <td>Get one product</td>
+                <td>/products/:id</td>
+                <td>GET</td>
+                <td>ID of product</td>
+                <td>JSON of one product</td>
+            </tbody>
+
+            <tbody>
+                <td>Post new product</td>
+                <td>/products</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>JSON of new product</td>
+            </tbody>
+
+            <tbody>
+                <td>Delete one product</td>
+                <td>/products/:id</td>
+                <td>DELETE</td>
+                <td>ID of product</td>
+                <td>Delete one product</td>
+            </tbody>
+
+            <tbody>
+                <td>Get all users</td>
+                <td>/users</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>JSON of all users</td>
+            </tbody>
+
+            <tbody>
+                <td>Get one user</td>
+                <td>/users/:Username</td>
+                <td>GET</td>
+                <td>Username</td>
+                <td>JSON of one user</td>
+            </tbody>
+
+            <tbody>
+                <td>Post new user</td>
+                <td>/users</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>JSON of new user</td>
+            </tbody>
+
+            <tbody>
+                <td>Delete one user</td>
+                <td>/products/:Username</td>
+                <td>DELETE</td>
+                <td>Username</td>
+                <td>Delete one user</td>
+            </tbody>
+
+            <tbody>
+                <td>Add item to cart</td>
+                <td>/users/:Username/cart/:id</td>
+                <td>PUT</td>
+                <td>Username and ID of product</td>
+                <td>Adds product to cart</td>
+            </tbody>
+
+            <tbody>
+                <td>Remove item from cart</td>
+                <td>/users/:Username/cart/:id</td>
+                <td>DELETE</td>
+                <td>Username and ID of product</td>
+                <td>Removes product from cart</td>
+            </tbody>
+
+            <tbody>
+                <td>Add item to wishlist</td>
+                <td>/users/:Username/wishlist/:id</td>
+                <td>PUT</td>
+                <td>Username and ID of product</td>
+                <td>Adds product to wishlist</td>
+            </tbody>
+
+            <tbody>
+                <td>Remove item from wishlist</td>
+                <td>/users/:Username/wishlist/:id</td>
+                <td>DELETE</td>
+                <td>Username and ID of product</td>
+                <td>Removes product from wishlist</td>
+            </tbody>
+        </table>
+
+    </body>
+</html>
