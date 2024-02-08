@@ -46,6 +46,7 @@ console.log('Listening on Port ' + port);
 //   console.log('Listening on port 8080.');
 //})
 
+//Default page
 app.get('/', (req, res) => {
     res.send('Transparent Storefront API');
 });
@@ -170,7 +171,7 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 });
 
 //Upload new user
-app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.post('/users', (req, res) => {
     User.findOne({ Username: req.body.Username })
     .then((existingUser) => {
         if (existingUser) {
