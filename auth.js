@@ -1,10 +1,17 @@
 const jwtSecret = 'sneeds_feed_and_seed'; 
 
+const Models = require('./models.js');
 const jwt = require('jsonwebtoken'),
     passport = require('passport');
 
+const User = Models.User;
+
 let generateJWTToken = (user) => {
-  return jwt.sign(user, jwtSecret, {
+    const userForToken = {
+        _id: user._id,
+        Username: user.Username
+    }
+  return jwt.sign(userForToken, jwtSecret, {
     subject: user.Username,
     expiresIn: '7d',
     algorithm: 'HS256'
@@ -14,7 +21,7 @@ let generateJWTToken = (user) => {
 // Export the function containing the login logic
 module.exports = (router) => {
     router.post('/login', (req, res) => {
-        passport.authenticate('local', {session: false}, (user) => {
+        passport.authenticate('local', {session: false}, (error, user, info) => {
             if (!user) {
                 return res.status(400).json({
                     message: 'Something went wrong.',
@@ -25,7 +32,7 @@ module.exports = (router) => {
                 if (error) {
                     res.send(error);
                 }
-                let token = generateJWTToken(user.toJSON());
+                let token = generateJWTToken(user);
                 return res.json({user, token});
             });
         })(req, res);

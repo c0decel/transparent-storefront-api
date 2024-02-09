@@ -1,9 +1,8 @@
-const { Model } = require('mongoose');
+const mongoose = require('mongoose');
 
 const passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     Models = require('./models.js'),
-    User = Models.User,
     passportJWT = require('passport-jwt');
 
 let Users = Models.User,
@@ -17,26 +16,36 @@ let Users = Models.User,
         },
         async (username, password, callback) => {
             console.log(`${username} ${password}`);
-            await Users.findOne({ Username: username })
-            .then((user) => {
+            try {
+                const user = await Users.findOne({ Username: username }).select('+Password');
                 if (!user) {
                     console.log('Wrong username.');
                     return callback(null, false, {
                         message: 'Invalid credentials.'
                     });
                 }
-                console.log('Done.')
-                return callback(null, user);
-            })
-            .catch((err) => {
-                if (err) {
-                    console.log(err);
-                    return callback(err);
+
+                if (!user.validatePass(password)) {
+                    console.log('Wrong password.');
+                    return callback(null, false, {
+                        message: 'Invalid credentials.'
+                    });
                 }
-            })
+                console.log('Done.')
+                // Return only necessary user data, excluding password
+                return callback(null, {
+                    _id: user._id,
+                    Username: user.Username,
+                    // Include other necessary fields here
+                });
+            } catch (err) {
+                console.log(err);
+                return callback(err);
+            }
         }
     )
-);
+    );
+    
 
 passport.use(new JWTStrategy({
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),

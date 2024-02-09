@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 
+
+
 const app = express();
 const router = express.Router();
 
@@ -22,10 +24,11 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
+//For live
 const mongoURI = process.env.CONNECTION_URI;
 
 //For local testing
-// const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
+//const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -52,6 +55,7 @@ app.get('/', (req, res) => {
 });
 
 const cors = require('cors');
+const { validationResult, check } = require('express-validator');
 let allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'https://transparent-storefront-api-7a631c0a8a92.herokuapp.com'];
 
 app.use(cors({
@@ -171,19 +175,36 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 });
 
 //Upload new user
-app.post('/users', (req, res) => {
+app.post('/users', [
+    check('Username', 'Username must be at least 5 characters.').isLength({min: 5}),
+    check('Username', 'Non alphanumeric characters not allowed.').isAlphanumeric(),
+    check('Password', 'Add a password').not().isEmpty(),
+    check('Email', 'Invalid email').isEmail()
+], (req, res) => {
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    let hashedPass = User.hashPass(req.body.Password);
     User.findOne({ Username: req.body.Username })
-    .then((existingUser) => {
-        if (existingUser) {
+    .then((user) => {
+        if (user) {
             return res.status(400).send(req.body.Username + ' already exists.');
         } else {
-            User.create(req.body)
-            .then((newUser) => {
-                res.status(201).json(newUser)
+            User.create({
+                Username: req.body.Username,
+                Password: hashedPass,
+                Email: req.body.Email,
+                Birthday: req.body.Birthday
+            })
+            .then((user) => {
+                res.status(201).json(user)
             })
             .catch((err) => {
                 console.error(err);
-                res.status(500).send('Error: ' + err)
+                res.status(500).send('Error: ' + err);
             })
         }
     })

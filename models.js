@@ -1,4 +1,5 @@
 const { default: mongoose, mongo } = require("mongoose");
+const bcrypt = require('bcrypt');
 
 const reviewSchema = mongoose.Schema({
     Rating: {type: Number, required: true},
@@ -30,11 +31,20 @@ const userSchema = mongoose.Schema({
     }],
     Reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
     hasBroom: {type: Boolean, default: false}
-})
+});
+
+userSchema.statics.hashPass = (password) => {
+    return bcrypt.hashSync(password, 10);
+};
+  
+userSchema.methods.validatePass = function(password) {
+    return bcrypt.compareSync(password, this.Password);
+};
 
 const Review = mongoose.model('Review', reviewSchema);
 const Product = mongoose.model('Product', productSchema);
 const User = mongoose.model('User', userSchema);
+const validatePass = userSchema.methods.validatePass;
 
 module.exports.Review = Review;
 module.exports.Product = Product;
