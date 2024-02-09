@@ -5,14 +5,26 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 
-
-
 const app = express();
-const router = express.Router();
 
 const Models = require('./models.js');
 const Product = Models.Product;
 const User = Models.User;
+
+const cors = require('cors');
+const { validationResult, check } = require('express-validator');
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'https://transparent-storefront-api-7a631c0a8a92.herokuapp.com'];
+
+app.use(cors({
+    origin: (origin, callback) => {
+      if(!origin) return callback(null, true);
+      if(allowedOrigins.indexOf(origin) === -1){
+        let message = 'The CORS policy for this application does not allow access from origin ' + origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    }
+  }));
 
 // Set up middleware
 app.use(morgan('common'));
@@ -53,21 +65,6 @@ console.log('Listening on Port ' + port);
 app.get('/', (req, res) => {
     res.send('Transparent Storefront API');
 });
-
-const cors = require('cors');
-const { validationResult, check } = require('express-validator');
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'http://localhost:4200/', 'https://transparent-storefront-api-7a631c0a8a92.herokuapp.com'];
-
-app.use(cors({
-    origin: (origin, callback) => {
-      if(!origin) return callback(null, true);
-      if(allowedOrigins.indexOf(origin) === -1){
-        let message = 'The CORS policy for this application does not allow access from origin ' + origin;
-        return callback(new Error(message), false);
-      }
-      return callback(null, true);
-    }
-  }));
 
 //Get documentation
 app.get('/documentation', (req, res) => {
