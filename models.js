@@ -12,10 +12,11 @@ const productSchema = mongoose.Schema({
     Name: {type: String, required: true},
     Price: {type: Number, required: true},
     Description: {type: String, required: true},
-    Image: {type: String, required: true},
+    Image: {type: String, default: 'https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg'},
     Sales: {type: Number, default: 0},
     Stock: {type: Number, default: 0},
-    Reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}]
+    Reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
+    isFeatured: {type: Boolean, default: false}
 });
 
 const userSchema = mongoose.Schema({
