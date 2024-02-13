@@ -36,7 +36,8 @@ let Users = Models.User,
                 return callback(null, {
                     _id: user._id,
                     Username: user.Username,
-                    // Include other necessary fields here
+                    hasBroom: user.hasBroom,
+                    isSponsor: user.isSponsor
                 });
             } catch (err) {
                 console.log(err);
