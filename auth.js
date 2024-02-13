@@ -1,34 +1,38 @@
-const jwtSecret = 'your_jwt_secret'; //has to be same jwt key used in strategy
+const jwtSecret = 'sneeds_feed_and_seed'; 
 
+const Models = require('./models.js');
 const jwt = require('jsonwebtoken'),
     passport = require('passport');
 
-require('./passport'); //local passport.js file
+const User = Models.User;
 
 let generateJWTToken = (user) => {
-    return jwt.sign(user, jwtSecret, {
-        subject: user.Username, //username to be encoded in jwt
-        expiresIn: '21d', //specifies expiry date
-        algorithm: 'HS256' //algo used to sign/encode values of jwt
-    });
+    const userForToken = {
+        _id: user._id,
+        Username: user.Username
+    }
+  return jwt.sign(userForToken, jwtSecret, {
+    subject: user.Username,
+    expiresIn: '7d',
+    algorithm: 'HS256'
+  });
 }
 
-/* POST Login. */
+// Export the function containing the login logic
 module.exports = (router) => {
     router.post('/login', (req, res) => {
-        passport.authenticate('local', { session: false }, (user) => {
-            console.log(user);
+        passport.authenticate('local', {session: false}, (error, user, info) => {
             if (!user) {
                 return res.status(400).json({
-                    message: 'Something is wrong',
+                    message: 'Something went wrong.',
                     user: user
                 });
             }
-            req.login(user, { session: false }, (error) => {
+            req.login(user, {session: false}, (error) => {
                 if (error) {
                     res.send(error);
                 }
-                let token = generateJWTToken(user.toJSON());
+                let token = generateJWTToken(user);
                 const response = {
                     user: {
                         _id: user._id,
