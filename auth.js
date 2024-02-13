@@ -1,39 +1,45 @@
-const jwtSecret = 'sneeds_feed_and_seed'; 
+const jwtSecret = 'your_jwt_secret'; //has to be same jwt key used in strategy
 
-const Models = require('./models.js');
 const jwt = require('jsonwebtoken'),
     passport = require('passport');
 
-const User = Models.User;
+require('./passport'); //local passport.js file
 
 let generateJWTToken = (user) => {
-    const userForToken = {
-        _id: user._id,
-        Username: user.Username
-    }
-  return jwt.sign(userForToken, jwtSecret, {
-    subject: user.Username,
-    expiresIn: '7d',
-    algorithm: 'HS256'
-  });
+    return jwt.sign(user, jwtSecret, {
+        subject: user.Username, //username to be encoded in jwt
+        expiresIn: '21d', //specifies expiry date
+        algorithm: 'HS256' //algo used to sign/encode values of jwt
+    });
 }
 
-// Export the function containing the login logic
+/* POST Login. */
 module.exports = (router) => {
     router.post('/login', (req, res) => {
-        passport.authenticate('local', {session: false}, (error, user, info) => {
+        passport.authenticate('local', { session: false }, (user) => {
+            console.log(user);
             if (!user) {
                 return res.status(400).json({
-                    message: 'Something went wrong.',
+                    message: 'Something is wrong',
                     user: user
                 });
             }
-            req.login(user, {session: false}, (error) => {
+            req.login(user, { session: false }, (error) => {
                 if (error) {
                     res.send(error);
                 }
-                let token = generateJWTToken(user);
-                return res.json({user, token});
+                let token = generateJWTToken(user.toJSON());
+                const response = {
+                    user: {
+                        _id: user._id,
+                        Username: user.Username,
+                        hasBroom: user.hasBroom,
+                        isSponsor: user.isSponsor
+                    },
+                    token: token
+                }
+                console.log(response);
+                return res.json(response);
             });
         })(req, res);
     });
