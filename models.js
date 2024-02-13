@@ -30,7 +30,8 @@ const userSchema = mongoose.Schema({
         PurchaseDate: Date
     }],
     Reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
-    hasBroom: {type: Boolean, default: false}
+    hasBroom: {type: Boolean, default: false},
+    isSponsor: {type: Boolean, default: false}
 });
 
 userSchema.statics.hashPass = (password) => {

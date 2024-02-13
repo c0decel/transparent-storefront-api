@@ -104,6 +104,10 @@ app.get('/products/:id', (req, res) => {
 
 //Upload new product
 app.post('/products', passport.authenticate('jwt', { session: false }), (req, res) => {
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
+    
     Product.findOne({ Name: req.body.Name })
     .then((existingProduct) => {
         if (existingProduct) {
