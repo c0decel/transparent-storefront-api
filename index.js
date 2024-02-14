@@ -235,6 +235,17 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
     });
 });
 
+//Get cart items
+app.get('/users/:Username/cart', async (req, res) => {
+    try {
+        const user = await User.findOne({ Username: req.params.Username }).populate('Cart.ProductID');
+        res.status(200).json(user.Cart);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 //Add product to cart
 app.put('/users/:Username/cart/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
@@ -275,6 +286,17 @@ app.delete('/users/:Username/cart/:id', passport.authenticate('jwt', { session: 
     } catch (err) {
         console.error(err);
         res.status(500).send('Error: ' + err)
+    }
+});
+
+//Get wishlist items
+app.get('/users/:Username/wishlist', async (req, res) => {
+    try {
+        const user = await User.findOne({ Username: req.params.Username }).populate('Wishlist.ProductID');
+        res.status(200).json(user.Wishlist);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
