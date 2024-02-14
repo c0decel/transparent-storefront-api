@@ -102,6 +102,10 @@ app.get('/products/:id', (req, res) => {
     });
 });
 
+/**
+ * Admin permissions
+ */
+
 //Upload new product
 app.post('/products', passport.authenticate('jwt', { session: false }), (req, res) => {
     if (!req.user.hasBroom) {
@@ -131,6 +135,10 @@ app.post('/products', passport.authenticate('jwt', { session: false }), (req, re
 
 //Delete product
 app.delete('/products/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
+    
     Product.findOneAndDelete({ id: req.params.ProductID })
     .then((existingProduct) => {
         if (!existingProduct) {
@@ -145,11 +153,12 @@ app.delete('/products/:id', passport.authenticate('jwt', { session: false }), (r
     });
 });
 
-/**
- * User logic
- */
 //Get all users
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
+
     User.find()
     .then((User) => {
         res.status(201).json(User);
@@ -162,6 +171,10 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
 
 //Get one user
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
+    
     User.findOne({ Username: req.params.Username })
     .then((User) => {
         if (!User) {
@@ -235,6 +248,10 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
     });
 });
 
+/**
+ * User logic
+ */
+
 //Get cart items
 app.get('/users/:Username/cart', async (req, res) => {
     try {
@@ -246,13 +263,29 @@ app.get('/users/:Username/cart', async (req, res) => {
     }
 });
 
-//Add product to cart
+// Add product to cart
 app.put('/users/:Username/cart/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
+        const productId = req.params.id;
+
+        // Fetch product details from the database
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).send('Product not found.');
+        }
+
+        // Update user's cart with product details
         const updatedCart = await User.findOneAndUpdate(
             { Username: req.params.Username },
             {
-                $addToSet: { Cart: req.params.id }
+                $addToSet: { 
+                    Cart: {
+                        ProductID: product._id,
+                        Name: product.Name,
+                        Price: product.Price,
+                        Image: product.Image
+                    }
+                }
             },
             { new: true }
         );
@@ -260,13 +293,14 @@ app.put('/users/:Username/cart/:id', passport.authenticate('jwt', { session: fal
         if (!updatedCart) {
             return res.status(404).send('User not found.');
         }
-        res.json(updatedCart);
 
+        res.json(updatedCart);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Error: ' + err)
+        res.status(500).send('Error: ' + err);
     }
 });
+
 
 //Remove product from cart
 app.delete('/users/:Username/cart/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -289,7 +323,7 @@ app.delete('/users/:Username/cart/:id', passport.authenticate('jwt', { session: 
     }
 });
 
-//Get wishlist items
+//Get cart items
 app.get('/users/:Username/wishlist', async (req, res) => {
     try {
         const user = await User.findOne({ Username: req.params.Username }).populate('Wishlist.ProductID');
@@ -300,13 +334,29 @@ app.get('/users/:Username/wishlist', async (req, res) => {
     }
 });
 
-//Add product to wishlist
+// Add product to wishlist
 app.put('/users/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
+        const productId = req.params.id;
+
+        // Fetch product details from the database
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).send('Product not found.');
+        }
+
+        // Update user's cart with product details
         const updatedWishlist = await User.findOneAndUpdate(
             { Username: req.params.Username },
             {
-                $addToSet: { Wishlist: req.params.id }
+                $addToSet: { 
+                    Wishlist: {
+                        ProductID: product._id,
+                        Name: product.Name,
+                        Price: product.Price,
+                        Image: product.Image
+                    }
+                }
             },
             { new: true }
         );
@@ -314,11 +364,11 @@ app.put('/users/:Username/wishlist/:id', passport.authenticate('jwt', { session:
         if (!updatedWishlist) {
             return res.status(404).send('User not found.');
         }
-        res.json(updatedWishlist);
 
+        res.json(updatedWishlist);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Error: ' + err)
+        res.status(500).send('Error: ' + err);
     }
 });
 

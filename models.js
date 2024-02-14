@@ -24,8 +24,18 @@ const userSchema = mongoose.Schema({
     Password: {type: String, required: true},
     Email: {type: String, required: true},
     Birthday: {type: Date, required: true},
-    Cart: { type: Array, default: []},
-    Wishlist: {type: Array, default: []},
+    Cart: [{
+        ProductID: String,
+        Name: String,
+        Price: String,
+        Image: String
+    }],
+    Wishlist: [{
+        ProductID: String,
+        Name: String,
+        Price: String,
+        Image: String
+    }],
     Purchases: [{
         ProductID: String,
         PurchaseDate: Date
