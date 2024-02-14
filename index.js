@@ -217,7 +217,11 @@ app.post('/users', [
 
 //Delete user
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
-    User.findOneAndDelete({ Username: req.body.Username })
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
+    
+    User.findOneAndDelete({ Username: req.params.Username })
     .then((existingUser) => {
         if (!existingUser) {
             res.status(404).send(req.params.Username + ' does not exist.')
