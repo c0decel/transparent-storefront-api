@@ -305,10 +305,14 @@ app.put('/users/:Username/cart/:id', passport.authenticate('jwt', { session: fal
 //Remove product from cart
 app.delete('/users/:Username/cart/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
+        const productId = req.params.id;
+
         const updatedCart = await User.findOneAndUpdate(
             { Username: req.params.Username },
             {
-                $pull: { Cart: req.params.id }
+                $pull: { 
+                    Cart: { ProductID: productId }
+                }
             },
             { new: true }
         );
@@ -316,12 +320,14 @@ app.delete('/users/:Username/cart/:id', passport.authenticate('jwt', { session: 
         if (!updatedCart) {
             return res.status(404).send('User not found.');
         }
+
         res.json(updatedCart);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Error: ' + err)
+        res.status(500).send('Error: ' + err);
     }
 });
+
 
 //Get cart items
 app.get('/users/:Username/wishlist', async (req, res) => {
@@ -339,13 +345,11 @@ app.put('/users/:Username/wishlist/:id', passport.authenticate('jwt', { session:
     try {
         const productId = req.params.id;
 
-        // Fetch product details from the database
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).send('Product not found.');
         }
 
-        // Update user's cart with product details
         const updatedWishlist = await User.findOneAndUpdate(
             { Username: req.params.Username },
             {
@@ -375,10 +379,14 @@ app.put('/users/:Username/wishlist/:id', passport.authenticate('jwt', { session:
 //Remove product from wishlist
 app.delete('/users/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
+        const productId = req.params.id;
+
         const updatedWishlist = await User.findOneAndUpdate(
             { Username: req.params.Username },
             {
-                $pull: { Wishlist: req.params.id }
+                $pull: { 
+                    Cart: { ProductID: productId }
+                }
             },
             { new: true }
         );
@@ -386,9 +394,10 @@ app.delete('/users/:Username/wishlist/:id', passport.authenticate('jwt', { sessi
         if (!updatedWishlist) {
             return res.status(404).send('User not found.');
         }
+
         res.json(updatedWishlist);
     } catch (err) {
         console.error(err);
-        res.status(500).send('Error: ' + err)
+        res.status(500).send('Error: ' + err);
     }
 });
