@@ -12,6 +12,7 @@ const Product = Models.Product;
 const User = Models.User;
 const Tag = Models.Tag;
 const Expense = Models.Expense;
+const Sale = Models.Sale;
 
 const cors = require('cors');
 const { validationResult, check } = require('express-validator');
@@ -60,7 +61,7 @@ console.log('Listening on Port ' + port);
 
 //For local testing
 //app.listen(8080, () => {
-  //console.log('Listening on port 8080.');
+//  console.log('Listening on port 8080.');
 //})
 
 //Default page
@@ -136,6 +137,18 @@ app.get('/expenses', (req, res) => {
     Expense.find()
     .then((Expense) => {
         res.status(201).json(Expense);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
+//Get all sales
+app.get('/sales', (req, res) => {
+    Sale.find()
+    .then((Sale) => {
+        res.status(201).json(Sale);
     })
     .catch((err) => {
         console.error(err);
@@ -321,6 +334,21 @@ app.post('/expenses', passport.authenticate('jwt', { session: false }), (req, re
     });
 });
 
+//Log a sale
+app.post('/sales', passport.authenticate('jwt', { session: false }), (req, res) => {
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
+
+    Sale.create(req.body)
+    .then((newSale) => {
+        res.status(201).json(newSale);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
 
 //Get all users
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {

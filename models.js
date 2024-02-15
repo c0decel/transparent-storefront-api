@@ -56,10 +56,17 @@ const tagSchema = mongoose.Schema({
 })
 
 const expenseSchema = mongoose.Schema({
-    Expense: String,
+    Expense: {type: String, required: true},
     Amount: Number,
     Description: String,
     ExpenseDate: {type: Date, required: true}
+})
+
+const saleSchema = mongoose.Schema({
+    Sale: {type: String, required: true},
+    Amount: Number,
+    Description: String,
+    SaleDate: {type: Date, required: true}
 })
 
 userSchema.statics.hashPass = (password) => {
@@ -75,6 +82,7 @@ const Product = mongoose.model('Product', productSchema);
 const User = mongoose.model('User', userSchema);
 const Tag = mongoose.model('Tag', tagSchema);
 const Expense = mongoose.model('Expense', expenseSchema);
+const Sale = mongoose.model('Sale', saleSchema);
 const validatePass = userSchema.methods.validatePass;
 
 module.exports.Review = Review;
@@ -82,3 +90,4 @@ module.exports.Product = Product;
 module.exports.User = User;
 module.exports.Tag = Tag;
 module.exports.Expense = Expense;
+module.exports.Sale = Sale;
