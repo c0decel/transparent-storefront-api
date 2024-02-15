@@ -17,11 +17,7 @@ const productSchema = mongoose.Schema({
     Stock: {type: Number, default: 0},
     Reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
     isFeatured: {type: Boolean, default: false},
-    Tags: [{
-        TagID: String,
-        Name: String,
-        Description: String
-    }]
+    Tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }]
 });
 
 const userSchema = mongoose.Schema({
