@@ -600,20 +600,20 @@ app.delete('/users/:Username/wishlist/:id', passport.authenticate('jwt', { sessi
 //Write a review
 app.post('/reviews', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-        const { Rating, UserId, ProductId, Content } = req.body;
+        const { Rating, UserID, ProductID, Content } = req.body;
 
         const review = new Review({
             Rating,
-            User: UserId,
-            Product: ProductId,
+            User: UserID,
+            Product: ProductID,
             Content
         });
 
         await review.save();
 
-        await User.findByIdAndUpdate(UserId, { $push: { Reviews: review._id } });
+        await User.findByIdAndUpdate(UserID, { $push: { Reviews: review._id } });
 
-        await Product.findByIdAndUpdate(ProductId, { $push: { Reviews: review._id } });
+        await Product.findByIdAndUpdate(ProductID, { $push: { Reviews: review._id } });
         res.status(201).json({ message: 'Review created successfully', review });
     } catch (err) {
         console.error('Could not create review: ', err);
