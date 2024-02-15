@@ -205,7 +205,7 @@ app.get('/reviews/:id', (req, res) => {
  * Admin permissions
  */
 
-//Upload new product
+// Upload new product
 app.post('/products', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if (!req.user.hasBroom) {
         return res.status(403).send('Mods ONLY.');
@@ -220,7 +220,7 @@ app.post('/products', passport.authenticate('jwt', { session: false }), async (r
             return res.status(400).send(Name + ' already exists.');
         }
 
-        const tagObjectIds = TagIds.map(tagId => mongoose.Types.ObjectId(tagId));
+        const existingTags = await Tag.find({ TagID: { $in: TagIds } });
 
         const newProduct = await Product.create({
             Name,
@@ -228,8 +228,10 @@ app.post('/products', passport.authenticate('jwt', { session: false }), async (r
             Description,
             Stock,
             Image,
-            Tags: [new mongoose.Types.ObjectId()]
+            Tags: existingTags.map(tag => tag._id)
         });
+
+        newProduct.Tags = existingTags;
 
         res.status(201).json(newProduct);
     } catch (err) {
@@ -237,6 +239,10 @@ app.post('/products', passport.authenticate('jwt', { session: false }), async (r
         res.status(500).send('Error: ' + err);
     }
 });
+
+
+
+
 
 
 //Delete product
