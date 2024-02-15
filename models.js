@@ -46,6 +46,7 @@ const userSchema = mongoose.Schema({
         ProductID: String,
         PurchaseDate: Date
     }],
+    Reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
     hasBroom: {type: Boolean, default: false},
     isSponsor: {type: Boolean, default: false}
 });
