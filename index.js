@@ -131,6 +131,18 @@ app.get('/tags/:id', (req, res) => {
     });
 });
 
+//Get all expenses
+app.get('/expenses', (req, res) => {
+    Expense.find()
+    .then((Expense) => {
+        res.status(201).json(Expense);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
 /**
  * Admin permissions
  */
