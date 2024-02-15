@@ -56,7 +56,7 @@ const tagSchema = mongoose.Schema({
 })
 
 const expenseSchema = mongoose.Schema({
-    Expense: {type: String, required: true},
+    Expense: String,
     Amount: Number,
     Description: String
 })
