@@ -596,3 +596,28 @@ app.delete('/users/:Username/wishlist/:id', passport.authenticate('jwt', { sessi
         res.status(500).send('Error: ' + err);
     }
 });
+
+//Write a review
+app.post('/reviews', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const { Rating, UserId, ProductId, Content } = req.body;
+
+        const review = new Review({
+            Rating,
+            User: UserId,
+            Product: ProductId,
+            Content
+        });
+
+        await review.save();
+
+        await User.findByIdAndUpdate(UserId, { $push: { Reviews: review._id } });
+
+        await Product.findByIdAndUpdate(ProductId, { $push: { Reviews: review._id } });
+        res.status(201).json({ message: 'Review created successfully', review });
+    } catch (err) {
+        console.error('Could not create review: ', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+    
+});
