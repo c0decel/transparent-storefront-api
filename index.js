@@ -206,31 +206,37 @@ app.get('/reviews/:id', (req, res) => {
  */
 
 //Upload new product
-app.post('/products', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.post('/products', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if (!req.user.hasBroom) {
         return res.status(403).send('Mods ONLY.');
     }
     
-    Product.findOne({ Name: req.body.Name })
-    .then((existingProduct) => {
+    try {
+        const { Name, Price, Description, Stock, Image, TagIds } = req.body;
+
+        // Check if the product with the same name already exists
+        const existingProduct = await Product.findOne({ Name });
+
         if (existingProduct) {
-            return res.status(400).send(req.body.Name + ' already exists.');
-        } else {
-            Product.create(req.body)
-            .then((newProduct) => {
-                res.status(201).json(newProduct);
-            })
-            .catch((err) => {
-                console.error(err);
-                res.status(500).send('Error: ' + err);
-            })
+            return res.status(400).send(Name + ' already exists.');
         }
-    })
-    .catch((err) => {
+
+        const newProduct = await Product.create({
+            Name,
+            Price,
+            Description,
+            Stock,
+            Image,
+            Tags: TagIds
+        });
+
+        res.status(201).json(newProduct);
+    } catch (err) {
         console.error(err);
         res.status(500).send('Error: ' + err);
-    });
+    }
 });
+
 
 //Delete product
 app.delete('/products/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
