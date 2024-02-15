@@ -16,7 +16,12 @@ const productSchema = mongoose.Schema({
     Sales: {type: Number, default: 0},
     Stock: {type: Number, default: 0},
     Reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
-    isFeatured: {type: Boolean, default: false}
+    isFeatured: {type: Boolean, default: false},
+    Tags: [{
+        TagID: String,
+        Name: String,
+        Description: String
+    }]
 });
 
 const userSchema = mongoose.Schema({
@@ -45,6 +50,17 @@ const userSchema = mongoose.Schema({
     isSponsor: {type: Boolean, default: false}
 });
 
+const tagSchema = mongoose.Schema({
+    Tag: {type: String, required: true},
+    Description: {type: String, required: true}
+})
+
+const expenseSchema = mongoose.Schema({
+    Expense: {type: String, required: true},
+    Amount: Number,
+    Description: String
+})
+
 userSchema.statics.hashPass = (password) => {
     return bcrypt.hashSync(password, 10);
 };
@@ -56,8 +72,12 @@ userSchema.methods.validatePass = function(password) {
 const Review = mongoose.model('Review', reviewSchema);
 const Product = mongoose.model('Product', productSchema);
 const User = mongoose.model('User', userSchema);
+const Tag = mongoose.model('Tag', tagSchema);
+const Expense = mongoose.model('Expense', expenseSchema);
 const validatePass = userSchema.methods.validatePass;
 
 module.exports.Review = Review;
 module.exports.Product = Product;
 module.exports.User = User;
+module.exports.Tag = Tag;
+module.exports.Expense = Expense;

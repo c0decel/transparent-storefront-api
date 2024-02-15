@@ -10,6 +10,8 @@ const app = express();
 const Models = require('./models.js');
 const Product = Models.Product;
 const User = Models.User;
+const Tag = Models.Tag;
+const Expense = Models.Expense;
 
 const cors = require('cors');
 const { validationResult, check } = require('express-validator');
@@ -37,10 +39,10 @@ const passport = require('passport');
 require('./passport');
 
 //For live
-const mongoURI = process.env.CONNECTION_URI;
+//const mongoURI = process.env.CONNECTION_URI;
 
 //For local testing
-//const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
+const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -52,14 +54,14 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const port = process.env.PORT || 8080;
 
-app.listen(port, '0.0.0.0',() => {
-console.log('Listening on Port ' + port);
-});
+//app.listen(port, '0.0.0.0',() => {
+//console.log('Listening on Port ' + port);
+//});
 
 //For local testing
-//app.listen(8080, () => {
-//   console.log('Listening on port 8080.');
-//})
+app.listen(8080, () => {
+  console.log('Listening on port 8080.');
+})
 
 //Default page
 app.get('/', (req, res) => {
@@ -102,6 +104,33 @@ app.get('/products/:id', (req, res) => {
     });
 });
 
+//Get all tags
+app.get('/tags', (req, res) => {
+    Tag.find()
+    .then((Tag) => {
+        res.status(201).json(Tag);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
+//Get one tag
+app.get('/tags/:id', (req, res) => {
+    Tag.findOne({ id: req.params.TagID })
+    .then((Tag) => {
+        if (!Tag) {
+            return res.status(404).send('Tag does not exist.');
+        }
+        res.json(Tag);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
 /**
  * Admin permissions
  */
@@ -119,11 +148,11 @@ app.post('/products', passport.authenticate('jwt', { session: false }), (req, re
         } else {
             Product.create(req.body)
             .then((newProduct) => {
-                res.status(201).json(newProduct)
+                res.status(201).json(newProduct);
             })
             .catch((err) => {
                 console.error(err);
-                res.status(500).send('Error: ' + err)
+                res.status(500).send('Error: ' + err);
             })
         }
     })
@@ -152,6 +181,134 @@ app.delete('/products/:id', passport.authenticate('jwt', { session: false }), (r
         res.status(500).send('Error: ' + err);
     });
 });
+
+//Post tag
+app.post('/tags', passport.authenticate('jwt', { session: false}), (req, res) => {
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
+
+    Tag.findOne({ Tag: req.body.Tag })
+    .then((existingTag) => {
+        if (existingTag) {
+            return res.status(400).send(req.body.Tag + ' already exists.');
+        } else {
+            Tag.create(req.body)
+            .then((newTag) => {
+                res.status(201).json(newTag);
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            })
+        }
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
+//Delete tag
+app.delete('/tags/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
+    
+    Product.findOneAndDelete({ id: req.params.TagID })
+    .then((existingTag) => {
+        if (!existingTag) {
+            res.status(404).send(req.params.Tag + ' does not exist.')
+        } else {
+            res.status(200).send(req.params.Tag + ' deleted.')
+        }
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
+//Add tag to product
+app.put('/products/:id/tags/:tagId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
+    
+    try {
+        const productId = req.params.id;
+        const tagId = req.params.tagId;
+
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).send('Product not found.');
+        }
+        const tag = await Tag.findById(tagId);
+        if (!tag) {
+            return res.status(404).send('Tag not found.');
+        }
+
+        product.Tags.push({
+            TagID: tag._id,
+            Name: tag.Tag,
+            Description: tag.Description
+        });
+
+        const updatedProduct = await product.save();
+
+        res.json(updatedProduct);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    }
+});
+
+// Remove tag from product
+app.delete('/products/:id/tags/:tagId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
+    
+    try {
+        const productId = req.params.id;
+        const tagId = req.params.tagId;
+
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).send('Product not found.');
+        }
+        const tagIndex = product.Tags.findIndex(tag => tag.TagID.toString() === tagId);
+        if (tagIndex === -1) {
+            return res.status(404).send('Tag not found.');
+        }
+
+        product.Tags.splice(tagIndex, 1);
+
+        const updatedProduct = await product.save();
+
+        res.json(updatedProduct);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    }
+});
+
+//Log an expense
+app.post('/expenses', passport.authenticate('jwt', { session: false }), (req, res) => {
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
+
+    Expense.create(req.body)
+    .then((newExpense) => {
+        res.status(201).json(newExpense);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
 
 //Get all users
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -268,13 +425,11 @@ app.put('/users/:Username/cart/:id', passport.authenticate('jwt', { session: fal
     try {
         const productId = req.params.id;
 
-        // Fetch product details from the database
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).send('Product not found.');
         }
 
-        // Update user's cart with product details
         const updatedCart = await User.findOneAndUpdate(
             { Username: req.params.Username },
             {
