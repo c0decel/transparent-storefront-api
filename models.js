@@ -1,12 +1,6 @@
 const { default: mongoose, mongo } = require("mongoose");
 const bcrypt = require('bcrypt');
 
-const reviewSchema = mongoose.Schema({
-    Rating: {type: Number, required: true},
-    Username: {type: String, required: true},
-    Content: {type: String, required: true}
-})
-
 const productSchema = mongoose.Schema({
     ProductID: String,
     Name: {type: String, required: true},
@@ -15,7 +9,11 @@ const productSchema = mongoose.Schema({
     Image: {type: String, default: 'https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg'},
     Sales: {type: Number, default: 0},
     Stock: {type: Number, default: 0},
-    Reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
+    Reviews: [{ 
+        ReviewID: String,
+        Username: String,
+        Content: String
+    }],
     isFeatured: {type: Boolean, default: false},
     Tags: [{
         TagID: String,
@@ -45,7 +43,6 @@ const userSchema = mongoose.Schema({
         ProductID: String,
         PurchaseDate: Date
     }],
-    Reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
     hasBroom: {type: Boolean, default: false},
     isSponsor: {type: Boolean, default: false}
 });
@@ -78,7 +75,6 @@ userSchema.methods.validatePass = function(password) {
     return bcrypt.compareSync(password, this.Password);
 };
 
-const Review = mongoose.model('Review', reviewSchema);
 const Product = mongoose.model('Product', productSchema);
 const User = mongoose.model('User', userSchema);
 const Tag = mongoose.model('Tag', tagSchema);
@@ -86,7 +82,6 @@ const Expense = mongoose.model('Expense', expenseSchema);
 const Sale = mongoose.model('Sale', saleSchema);
 const validatePass = userSchema.methods.validatePass;
 
-module.exports.Review = Review;
 module.exports.Product = Product;
 module.exports.User = User;
 module.exports.Tag = Tag;
