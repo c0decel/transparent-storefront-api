@@ -629,10 +629,12 @@ app.delete('/users/:Username/wishlist/:id', passport.authenticate('jwt', { sessi
 app.post('/reviews', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const { Rating, UserID, ProductID, Content } = req.body;
+        const username = req.user.Username;
 
         const review = new Review({
             Rating,
             User: UserID,
+            Username: username,
             Product: ProductID,
             Content
         });
