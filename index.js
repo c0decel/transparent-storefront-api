@@ -106,6 +106,23 @@ app.get('/products/:id', (req, res) => {
     });
 });
 
+//Get tags from product
+app.get('/products/:id/tags', async (req, res) => {
+    try {
+        const productId = req.params.id;
+
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).send('Not found.')
+        }
+
+        res.json(product.Tags);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    }
+});
+
 //Get all tags
 app.get('/tags', (req, res) => {
     Tag.find()
