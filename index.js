@@ -524,7 +524,7 @@ app.delete('/users/:Username/cart/:id', passport.authenticate('jwt', { session: 
 });
 
 
-//Get cart items
+//Get wishlist items
 app.get('/users/:Username/wishlist', async (req, res) => {
     try {
         const user = await User.findOne({ Username: req.params.Username }).populate('Wishlist.ProductID');

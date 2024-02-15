@@ -33,6 +33,38 @@
             </tbody>
 
             <tbody>
+                <td>Get all tags</td>
+                <td>/tags</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>JSON of all tags</td>
+            </tbody>
+
+            <tbody>
+                <td>Get one tag</td>
+                <td>/tags/:id</td>
+                <td>GET</td>
+                <td>ID of tag</td>
+                <td>JSON of one tag</td>
+            </tbody>
+
+            <tbody>
+                <td>Get all sales</td>
+                <td>/sales</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>JSON of all sales</td>
+            </tbody>
+
+            <tbody>
+                <td>Get all expenses</td>
+                <td>/expenses</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>JSON of all expenses</td>
+            </tbody>
+
+            <tbody>
                 <td>Post new user</td>
                 <td>/users</td>
                 <td>POST</td>
@@ -98,6 +130,49 @@
                 <td>DELETE</td>
                 <td>ID of product</td>
                 <td>Delete one product</td>
+            </tbody>
+            <tbody>
+                <td>Post new tag</td>
+                <td>/tags</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>JSON of new tag</td>
+            </tbody>
+            <tbody>
+                <td>Delete one tag</td>
+                <td>/tags/:id</td>
+                <td>DELETE</td>
+                <td>ID of tag</td>
+                <td>Delete one tag</td>
+            </tbody>
+            <tbody>
+                <td>Add tag to product</td>
+                <td>/products/:id/tags/:tagId</td>
+                <td>PUT</td>
+                <td>Tag and ID of product</td>
+                <td>Adds tag to product</td>
+            </tbody>
+
+            <tbody>
+                <td>Remove tag from product</td>
+                <td>/products/:id/tags/:tagId</td>
+                <td>DELETE</td>
+                <td>Tag and ID of product</td>
+                <td>Removes tag from product</td>
+            </tbody>
+            <tbody>
+                <td>Post new expense</td>
+                <td>/expenses</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>JSON of new expense</td>
+            </tbody>
+            <tbody>
+                <td>Post new sale</td>
+                <td>/sales</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>JSON of new sale</td>
             </tbody>
             <tbody>
                 <td>Get all users</td>
