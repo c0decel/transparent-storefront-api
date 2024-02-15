@@ -9,6 +9,7 @@ const app = express();
 
 const Models = require('./models.js');
 const Product = Models.Product;
+const Review = Models.Review;
 const User = Models.User;
 const Tag = Models.Tag;
 const Expense = Models.Expense;
@@ -61,7 +62,7 @@ console.log('Listening on Port ' + port);
 
 //For local testing
 //app.listen(8080, () => {
-// console.log('Listening on port 8080.');
+ //console.log('Listening on port 8080.');
 //})
 
 //Default page
@@ -97,7 +98,7 @@ app.get('/products/:id', (req, res) => {
         if (!Product) {
             return res.status(404).send('Product does not exist.');
         }
-        res.json(Product);
+        res.json({Product});
     })
     .catch((err) => {
         console.error(err);
@@ -149,6 +150,33 @@ app.get('/sales', (req, res) => {
     Sale.find()
     .then((Sale) => {
         res.status(201).json(Sale);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
+//Get all reviews
+app.get('/reviews', (req, res) => {
+    Review.find()
+    .then((Review) => {
+        res.status(201).json(Review);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
+//Get one review
+app.get('/reviews/:id', (req, res) => {
+    Review.findOne({ id: req.params.ReviewID })
+    .then((Review) => {
+        if (!Review) {
+            return res.status(404).send('Review does not exist.');
+        }
+        res.json({Review});
     })
     .catch((err) => {
         console.error(err);

@@ -2,6 +2,7 @@ const { default: mongoose, mongo } = require("mongoose");
 const bcrypt = require('bcrypt');
 
 const reviewSchema = mongoose.Schema({
+    ReviewID: String,
     Rating: {type: Number, required: true},
     User: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     Product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
