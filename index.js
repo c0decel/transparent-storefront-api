@@ -214,12 +214,13 @@ app.post('/products', passport.authenticate('jwt', { session: false }), async (r
     try {
         const { Name, Price, Description, Stock, Image, TagIds } = req.body;
 
-        // Check if the product with the same name already exists
         const existingProduct = await Product.findOne({ Name });
 
         if (existingProduct) {
             return res.status(400).send(Name + ' already exists.');
         }
+
+        const tagObjectIds = TagIds.map(tagId => mongoose.Types.ObjectId(tagId));
 
         const newProduct = await Product.create({
             Name,
@@ -227,7 +228,7 @@ app.post('/products', passport.authenticate('jwt', { session: false }), async (r
             Description,
             Stock,
             Image,
-            Tags: TagIds
+            Tags: tagObjectIds
         });
 
         res.status(201).json(newProduct);
