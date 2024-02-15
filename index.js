@@ -228,7 +228,7 @@ app.post('/products', passport.authenticate('jwt', { session: false }), async (r
             Description,
             Stock,
             Image,
-            Tags: tagObjectIds
+            Tags: [new mongoose.Types.ObjectId()]
         });
 
         res.status(201).json(newProduct);
