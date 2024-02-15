@@ -58,7 +58,8 @@ const tagSchema = mongoose.Schema({
 const expenseSchema = mongoose.Schema({
     Expense: String,
     Amount: Number,
-    Description: String
+    Description: String,
+    ExpenseDate: {type: Date, required: true}
 })
 
 userSchema.statics.hashPass = (password) => {
