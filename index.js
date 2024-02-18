@@ -241,7 +241,31 @@ app.post('/products', passport.authenticate('jwt', { session: false }), async (r
     }
 });
 
+//Update product stock
+app.put('/products/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    if (!req.user.hasBroom) {
+        return res.status(403).send('Mods ONLY.');
+    }
 
+    try {
+        const product = await Product.findById(req.params.id);
+
+        if (!product) {
+            return res.status(404).send('Product not found.');
+        }
+
+        const { newStock } = req.body;
+
+        product.Stock = newStock;
+
+        await product.save();
+
+        return res.status(200).send('Stock quantity updated successfully.');
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send('Internal server error.');
+    }
+});
 
 
 
