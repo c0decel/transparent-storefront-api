@@ -111,12 +111,13 @@ app.get('/products/:id/tags', async (req, res) => {
     try {
         const productId = req.params.id;
 
-        const product = await Product.findById(productId);
+        const product = await Product.findById(productId).populate('Tags');
         if (!product) {
             return res.status(404).send('Not found.')
         }
+        const tagNames = product.Tags.map(tag => tag.Tag);
 
-        res.json(product.Tags);
+        res.json(tagNames);
     } catch (err) {
         console.error(err);
         res.status(500).send('Error: ' + err);
