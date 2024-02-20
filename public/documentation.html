@@ -3,8 +3,24 @@
     <head>
         <title>Documentation</title>
     </head>
+    <style type="text/css">
+        body {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        table {
+            border-style: solid;
+            border-color: black;
+            padding: 20px;
+            margin: 20px;
+        }
+    </style>
     <body>
-        <h1>Basic User</h1>
+        <h1>Index</h1>
+        <p>index.js</p>
         <table>
             <thead>
                 <tr>
@@ -12,46 +28,33 @@
                     <th>URL</th>
                     <th>Method</th>
                     <th>Query Params</th>
+                    <th>Permissions</th>
                     <th>Response</th>
                 </tr>
             </thead>
-
+            
             <tbody>
-                <td>Get all products</td>
-                <td>/products</td>
-                <td>GET</td>
+                <td>Post new expense</td>
+                <td>/expenses</td>
+                <td>POST</td>
                 <td>None</td>
-                <td>JSON of all products</td>
+                <td>Admin</td>
+                <td>JSON of new expense</td>
             </tbody>
-
             <tbody>
-                <td>Get one product</td>
-                <td>/products/:id</td>
-                <td>GET</td>
-                <td>ID of product</td>
-                <td>JSON of one product</td>
-            </tbody>
-
-            <tbody>
-                <td>Get all tags</td>
-                <td>/tags</td>
-                <td>GET</td>
+                <td>Post new sale</td>
+                <td>/sales</td>
+                <td>POST</td>
                 <td>None</td>
-                <td>JSON of all tags</td>
+                <td>Admin</td>
+                <td>JSON of new sale</td>
             </tbody>
-
-            <tbody>
-                <td>Get one tag</td>
-                <td>/tags/:id</td>
-                <td>GET</td>
-                <td>ID of tag</td>
-                <td>JSON of one tag</td>
-            </tbody>
-
+            
             <tbody>
                 <td>Get all sales</td>
                 <td>/sales</td>
                 <td>GET</td>
+                <td>None</td>
                 <td>None</td>
                 <td>JSON of all sales</td>
             </tbody>
@@ -61,13 +64,273 @@
                 <td>/expenses</td>
                 <td>GET</td>
                 <td>None</td>
+                <td>None</td>
                 <td>JSON of all expenses</td>
             </tbody>
+        </table>
+        
+        <h1>Products</h1>
+        <p>productRoutes.js</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Business Logic</th>
+                    <th>URL</th>
+                    <th>Method</th>
+                    <th>Query Params</th>
+                    <th>Permissions</th>
+                    <th>Response</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <td>Get all products</td>
+                <td>/products</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>None</td>
+                <td>JSON of all products</td>
+            </tbody>
+
+            <tbody>
+                <td>Get one product</td>
+                <td>/products/:id</td>
+                <td>GET</td>
+                <td>ID of product</td>
+                <td>None</td>
+                <td>JSON of one product</td>
+            </tbody>
+
+            <tbody>
+                <td>Get tags from one product</td>
+                <td>/products/:id/tags</td>
+                <td>GET</td>
+                <td>ID of product</td>
+                <td>None</td>
+                <td>Array of product's tags</td>
+            </tbody>
+
+            <tbody>
+                <td>Post new product</td>
+                <td>/products</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>Admin</td>
+                <td>JSON of new product</td>
+            </tbody>
+
+            <tbody>
+                <td>Update stock quantity</td>
+                <td>/products/:id</td>
+                <td>PUT</td>
+                <td>ID of product</td>
+                <td>Admin</td>
+                <td>JSON of new stock quantity</td>
+            </tbody>
+
+            <tbody>
+                <td>Add tag to product</td>
+                <td>/products/:id/tags/:tagId</td>
+                <td>PUT</td>
+                <td>ID of product and ID of tag</td>
+                <td>Admin</td>
+                <td>Array of product's tags</td>
+            </tbody>
+
+            <tbody>
+                <td>Remove tag from product</td>
+                <td>/products/:id/tags/:tagId</td>
+                <td>DELETE</td>
+                <td>ID of product and ID of tag</td>
+                <td>Admin</td>
+                <td>Array of product's tags</td>
+            </tbody>
+
+            <tbody>
+                <td>Delete a product</td>
+                <td>/products/:id</td>
+                <td>DELETE</td>
+                <td>ID of product</td>
+                <td>Admin</td>
+                <td>Deletes a product</td>
+            </tbody>
+        </table>
+
+        <h1>Tags</h1>
+        <p>tagRoutes.js</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Business Logic</th>
+                    <th>URL</th>
+                    <th>Method</th>
+                    <th>Query Params</th>
+                    <th>Permissions</th>
+                    <th>Response</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <td>Get all tags</td>
+                <td>/tags</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>None</td>
+                <td>JSON of all tags</td>
+            </tbody>
+
+            <tbody>
+                <td>Get one tag</td>
+                <td>/tags/:id</td>
+                <td>GET</td>
+                <td>ID of tag</td>
+                <td>None</td>
+                <td>JSON of one tag</td>
+            </tbody>
+
+            <tbody>
+                <td>Post tag</td>
+                <td>/tags</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>Admin</td>
+                <td>JSON of new tag</td>
+            </tbody>
+
+            <tbody>
+                <td>Delete tag</td>
+                <td>/tags/:id</td>
+                <td>DELETE</td>
+                <td>ID of tag</td>
+                <td>Admin</td>
+                <td>Deletes tag</td>
+            </tbody>
+        </table>
+
+        <h1>Users</h1>
+        <p>userRoutes.js</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Business Logic</th>
+                    <th>URL</th>
+                    <th>Method</th>
+                    <th>Query Params</th>
+                    <th>Permissions</th>
+                    <th>Response</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <td>Post new user</td>
+                <td>/users</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>None</td>
+                <td>JSON of new user</td>
+            </tbody>
+
+            <tbody>
+                <td>Get cart items</td>
+                <td>/users/:Username/cart</td>
+                <td>GET</td>
+                <td>Username</td>
+                <td>Session</td>
+                <td>Returns cart items</td>
+            </tbody>
+
+            <tbody>
+                <td>Add item to cart</td>
+                <td>/users/:Username/cart/:id</td>
+                <td>PUT</td>
+                <td>Username and ID of product</td>
+                <td>Session</td>
+                <td>Adds product to cart</td>
+            </tbody>
+
+            <tbody>
+                <td>Remove item from cart</td>
+                <td>/users/:Username/cart/:id</td>
+                <td>DELETE</td>
+                <td>Username and ID of product</td>
+                <td>Session</td>
+                <td>Removes product from cart</td>
+            </tbody>
+
+            <tbody>
+                <td>Get wishlist items</td>
+                <td>/users/:Username/wishlist</td>
+                <td>GET</td>
+                <td>Username</td>
+                <td>Session</td>
+                <td>Returns wishlist items</td>
+            </tbody>
+
+            <tbody>
+                <td>Add item to wishlist</td>
+                <td>/users/:Username/wishlist/:id</td>
+                <td>PUT</td>
+                <td>Username and ID of product</td>
+                <td>Session</td>
+                <td>Adds product to wishlist</td>
+            </tbody>
+
+            <tbody>
+                <td>Remove item from wishlist</td>
+                <td>/users/:Username/wishlist/:id</td>
+                <td>DELETE</td>
+                <td>Username and ID of product</td>
+                <td>Session</td>
+                <td>Removes product from wishlist</td>
+            </tbody>
+
+            <tbody>
+                <td>Get all users</td>
+                <td>/users</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>Admin</td>
+                <td>JSON of all users</td>
+            </tbody>
+
+            <tbody>
+                <td>Get one user</td>
+                <td>/users/:Username</td>
+                <td>GET</td>
+                <td>Username</td>
+                <td>Admin</td>
+                <td>JSON of one user</td>
+            </tbody>
+
+            <tbody>
+                <td>Delete one user</td>
+                <td>/users/:Username</td>
+                <td>DELETE</td>
+                <td>Username</td>
+                <td>Admin</td>
+                <td>Delete one user</td>
+            </tbody>
+        </table>
+
+        <h1>Reviews</h1>
+        <p>reviewRoutes.js</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Business Logic</th>
+                    <th>URL</th>
+                    <th>Method</th>
+                    <th>Query Params</th>
+                    <th>Permissions</th>
+                    <th>Response</th>
+                </tr>
+            </thead>
 
             <tbody>
                 <td>Get all reviews</td>
                 <td>/reviews</td>
                 <td>GET</td>
+                <td>None</td>
                 <td>None</td>
                 <td>JSON of all reviews</td>
             </tbody>
@@ -77,141 +340,18 @@
                 <td>/reviews/:id</td>
                 <td>GET</td>
                 <td>ID of review</td>
+                <td>None</td>
                 <td>JSON of one review</td>
             </tbody>
 
             <tbody>
-                <td>Post new user</td>
-                <td>/users</td>
+                <td>Post a review</td>
+                <td>/reviews</td>
                 <td>POST</td>
                 <td>None</td>
-                <td>JSON of new user</td>
-            </tbody>
-
-
-            <tbody>
-                <td>Add item to cart</td>
-                <td>/users/:Username/cart/:id</td>
-                <td>PUT</td>
-                <td>Username and ID of product</td>
-                <td>Adds product to cart</td>
-            </tbody>
-
-            <tbody>
-                <td>Remove item from cart</td>
-                <td>/users/:Username/cart/:id</td>
-                <td>DELETE</td>
-                <td>Username and ID of product</td>
-                <td>Removes product from cart</td>
-            </tbody>
-
-            <tbody>
-                <td>Add item to wishlist</td>
-                <td>/users/:Username/wishlist/:id</td>
-                <td>PUT</td>
-                <td>Username and ID of product</td>
-                <td>Adds product to wishlist</td>
-            </tbody>
-
-            <tbody>
-                <td>Remove item from wishlist</td>
-                <td>/users/:Username/wishlist/:id</td>
-                <td>DELETE</td>
-                <td>Username and ID of product</td>
-                <td>Removes product from wishlist</td>
+                <td>Session</td>
+                <td>JSON of new review</td>
             </tbody>
         </table>
-
-        <h1>Mod Permissions</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Business Logic</th>
-                    <th>URL</th>
-                    <th>Method</th>
-                    <th>Query Params</th>
-                    <th>Response</th>
-                </tr>
-            </thead>
-            <tbody>
-                <td>Post new product</td>
-                <td>/products</td>
-                <td>POST</td>
-                <td>None</td>
-                <td>JSON of new product</td>
-            </tbody>
-            <tbody>
-                <td>Delete one product</td>
-                <td>/products/:id</td>
-                <td>DELETE</td>
-                <td>ID of product</td>
-                <td>Delete one product</td>
-            </tbody>
-            <tbody>
-                <td>Post new tag</td>
-                <td>/tags</td>
-                <td>POST</td>
-                <td>None</td>
-                <td>JSON of new tag</td>
-            </tbody>
-            <tbody>
-                <td>Delete one tag</td>
-                <td>/tags/:id</td>
-                <td>DELETE</td>
-                <td>ID of tag</td>
-                <td>Delete one tag</td>
-            </tbody>
-            <tbody>
-                <td>Add tag to product</td>
-                <td>/products/:id/tags/:tagId</td>
-                <td>PUT</td>
-                <td>Tag and ID of product</td>
-                <td>Adds tag to product</td>
-            </tbody>
-
-            <tbody>
-                <td>Remove tag from product</td>
-                <td>/products/:id/tags/:tagId</td>
-                <td>DELETE</td>
-                <td>Tag and ID of product</td>
-                <td>Removes tag from product</td>
-            </tbody>
-            <tbody>
-                <td>Post new expense</td>
-                <td>/expenses</td>
-                <td>POST</td>
-                <td>None</td>
-                <td>JSON of new expense</td>
-            </tbody>
-            <tbody>
-                <td>Post new sale</td>
-                <td>/sales</td>
-                <td>POST</td>
-                <td>None</td>
-                <td>JSON of new sale</td>
-            </tbody>
-            <tbody>
-                <td>Get all users</td>
-                <td>/users</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>JSON of all users</td>
-            </tbody>
-            <tbody>
-                <td>Get one user</td>
-                <td>/users/:Username</td>
-                <td>GET</td>
-                <td>Username</td>
-                <td>JSON of one user</td>
-            </tbody>
-            <tbody>
-                <td>Delete one user</td>
-                <td>/products/:Username</td>
-                <td>DELETE</td>
-                <td>Username</td>
-                <td>Delete one user</td>
-            </tbody>
-        </table>
-
     </body>
 </html>

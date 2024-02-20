@@ -70,6 +70,7 @@ const saleSchema = mongoose.Schema({
     SaleDate: {type: Date, required: true}
 })
 
+
 userSchema.statics.hashPass = (password) => {
     return bcrypt.hashSync(password, 10);
 };
