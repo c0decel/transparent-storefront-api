@@ -213,7 +213,7 @@ app.post('/products', passport.authenticate('jwt', { session: false }), async (r
     }
     
     try {
-        const { Name, Price, Description, Stock, Image, TagIds } = req.body;
+        const { Name, Price, Description, Stock, Image, Tags } = req.body;
 
         const existingProduct = await Product.findOne({ Name });
 
@@ -221,18 +221,15 @@ app.post('/products', passport.authenticate('jwt', { session: false }), async (r
             return res.status(400).send(Name + ' already exists.');
         }
 
-        const existingTags = await Tag.find({ TagID: { $in: TagIds } });
-
         const newProduct = await Product.create({
             Name,
             Price,
             Description,
             Stock,
             Image,
-            Tags: existingTags.map(tag => tag._id)
+            Tags
         });
 
-        newProduct.Tags = existingTags;
 
         res.status(201).json(newProduct);
     } catch (err) {
