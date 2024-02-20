@@ -245,28 +245,28 @@ app.put('/products/:id', passport.authenticate('jwt', { session: false }), async
     }
 
     try {
+        const { newStock } = req.body;
+
         const product = await Product.findById(req.params.id);
+        console.log(product)
 
         if (!product) {
             return res.status(404).send('Product not found.');
         }
 
-        const { newStock } = req.body;
+        const updatedProduct = await Product.findOneAndUpdate(
+            { _id: req.params.id },
+            { $set: { Stock: newStock } },
+            { new: true }
+        );
 
-        product.Stock = newStock;
 
-        await product.save();
-
-        return res.status(200).send('Stock quantity updated successfully.');
+        return res.status(200).json(updatedProduct);
     } catch (err) {
         console.error(err);
         return res.status(500).send('Internal server error.');
     }
 });
-
-
-
-
 //Delete product
 app.delete('/products/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
     if (!req.user.hasBroom) {
