@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const checkBroom = require('./appFunctions.js');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -38,10 +39,10 @@ const passport = require('passport');
 require('./passport');
 
 //For live
-//const mongoURI = process.env.CONNECTION_URI;
+const mongoURI = process.env.CONNECTION_URI;
 
 //For local testing
-const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
+//const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -53,14 +54,14 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const port = process.env.PORT || 8080;
 
-//app.listen(port, '0.0.0.0',() => {
-//console.log('Listening on Port ' + port);
-//});
+app.listen(port, '0.0.0.0',() => {
+console.log('Listening on Port ' + port);
+});
 
 //For local testing
-app.listen(8080, () => {
- console.log('Listening on port 8080.');
-})
+//app.listen(8080, () => {
+//console.log('Listening on port 8080.');
+//})
 
 //Default page
 app.get('/', (req, res) => {
@@ -100,7 +101,7 @@ app.use('/reviews', reviewRoutes);
  * Basic user permissions
  */
 //Get all expenses
-app.get('/expenses', (req, res) => {
+app.get('/expenses', (res) => {
     Expense.find()
     .then((Expense) => {
         res.status(201).json(Expense);
@@ -112,7 +113,7 @@ app.get('/expenses', (req, res) => {
 });
 
 //Get all sales
-app.get('/sales', (req, res) => {
+app.get('/sales', (res) => {
     Sale.find()
     .then((Sale) => {
         res.status(201).json(Sale);
@@ -127,11 +128,7 @@ app.get('/sales', (req, res) => {
  * Admin permissions
  */
 //Log an expense
-app.post('/expenses', passport.authenticate('jwt', { session: false }), (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-
+app.post('/expenses', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
     Expense.create(req.body)
     .then((newExpense) => {
         res.status(201).json(newExpense);
@@ -143,11 +140,7 @@ app.post('/expenses', passport.authenticate('jwt', { session: false }), (req, re
 });
 
 //Log a sale
-app.post('/sales', passport.authenticate('jwt', { session: false }), (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-
+app.post('/sales', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
     Sale.create(req.body)
     .then((newSale) => {
         res.status(201).json(newSale);

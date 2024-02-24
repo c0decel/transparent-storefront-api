@@ -1,4 +1,5 @@
 const express = require('express');
+const checkBroom = require('./appFunctions.js');
 const router = express.Router();
 const Models = require('./models.js');
 const Tag = Models.Tag;
@@ -41,11 +42,7 @@ router.get('/:id', (req, res) => {
  * Admin permissions
  */
 //Post tag
-router.post('/', passport.authenticate('jwt', { session: false}), (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-
+router.post('/', passport.authenticate('jwt', { session: false}), checkBroom, (req, res) => {
     Tag.findOne({ Tag: req.body.Tag })
     .then((existingTag) => {
         if (existingTag) {
@@ -68,11 +65,7 @@ router.post('/', passport.authenticate('jwt', { session: false}), (req, res) => 
 });
 
 //Delete tag
-router.delete('/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-    
+router.delete('/:id', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
     Tag.findOneAndDelete({ _id: req.params.id })
     .then((existingTag) => {
         if (!existingTag) {

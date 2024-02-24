@@ -1,4 +1,5 @@
 const express = require('express');
+const checkBroom = require('./appFunctions.js');
 const mongoose = require('mongoose');
 const router = express.Router();
 const Models = require('./models.js');
@@ -60,11 +61,7 @@ router.get('/:id/tags', async (req, res) => {
  * Admin permissions
  */
 // Upload new product
-router.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-    
+router.post('/', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
     try {
         const { Name, Price, Description, Stock, Image, Tags } = req.body;
 
@@ -92,11 +89,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
 });
 
 //Update product stock
-router.put('/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-
+router.put('/:id', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
     try {
         const { newStock } = req.body;
 
@@ -122,11 +115,7 @@ router.put('/:id', passport.authenticate('jwt', { session: false }), async (req,
 });
 
 //Add tag to product
-router.put('/:id/tags/:tagId', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-    
+router.put('/:id/tags/:tagId', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
     try {
         const tagId = req.params.tagId;
 
@@ -156,11 +145,7 @@ router.put('/:id/tags/:tagId', passport.authenticate('jwt', { session: false }),
 });
 
 // Remove tag from product
-router.delete('/:id/tags/:tagId', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-    
+router.delete('/:id/tags/:tagId', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => { 
     try {
         const tagId = req.params.tagId;
 
@@ -191,11 +176,7 @@ router.delete('/:id/tags/:tagId', passport.authenticate('jwt', { session: false 
 });
 
 //Delete product
-router.delete('/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-    
+router.delete('/:id', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
     Product.findOneAndDelete({ _id: req.params.id })
     .then((existingProduct) => {
         if (!existingProduct) {

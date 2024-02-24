@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const checkBroom = require('./appFunctions.js');
+const checkAuth = require('./appFunctions.js');
 const Models = require('./models.js');
-const Tag = Models.Tag;
 const Product = Models.Product;
 const User = Models.User;
 
@@ -57,7 +58,7 @@ router.post('/', [
  * Logged in user permissions
  */
 //Get cart items
-router.get('/:Username/cart', async (req, res) => {
+router.get('/:Username/cart', checkAuth, async (req, res) => {
     try {
         const user = await User.findOne({ Username: req.params.Username }).populate('Cart.ProductID');
         res.status(200).json(user.Cart);
@@ -68,7 +69,7 @@ router.get('/:Username/cart', async (req, res) => {
 });
 
 // Add product to cart
-router.put('/:Username/cart/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.put('/:Username/cart/:id', passport.authenticate('jwt', { session: false }), checkAuth, async (req, res) => {
     try {
         const productId = req.params.id;
 
@@ -105,9 +106,9 @@ router.put('/:Username/cart/:id', passport.authenticate('jwt', { session: false 
 
 
 //Remove product from cart
-router.delete('/:Username/cart/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.delete('/:Username/cart/:id', passport.authenticate('jwt', { session: false }), checkAuth, async (req, res) => {
     try {
-        const productId = req.params.id;
+       const productId = req.params.id;
 
         const updatedCart = await User.findOneAndUpdate(
             { Username: req.params.Username },
@@ -132,7 +133,7 @@ router.delete('/:Username/cart/:id', passport.authenticate('jwt', { session: fal
 
 
 //Get wishlist items
-router.get('/:Username/wishlist', async (req, res) => {
+router.get('/:Username/wishlist', checkAuth, async (req, res) => {
     try {
         const user = await User.findOne({ Username: req.params.Username }).populate('Wishlist.ProductID');
         res.status(200).json(user.Wishlist);
@@ -143,7 +144,7 @@ router.get('/:Username/wishlist', async (req, res) => {
 });
 
 // Add product to wishlist
-router.put('/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.put('/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), checkAuth, async (req, res) => {
     try {
         const productId = req.params.id;
 
@@ -179,10 +180,9 @@ router.put('/:Username/wishlist/:id', passport.authenticate('jwt', { session: fa
 });
 
 //Remove product from wishlist
-router.delete('/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.delete('/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), checkAuth, async (req, res) => {
     try {
         const productId = req.params.id;
-
         const updatedWishlist = await User.findOneAndUpdate(
             { Username: req.params.Username },
             {
@@ -208,11 +208,7 @@ router.delete('/:Username/wishlist/:id', passport.authenticate('jwt', { session:
  * Admin permissions
  */
 //Get all users
-router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-
+router.get('/', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
     User.find()
     .then((User) => {
         res.status(201).json(User);
@@ -224,11 +220,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
 });
 
 //Get one user
-router.get('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-    
+router.get('/:Username', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
     User.findOne({ Username: req.params.Username })
     .then((User) => {
         if (!User) {
@@ -243,11 +235,7 @@ router.get('/:Username', passport.authenticate('jwt', { session: false }), (req,
 });
 
 //Delete user
-router.delete('/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
-    if (!req.user.hasBroom) {
-        return res.status(403).send('Mods ONLY.');
-    }
-    
+router.delete('/:Username', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
     User.findOneAndDelete({ Username: req.params.Username })
     .then((existingUser) => {
         if (!existingUser) {
