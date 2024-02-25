@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const express = require('express');
-const checkBroom = require('./appFunctions.js');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -11,8 +10,6 @@ const app = express();
 const Models = require('./models.js');
 const Expense = Models.Expense;
 const Sale = Models.Sale;
-
-
 
 const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'https://transparent-storefront-api-7a631c0a8a92.herokuapp.com'];
@@ -34,6 +31,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 let auth = require('./auth')(app);
+
+const checkBroom = require('./appFunctions.js');
 
 const passport = require('passport');
 require('./passport');
