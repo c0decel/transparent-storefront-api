@@ -8,7 +8,6 @@ const passport = require('passport');
 const app = express();
 
 const Models = require('./models.js');
-let auth = require('./auth')(app);
 const checkBroom = require('./appFunctions.js');
 require('./passport');
 
@@ -19,6 +18,7 @@ const productRoutes = require('./productRoutes');
 const tagRoutes = require('./tagRoutes');
 const userRoutes = require('./userRoutes');
 const reviewRoutes = require('./reviewRoutes');
+let auth = require('./auth')(app);
 
 require('dotenv').config();
 
@@ -84,6 +84,11 @@ app.use('/users', userRoutes);
  * Review logic
  */
 app.use('/reviews', reviewRoutes);
+
+/**
+ * Login
+ */
+auth(app);
 
 /**
  * Basic user permissions
