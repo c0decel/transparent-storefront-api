@@ -15,7 +15,6 @@ let Users = Models.User,
             passwordField: 'Password'
         },
         async (username, password, callback) => {
-            console.log(`${username} ${password}`);
             try {
                 const user = await Users.findOne({ Username: username }).select('+Password');
                 if (!user) {
