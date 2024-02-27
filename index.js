@@ -21,7 +21,7 @@ const userRoutes = require('./userRoutes');
 const reviewRoutes = require('./reviewRoutes');
 
 require('dotenv').config();
-const port = process.env.PORT || 8080;
+
 let allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'https://transparent-storefront-api-7a631c0a8a92.herokuapp.com'];
 
 app.use(cors({
@@ -143,6 +143,8 @@ app.post('/sales', passport.authenticate('jwt', { session: false }), checkBroom,
 //app.listen(8080, () => {
 //    console.log('Listening on port 8080.');
 //    });
+
+const port = process.env.PORT || 8080;
 
 app.listen(port, '0.0.0.0',() => {
 console.log('Listening on Port ' + port);
