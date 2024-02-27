@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const checkBroom = require('./appFunctions.js');
-const checkAuth = require('./appFunctions.js');
 const Models = require('./models.js');
 const Product = Models.Product;
 const User = Models.User;
@@ -58,7 +57,7 @@ router.post('/', [
  * Logged in user permissions
  */
 //Get cart items
-router.get('/:Username/cart', checkAuth, async (req, res) => {
+router.get('/:Username/cart', async (req, res) => {
     try {
         const user = await User.findOne({ Username: req.params.Username }).populate('Cart.ProductID');
         res.status(200).json(user.Cart);
@@ -69,7 +68,7 @@ router.get('/:Username/cart', checkAuth, async (req, res) => {
 });
 
 // Add product to cart
-router.put('/:Username/cart/:id', passport.authenticate('jwt', { session: false }), checkAuth, async (req, res) => {
+router.put('/:Username/cart/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const productId = req.params.id;
 
@@ -106,7 +105,7 @@ router.put('/:Username/cart/:id', passport.authenticate('jwt', { session: false 
 
 
 //Remove product from cart
-router.delete('/:Username/cart/:id', passport.authenticate('jwt', { session: false }), checkAuth, async (req, res) => {
+router.delete('/:Username/cart/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
        const productId = req.params.id;
 
@@ -133,7 +132,7 @@ router.delete('/:Username/cart/:id', passport.authenticate('jwt', { session: fal
 
 
 //Get wishlist items
-router.get('/:Username/wishlist', checkAuth, async (req, res) => {
+router.get('/:Username/wishlist', async (req, res) => {
     try {
         const user = await User.findOne({ Username: req.params.Username }).populate('Wishlist.ProductID');
         res.status(200).json(user.Wishlist);
@@ -144,7 +143,7 @@ router.get('/:Username/wishlist', checkAuth, async (req, res) => {
 });
 
 // Add product to wishlist
-router.put('/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), checkAuth, async (req, res) => {
+router.put('/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const productId = req.params.id;
 
@@ -180,7 +179,7 @@ router.put('/:Username/wishlist/:id', passport.authenticate('jwt', { session: fa
 });
 
 //Remove product from wishlist
-router.delete('/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), checkAuth, async (req, res) => {
+router.delete('/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const productId = req.params.id;
         const updatedWishlist = await User.findOneAndUpdate(
