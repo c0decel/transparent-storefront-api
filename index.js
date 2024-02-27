@@ -1,17 +1,27 @@
-require('dotenv').config();
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const cors = require('cors');
+const passport = require('passport');
 
 const app = express();
 
 const Models = require('./models.js');
+let auth = require('./auth')(app);
+const checkBroom = require('./appFunctions.js');
+require('./passport');
+
 const Expense = Models.Expense;
 const Sale = Models.Sale;
 
-const cors = require('cors');
+const productRoutes = require('./productRoutes');
+const tagRoutes = require('./tagRoutes');
+const userRoutes = require('./userRoutes');
+const reviewRoutes = require('./reviewRoutes');
+
+require('dotenv').config();
+const port = process.env.PORT || 8080;
 let allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'https://transparent-storefront-api-7a631c0a8a92.herokuapp.com'];
 
 app.use(cors({
@@ -30,12 +40,6 @@ app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let auth = require('./auth')(app);
-
-const checkBroom = require('./appFunctions.js');
-
-const passport = require('passport');
-require('./passport');
 
 //For live
 const mongoURI = process.env.CONNECTION_URI;
@@ -51,17 +55,6 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     console.error('Failed to connect ', err);
   });
 
-const port = process.env.PORT || 8080;
-
-app.listen(port, '0.0.0.0',() => {
-console.log('Listening on Port ' + port);
-});
-
-//For local testing
-//app.listen(8080, () => {
-//console.log('Listening on port 8080.');
-//})
-
 //Default page
 app.get('/', (req, res) => {
     res.send('Transparent Storefront API');
@@ -75,25 +68,21 @@ app.get('/documentation', (req, res) => {
 /**
  * Product logic
  */
-const productRoutes = require('./productRoutes');
 app.use('/products', productRoutes);
 
 /**
  * Tag logic
  */
-const tagRoutes = require('./tagRoutes');
 app.use('/tags', tagRoutes);
 
 /**
  * User logic
  */
-const userRoutes = require('./userRoutes');
 app.use('/users', userRoutes);
 
 /**
  * Review logic
  */
-const reviewRoutes = require('./reviewRoutes');
 app.use('/reviews', reviewRoutes);
 
 /**
@@ -148,4 +137,13 @@ app.post('/sales', passport.authenticate('jwt', { session: false }), checkBroom,
         console.error(err);
         res.status(500).send('Error: ' + err);
     });
+});
+
+//For local testing
+//app.listen(8080, () => {
+//    console.log('Listening on port 8080.');
+//    });
+
+app.listen(port, '0.0.0.0',() => {
+console.log('Listening on Port ' + port);
 });
