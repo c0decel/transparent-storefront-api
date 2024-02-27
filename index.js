@@ -8,9 +8,7 @@ const passport = require('passport');
 const app = express();
 
 const Models = require('./models.js');
-let auth = require('./auth')(app);
 const checkBroom = require('./appFunctions.js');
-require('./passport');
 
 const Expense = Models.Expense;
 const Sale = Models.Sale;
@@ -39,6 +37,9 @@ app.use(cors({
 app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+require('./passport');
+let auth = require('./auth')(app);
 
 
 //For live
