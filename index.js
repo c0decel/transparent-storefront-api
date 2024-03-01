@@ -45,10 +45,10 @@ const checkBroom = require('./appFunctions.js');
 
 
 //For live
-//const mongoURI = process.env.CONNECTION_URI;
+const mongoURI = process.env.CONNECTION_URI;
 
 //For local testing
-const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
+//const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -100,12 +100,12 @@ app.use('/expenses', expenseRoutes);
 
 
 //For local testing
-app.listen(8080, () => {
-    console.log('Listening on port 8080.');
-    });
+//app.listen(8080, () => {
+ //   console.log('Listening on port 8080.');
+  //  });
 
 const port = process.env.PORT || 8080;
 
-//app.listen(port, '0.0.0.0',() => {
-//console.log('Listening on Port ' + port);
-//});
+app.listen(port, '0.0.0.0',() => {
+console.log('Listening on Port ' + port);
+});
