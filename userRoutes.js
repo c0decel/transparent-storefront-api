@@ -234,13 +234,15 @@ router.get('/:Username', passport.authenticate('jwt', { session: false }), check
 });
 
 //Delete user
-router.delete('/:Username', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
-    User.findOneAndDelete({ User: req.params.Username })
-    .then((existingUser) => {
-        if (!existingUser) {
-            res.status(404).send(req.params.Username + ' does not exist.')
+router.delete('/:id', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
+    const id = req.params.id;
+
+    User.findByIdAndDelete(id)
+    .then((deletedUser) => {
+        if (!deletedUser) {
+            res.status(404).send('User does not exist.');
         } else {
-            res.status(200).send(req.params.Username + ' deleted.')
+            res.status(200).send('Done.');
         }
     })
     .catch((err) => {
@@ -248,5 +250,6 @@ router.delete('/:Username', passport.authenticate('jwt', { session: false }), ch
         res.status(500).send('Error: ' + err);
     });
 });
+
 
 module.exports = router;
