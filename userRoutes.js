@@ -251,5 +251,47 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), checkBro
     });
 });
 
+//Promote or demote user for sponsor
+router.patch('/:id/toggle-sponsor', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
+    const id = req.params.id;
+
+    User.findById(id)
+        .then((user) => {
+            if (!user) {
+                return res.status(404).send('User not found.');
+            }
+            user.isSponsor = !user.isSponsor;
+            return user.save();
+        })
+        .then((updatedUser) => {
+            res.status(200).json(updatedUser);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+
+//Promote or demote user for admin
+router.patch('/:id/toggle-admin', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
+    const id = req.params.id;
+
+    User.findById(id)
+        .then((user) => {
+            if (!user) {
+                return res.status(404).send('User not found.');
+            }
+            user.hasBroom = !user.hasBroom;
+            return user.save();
+        })
+        .then((updatedUser) => {
+            res.status(200).json(updatedUser);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
 
 module.exports = router;
