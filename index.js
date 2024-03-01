@@ -13,6 +13,7 @@ const Expense = Models.Expense;
 const Sale = Models.Sale;
 
 const productRoutes = require('./productRoutes');
+const supplyRoutes = require('./supplyRoutes');
 const tagRoutes = require('./tagRoutes');
 const userRoutes = require('./userRoutes');
 const reviewRoutes = require('./reviewRoutes');
@@ -72,6 +73,11 @@ app.get('/documentation', (req, res) => {
  * Product logic
  */
 app.use('/products', productRoutes);
+
+/**
+ * Supply logic
+ */
+app.use('/supplies', supplyRoutes);
 
 /**
  * Tag logic

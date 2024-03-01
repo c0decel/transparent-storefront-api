@@ -79,8 +79,6 @@ router.post('/', passport.authenticate('jwt', { session: false }), checkBroom, a
             Image,
             Tags
         });
-
-
         res.status(201).json(newProduct);
     } catch (err) {
         console.error(err);
@@ -177,7 +175,7 @@ router.delete('/:id/tags/:tagId', passport.authenticate('jwt', { session: false 
 
 //Delete product
 router.delete('/:id', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
-    Product.findOneAndDelete({ _id: req.params.id })
+    Product.findOneAndDelete({ id: req.params.id })
     .then((existingProduct) => {
         if (!existingProduct) {
             res.status(404).send(req.params.id + ' does not exist.')

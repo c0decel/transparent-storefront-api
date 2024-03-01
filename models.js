@@ -23,6 +23,18 @@ const productSchema = mongoose.Schema({
     Tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}]
 });
 
+const measurementUnits = ['grams', 'oz', 'ml', 'piece'];
+
+const supplySchema = mongoose.Schema({
+    SupplyID: String,
+    Name: {type: String, required: true},
+    Description: {type: String, required: true},
+    Cost: {type: Number, required: true},
+    Quantity: {type: Number, required: true},
+    Measurement: {type: String, enum: measurementUnits, required: true},
+    Supplier: String
+})
+
 const userSchema = mongoose.Schema({
     UserID: String,
     Username: {type: String, required: true},
@@ -71,6 +83,7 @@ const saleSchema = mongoose.Schema({
 })
 
 
+
 userSchema.statics.hashPass = (password) => {
     return bcrypt.hashSync(password, 10);
 };
@@ -81,6 +94,7 @@ userSchema.methods.validatePass = function(password) {
 
 const Review = mongoose.model('Review', reviewSchema);
 const Product = mongoose.model('Product', productSchema);
+const Supply = mongoose.model('Supply', supplySchema);
 const User = mongoose.model('User', userSchema);
 const Tag = mongoose.model('Tag', tagSchema);
 const Expense = mongoose.model('Expense', expenseSchema);
@@ -89,6 +103,7 @@ const validatePass = userSchema.methods.validatePass;
 
 module.exports.Review = Review;
 module.exports.Product = Product;
+module.exports.Supply = Supply;
 module.exports.User = User;
 module.exports.Tag = Tag;
 module.exports.Expense = Expense;

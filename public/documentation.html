@@ -19,56 +19,6 @@
         }
     </style>
     <body>
-        <h1>Index</h1>
-        <p>index.js</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Business Logic</th>
-                    <th>URL</th>
-                    <th>Method</th>
-                    <th>Query Params</th>
-                    <th>Permissions</th>
-                    <th>Response</th>
-                </tr>
-            </thead>
-            
-            <tbody>
-                <td>Post new expense</td>
-                <td>/expenses</td>
-                <td>POST</td>
-                <td>None</td>
-                <td>Admin</td>
-                <td>JSON of new expense</td>
-            </tbody>
-            <tbody>
-                <td>Post new sale</td>
-                <td>/sales</td>
-                <td>POST</td>
-                <td>None</td>
-                <td>Admin</td>
-                <td>JSON of new sale</td>
-            </tbody>
-            
-            <tbody>
-                <td>Get all sales</td>
-                <td>/sales</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>None</td>
-                <td>JSON of all sales</td>
-            </tbody>
-
-            <tbody>
-                <td>Get all expenses</td>
-                <td>/expenses</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>None</td>
-                <td>JSON of all expenses</td>
-            </tbody>
-        </table>
-        
         <h1>Products</h1>
         <p>productRoutes.js</p>
         <table>
@@ -154,6 +104,58 @@
                 <td>Admin</td>
                 <td>Deletes a product</td>
             </tbody>
+        </table>
+
+        <h1>Supplies</h1>
+        <p>supplyRoutes.js</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Business Logic</th>
+                    <th>URL</th>
+                    <th>Method</th>
+                    <th>Query Params</th>
+                    <th>Permissions</th>
+                    <th>Response</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <td>Get all supplies</td>
+                <td>/supplies</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>None</td>
+                <td>JSON of all supplies</td>
+            </tbody>
+
+            <tbody>
+                <td>Get one supply</td>
+                <td>/supplies/:id</td>
+                <td>GET</td>
+                <td>ID of supply</td>
+                <td>None</td>
+                <td>JSON of one supply</td>
+            </tbody>
+
+            <tbody>
+                <td>Post new supply</td>
+                <td>/supplies</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>Admin</td>
+                <td>JSON of new supply</td>
+            </tbody>
+
+            <tbody>
+                <td>Delete a supply</td>
+                <td>/supplies/:id</td>
+                <td>DELETE</td>
+                <td>ID of supply</td>
+                <td>Admin</td>
+                <td>Deletes a supply</td>
+            </tbody>
+
         </table>
 
         <h1>Tags</h1>
@@ -304,11 +306,29 @@
 
             <tbody>
                 <td>Delete one user</td>
-                <td>/users/:Username</td>
+                <td>/users/:id</td>
                 <td>DELETE</td>
-                <td>Username</td>
+                <td>User ID</td>
                 <td>Admin</td>
                 <td>Delete one user</td>
+            </tbody>
+
+            <tbody>
+                <td>Toggle user's sponsor status</td>
+                <td>/users/:id</td>
+                <td>PATCH</td>
+                <td>User ID</td>
+                <td>Admin</td>
+                <td>Update user's sponsor status.</td>
+            </tbody>
+
+            <tbody>
+                <td>Toggle user's admin status</td>
+                <td>/users/:id</td>
+                <td>PATCH</td>
+                <td>User ID</td>
+                <td>Admin</td>
+                <td>Update user's admin status.</td>
             </tbody>
         </table>
 
@@ -351,6 +371,72 @@
                 <td>None</td>
                 <td>Session</td>
                 <td>JSON of new review</td>
+            </tbody>
+        </table>
+
+        <h1>Sales</h1>
+        <p>salesRoutes.js</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Business Logic</th>
+                    <th>URL</th>
+                    <th>Method</th>
+                    <th>Query Params</th>
+                    <th>Permissions</th>
+                    <th>Response</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <td>Get all sales</td>
+                <td>/sales</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>None</td>
+                <td>JSON of all sales</td>
+            </tbody>
+
+            <tbody>
+                <td>Post new sale</td>
+                <td>/sales</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>Admin</td>
+                <td>JSON of new sale</td>
+            </tbody>
+        </table>
+
+        <h1>Expenses</h1>
+        <p>expenseRoutes.js</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Business Logic</th>
+                    <th>URL</th>
+                    <th>Method</th>
+                    <th>Query Params</th>
+                    <th>Permissions</th>
+                    <th>Response</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <td>Get all expenses</td>
+                <td>/expenses</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>None</td>
+                <td>JSON of all expenses</td>
+            </tbody>
+
+            <tbody>
+                <td>Post new expense</td>
+                <td>/expenses</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>Admin</td>
+                <td>JSON of new expense</td>
             </tbody>
         </table>
     </body>
