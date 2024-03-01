@@ -16,6 +16,8 @@ const productRoutes = require('./productRoutes');
 const tagRoutes = require('./tagRoutes');
 const userRoutes = require('./userRoutes');
 const reviewRoutes = require('./reviewRoutes');
+const expenseRoutes = require('./expenseRoutes');
+const salesRoutes = require('./salesRoutes');
 
 require('dotenv').config();
 
@@ -43,10 +45,10 @@ const checkBroom = require('./appFunctions.js');
 
 
 //For live
-const mongoURI = process.env.CONNECTION_URI;
+//const mongoURI = process.env.CONNECTION_URI;
 
 //For local testing
-//const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
+const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -87,66 +89,23 @@ app.use('/users', userRoutes);
 app.use('/reviews', reviewRoutes);
 
 /**
- * Basic user permissions
+ * Sales logic
  */
-//Get all expenses
-app.get('/expenses', (res) => {
-    Expense.find()
-    .then((Expense) => {
-        res.status(201).json(Expense);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-    });
-});
-
-//Get all sales
-app.get('/sales', (res) => {
-    Sale.find()
-    .then((Sale) => {
-        res.status(201).json(Sale);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-    });
-});
+app.use('/sales', salesRoutes);
 
 /**
- * Admin permissions
+ * Expense logic
  */
-//Log an expense
-app.post('/expenses', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
-    Expense.create(req.body)
-    .then((newExpense) => {
-        res.status(201).json(newExpense);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-    });
-});
+app.use('/expenses', expenseRoutes);
 
-//Log a sale
-app.post('/sales', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
-    Sale.create(req.body)
-    .then((newSale) => {
-        res.status(201).json(newSale);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-    });
-});
 
 //For local testing
-//app.listen(8080, () => {
-//    console.log('Listening on port 8080.');
-//    });
+app.listen(8080, () => {
+    console.log('Listening on port 8080.');
+    });
 
 const port = process.env.PORT || 8080;
 
-app.listen(port, '0.0.0.0',() => {
-console.log('Listening on Port ' + port);
-});
+//app.listen(port, '0.0.0.0',() => {
+//console.log('Listening on Port ' + port);
+//});

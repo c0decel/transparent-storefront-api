@@ -235,7 +235,7 @@ router.get('/:Username', passport.authenticate('jwt', { session: false }), check
 
 //Delete user
 router.delete('/:Username', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
-    User.findOneAndDelete({ Username: req.params.Username })
+    User.findOneAndDelete({ User: req.params.Username })
     .then((existingUser) => {
         if (!existingUser) {
             res.status(404).send(req.params.Username + ' does not exist.')
