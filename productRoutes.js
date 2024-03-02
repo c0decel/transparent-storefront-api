@@ -163,35 +163,6 @@ router.put('/:id/tags/:tagId', passport.authenticate('jwt', { session: false }),
     }
 });
 
-//Add supply to product
-router.put('/:id/supplies/:supplyId', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
-    try {
-        const supplyId = req.params.supplyId;
-
-        const product = await Product.findById(req.params.id);
-        if (!product) {
-            return res.status(404).send('Product not found.');
-        }
-
-        const supply = await Supply.findById(supplyId);
-        if (!supply) {
-            return res.status(404).send('Supply not found.');
-        }
-        console.log('Supply', supply);
-
-        const updatedProduct = await Product.findOneAndUpdate(
-            { _id: req.params.id },
-            { $addToSet: { Supplies: supply} },
-            { new: true }
-        );
-        console.log(updatedProduct);
-
-        return res.status(200).json(updatedProduct);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-    }
-});
 
 // Remove tag from product
 router.delete('/:id/tags/:tagId', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => { 
@@ -213,6 +184,36 @@ router.delete('/:id/tags/:tagId', passport.authenticate('jwt', { session: false 
         const updatedProduct = await Product.findOneAndUpdate(
             { _id: req.params.id },
             { $pull: { Tags: tag._id } },
+            { new: true }
+        );
+        console.log(updatedProduct);
+
+        return res.status(200).json(updatedProduct);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    }
+});
+
+//Add supply to product
+router.put('/:id/supplies/:supplyId', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
+    try {
+        const supplyId = req.params.supplyId;
+
+        const product = await Product.findById(req.params.id);
+        if (!product) {
+            return res.status(404).send('Product not found.');
+        }
+
+        const supply = await Supply.findById(supplyId);
+        if (!supply) {
+            return res.status(404).send('Supply not found.');
+        }
+        console.log('Supply', supply);
+
+        const updatedProduct = await Product.findOneAndUpdate(
+            { _id: req.params.id },
+            { $addToSet: { Supplies: supply} },
             { new: true }
         );
         console.log(updatedProduct);

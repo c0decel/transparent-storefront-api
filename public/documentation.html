@@ -61,6 +61,15 @@
             </tbody>
 
             <tbody>
+                <td>Get supplies from one product</td>
+                <td>/products/:id/supplies</td>
+                <td>GET</td>
+                <td>ID of supply</td>
+                <td>None</td>
+                <td>Array of product's supplies</td>
+            </tbody>
+
+            <tbody>
                 <td>Post new product</td>
                 <td>/products</td>
                 <td>POST</td>
@@ -94,6 +103,24 @@
                 <td>ID of product and ID of tag</td>
                 <td>Admin</td>
                 <td>Array of product's tags</td>
+            </tbody>
+
+            <tbody>
+                <td>Add supply to product</td>
+                <td>/products/:id/supplies/:supplyId</td>
+                <td>PUT</td>
+                <td>ID of product and ID of supply</td>
+                <td>Admin</td>
+                <td>Array of product's supplies</td>
+            </tbody>
+
+            <tbody>
+                <td>Remove supply from product</td>
+                <td>/products/:id/supplies/:supplyId</td>
+                <td>DELETE</td>
+                <td>ID of product and ID of supply</td>
+                <td>Admin</td>
+                <td>Array of product's supplies</td>
             </tbody>
 
             <tbody>
