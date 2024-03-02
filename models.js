@@ -20,7 +20,10 @@ const productSchema = mongoose.Schema({
     Stock: {type: Number, default: 0},
     Reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
     isFeatured: {type: Boolean, default: false},
-    Tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}]
+    Tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
+    Supplies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Supply'}],
+    Upcharge: {Number}
+    // Upcharge is a %
 });
 
 const measurementUnits = ['grams', 'oz', 'ml', 'piece'];
@@ -59,7 +62,7 @@ const userSchema = mongoose.Schema({
     }],
     Reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review'}],
     hasBroom: {type: Boolean, default: false},
-    isSponsor: {type: Boolean, default: false}
+    isSponsor: {type: Boolean, default: false},
 });
 
 const tagSchema = mongoose.Schema({
