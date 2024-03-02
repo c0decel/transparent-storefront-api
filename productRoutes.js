@@ -58,6 +58,25 @@ router.get('/:id/tags', async (req, res) => {
     }
 });
 
+//Get supplies from product
+router.get('/:id/supplies', async (req, res) => {
+    try {
+        const productId = req.params.id;
+
+        const product = await Product.findById(productId).populate('Supplies');
+        if (!product) {
+            return res.status(404).send('Not found.')
+        }
+        const supplies = product.Supplies;
+        return res.status(200).json(supplies);
+
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    }
+});
+
 /**
  * Admin permissions
  */
