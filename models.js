@@ -22,7 +22,7 @@ const productSchema = mongoose.Schema({
     isFeatured: {type: Boolean, default: false},
     Tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
     Supplies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Supply'}],
-    Upcharge: {typs: Number, default: 0}
+    Upcharge: {type: Number, default: 0}
     // Upcharge is a %
 });
 
