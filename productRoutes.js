@@ -64,7 +64,7 @@ router.get('/:id/tags', async (req, res) => {
 // Upload new product
 router.post('/', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
     try {
-        const { Name, Price, Description, Stock, Image, Tags } = req.body;
+        const { Name, Price, Description, Stock, Image, Tags, Supplies } = req.body;
 
         const existingProduct = await Product.findOne({ Name });
 
@@ -78,7 +78,8 @@ router.post('/', passport.authenticate('jwt', { session: false }), checkBroom, a
             Description,
             Stock,
             Image,
-            Tags
+            Tags,
+            Supplies
         });
         res.status(201).json(newProduct);
     } catch (err) {
