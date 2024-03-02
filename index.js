@@ -39,6 +39,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 require('./passport');
+let auth = require('./auth')(app);
+const checkBroom = require('./appFunctions.js');
 
 
 //For live
