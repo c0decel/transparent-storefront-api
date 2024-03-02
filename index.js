@@ -9,8 +9,6 @@ const app = express();
 
 const Models = require('./models.js');
 
-const Expense = Models.Expense;
-const Sale = Models.Sale;
 
 const productRoutes = require('./productRoutes');
 const supplyRoutes = require('./supplyRoutes');
@@ -41,8 +39,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 require('./passport');
-let auth = require('./auth')(app);
-const checkBroom = require('./appFunctions.js');
 
 
 //For live
