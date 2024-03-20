@@ -10,13 +10,14 @@ const app = express();
 const Models = require('./models.js');
 
 
-const productRoutes = require('./productRoutes');
-const supplyRoutes = require('./supplyRoutes');
-const tagRoutes = require('./tagRoutes');
-const userRoutes = require('./userRoutes');
-const reviewRoutes = require('./reviewRoutes');
-const expenseRoutes = require('./expenseRoutes');
-const salesRoutes = require('./salesRoutes');
+const productRoutes = require('./routes/productRoutes.js');
+const supplyRoutes = require('./routes/supplyRoutes.js');
+const tagRoutes = require('./routes/tagRoutes.js');
+const userRoutes = require('./routes/userRoutes.js');
+const reviewRoutes = require('./routes/reviewRoutes.js');
+const expenseRoutes = require('./routes/expenseRoutes.js');
+const salesRoutes = require('./routes/salesRoutes.js');
+const forumRoutes = require('./routes/threadRoutes.js');
 
 require('dotenv').config();
 
@@ -102,11 +103,16 @@ app.use('/sales', salesRoutes);
  */
 app.use('/expenses', expenseRoutes);
 
+/**
+ * Forum logic
+ */
+app.use('/threads', forumRoutes);
+
 
 //For local testing
 //app.listen(8080, () => {
- //   console.log('Listening on port 8080.');
-  //  });
+  //  console.log('Listening on port 8080.');
+ // });
 
 const port = process.env.PORT || 8080;
 

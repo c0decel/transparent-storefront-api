@@ -264,7 +264,7 @@
                 <td>/users/:Username/cart</td>
                 <td>GET</td>
                 <td>Username</td>
-                <td>Session</td>
+                <td>Logged in</td>
                 <td>Returns cart items</td>
             </tbody>
 
@@ -273,7 +273,7 @@
                 <td>/users/:Username/cart/:id</td>
                 <td>PUT</td>
                 <td>Username and ID of product</td>
-                <td>Session</td>
+                <td>Logged in</td>
                 <td>Adds product to cart</td>
             </tbody>
 
@@ -282,7 +282,7 @@
                 <td>/users/:Username/cart/:id</td>
                 <td>DELETE</td>
                 <td>Username and ID of product</td>
-                <td>Session</td>
+                <td>Logged in</td>
                 <td>Removes product from cart</td>
             </tbody>
 
@@ -291,7 +291,7 @@
                 <td>/users/:Username/wishlist</td>
                 <td>GET</td>
                 <td>Username</td>
-                <td>Session</td>
+                <td>Logged in</td>
                 <td>Returns wishlist items</td>
             </tbody>
 
@@ -300,7 +300,7 @@
                 <td>/users/:Username/wishlist/:id</td>
                 <td>PUT</td>
                 <td>Username and ID of product</td>
-                <td>Session</td>
+                <td>Logged in</td>
                 <td>Adds product to wishlist</td>
             </tbody>
 
@@ -309,7 +309,7 @@
                 <td>/users/:Username/wishlist/:id</td>
                 <td>DELETE</td>
                 <td>Username and ID of product</td>
-                <td>Session</td>
+                <td>Logged in</td>
                 <td>Removes product from wishlist</td>
             </tbody>
 
@@ -342,20 +342,29 @@
 
             <tbody>
                 <td>Toggle user's sponsor status</td>
-                <td>/users/:id</td>
+                <td>/users/:id/toggle-sponsor</td>
                 <td>PATCH</td>
                 <td>User ID</td>
                 <td>Admin</td>
-                <td>Update user's sponsor status.</td>
+                <td>Update user's sponsor status</td>
             </tbody>
 
             <tbody>
                 <td>Toggle user's admin status</td>
-                <td>/users/:id</td>
+                <td>/users/:id/toggle-admin</td>
                 <td>PATCH</td>
                 <td>User ID</td>
                 <td>Admin</td>
-                <td>Update user's admin status.</td>
+                <td>Update user's admin status</td>
+            </tbody>
+
+            <tbody>
+                <td>Toggle user's admin status</td>
+                <td>/users/:id/toggle-posting</td>
+                <td>PATCH</td>
+                <td>User ID</td>
+                <td>Admin</td>
+                <td>Allow or ban a user from making forum posts</td>
             </tbody>
         </table>
 
@@ -396,7 +405,7 @@
                 <td>/reviews</td>
                 <td>POST</td>
                 <td>None</td>
-                <td>Session</td>
+                <td>Logged in</td>
                 <td>JSON of new review</td>
             </tbody>
         </table>
@@ -464,6 +473,57 @@
                 <td>None</td>
                 <td>Admin</td>
                 <td>JSON of new expense</td>
+            </tbody>
+        </table>
+
+        <h1>Threads</h1>
+        <p>threadRoutes.js</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Business Logic</th>
+                    <th>URL</th>
+                    <th>Method</th>
+                    <th>Query Params</th>
+                    <th>Permissions</th>
+                    <th>Response</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <td>Get all threads</td>
+                <td>/threads</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>None</td>
+                <td>JSON of all thread OP posts</td>
+            </tbody>
+
+            <tbody>
+                <td>Get one thread</td>
+                <td>/threads/:id</td>
+                <td>GET</td>
+                <td>ID of thread</td>
+                <td>None</td>
+                <td>JSON of one thread OP post</td>
+            </tbody>
+
+            <tbody>
+                <td>Get replies from one thread</td>
+                <td>/threads/:id/replies</td>
+                <td>GET</td>
+                <td>ID of thread</td>
+                <td>None</td>
+                <td>JSON of all responses to one thread</td>
+            </tbody>
+
+            <tbody>
+                <td>Post new thread OP</td>
+                <td>/threads</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>Logged in</td>
+                <td>JSON of new thread OP</td>
             </tbody>
         </table>
     </body>
