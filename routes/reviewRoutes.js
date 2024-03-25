@@ -48,7 +48,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
         const { Rating, UserID, ProductID, Content } = req.body;
         const username = req.user.Username;
 
-        const review = new Review({
+        const review = await Review.create({
             Rating,
             User: UserID,
             Username: username,
