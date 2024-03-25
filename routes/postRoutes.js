@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Models = require('../models.js');
 const Tag = Models.Tag;
-const Product = Models.Product;
+const Thread = Models.Thread;
 const Post = Models.Post;
 const User = Models.User;
 
