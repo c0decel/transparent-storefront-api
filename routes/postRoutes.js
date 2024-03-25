@@ -26,6 +26,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
         });
 
         await post.save();
+        console.log(post);
 
         await User.findByIdAndUpdate(UserID, { $push: { Posts: post._id } });
 
