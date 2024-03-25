@@ -7,6 +7,7 @@ const Post = Models.Post;
 const User = Models.User;
 
 const passport = require('passport');
+const checkBroom = require('../appFunctions.js');
 require('../passport.js');
 
 /**
@@ -67,5 +68,26 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
         res.status(500).json({ error: 'Internal server error' });
     }
 })
+
+//Toggle highlighted post
+router.patch('/:id/toggle-highlight', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
+    const id = req.params.id;
+
+    Post.findById(id)
+        .then((post) => {
+            if (!post) {
+                return res.status(404).send('Post not found.');
+            }
+            post.Highlighted = !post.Highlighted;
+            return post.save();
+        })
+        .then((updatedPost) => {
+            res.status(200).json(updatedPost);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
 
 module.exports = router;
