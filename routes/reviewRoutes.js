@@ -43,7 +43,7 @@ router.get('/:id', (req, res) => {
  * Logged in user permissions
  */
 //Write a review
-router.post('/reviews', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const { Rating, UserID, ProductID, Content } = req.body;
         const username = req.user.Username;
