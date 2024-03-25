@@ -18,7 +18,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
         const { UserID, ThreadID, Content } = req.body;
         const username = req.user.Username;
 
-        const post = new Post({
+        const post = await Post.create({
             User: UserID,
             Username: username,
             Thread: ThreadID,
@@ -28,9 +28,9 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
         await post.save();
         console.log(post);
 
-        //await User.findByIdAndUpdate(UserID, { $push: { Posts: post._id } });
+        await User.findByIdAndUpdate(UserID, { $push: { Posts: post._id } });
 
-        //await Thread.findByIdAndUpdate(ThreadID, { $push: { Replies: post._id } });
+        await Thread.findByIdAndUpdate(ThreadID, { $push: { Replies: post._id } });
         res.status(201).json({ message: 'Post created successfully', post });
     } catch (err) {
         console.error('Could not create post: ', err);
