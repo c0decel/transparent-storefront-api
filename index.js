@@ -18,6 +18,7 @@ const reviewRoutes = require('./routes/reviewRoutes.js');
 const expenseRoutes = require('./routes/expenseRoutes.js');
 const salesRoutes = require('./routes/salesRoutes.js');
 const forumRoutes = require('./routes/threadRoutes.js');
+const postRoutes = require('./routes/postRoutes.js');
 
 require('dotenv').config();
 
@@ -107,6 +108,11 @@ app.use('/expenses', expenseRoutes);
  * Forum logic
  */
 app.use('/threads', forumRoutes);
+
+/**
+ * Post logic
+ */
+app.use('/posts', postRoutes);
 
 
 //For local testing
