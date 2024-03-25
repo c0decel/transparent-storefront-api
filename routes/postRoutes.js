@@ -28,7 +28,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
         await post.save();
         console.log(post);
 
-        await User.findByIdAndUpdate(UserID, { $push: { Posts: post._id } });
+        //await User.findByIdAndUpdate(UserID, { $push: { Posts: post._id } });
 
         //await Thread.findByIdAndUpdate(ThreadID, { $push: { Replies: post._id } });
         res.status(201).json({ message: 'Post created successfully', post });
