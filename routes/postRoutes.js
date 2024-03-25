@@ -12,6 +12,36 @@ require('../passport.js');
 /**
  * Basic user permissions
  */
+//Get all posts
+router.get('/', (req, res) => {
+    Post.find()
+    .then((Post) => {
+        res.status(201).json(Post);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
+//Get one post
+router.get('/:id', (req, res) => {
+    Post.findOne({ id: req.params.PostID })
+    .then((Post) => {
+        if (!Post) {
+            return res.status(404).send('Post does not exist.');
+        }
+        res.json({Post});
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
+/**
+ * Logged in user permission
+ */
 //Post new reply
 router.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
