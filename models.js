@@ -35,7 +35,9 @@ const threadSchema = mongoose.Schema({
     ReplyCount: {type: Number, default: 0},
     Replies: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
     Tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
-    Highlighted: {type: Boolean, default: true}
+    Highlighted: {type: Boolean, default: true},
+    LikedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    DislikedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 })
 
 const postSchema = mongoose.Schema({
@@ -44,7 +46,9 @@ const postSchema = mongoose.Schema({
     User: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     Username: String,
     Content: {type: String, required: true},
-    Highlighted: {type: Boolean, default: false}
+    Highlighted: {type: Boolean, default: false},
+    LikedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    DislikedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 })
 
 const banSchema = mongoose.Schema({
