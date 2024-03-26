@@ -53,6 +53,8 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
             User: UserID,
             Username: username,
             Thread: ThreadID,
+            LikedBy: [],
+            DislikedBy: [],
             Content
         });
 
