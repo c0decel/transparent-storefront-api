@@ -25,7 +25,7 @@ const paymentRoutes = require('./routes/paymentRoutes.js');
 
 require('dotenv').config();
 
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'http://localhost:1234', 'http://localhost:5006', 'https://store-api-live-9a7a4163f295.herokuapp.com'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'http://localhost:1234', 'http://localhost:5006', 'https://transparent-storefront-api-7a631c0a8a92.herokuapp.com'];
 
 app.use(cors({
     origin: (origin, callback) => {

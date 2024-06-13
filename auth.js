@@ -38,7 +38,8 @@ module.exports = (router) => {
                         _id: user._id,
                         Username: user.Username,
                         hasBroom: user.hasBroom,
-                        isSponsor: user.isSponsor
+                        isSponsor: user.isSponsor,
+                        JoinDate: user.JoinDate
                     },
                     token: token
                 }

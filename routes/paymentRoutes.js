@@ -109,7 +109,7 @@ router.post('/create-checkout-session', passport.authenticate('jwt', {session: f
             await sale.save();
 
             const purchase = await Purchase.create({
-                ProductID: product._id,
+                ProductID: ProductID,
                 PurchaseDate: formattedDate,
                 PurchaseTime: formattedTime,
                 Name: product.Name,

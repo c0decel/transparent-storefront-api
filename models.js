@@ -506,7 +506,10 @@ const purchaseSchema = mongoose.Schema({
         required: true
     },
     PurchaseDate: {
-        type: Date
+        type: String
+    },
+    PurchaseTime: {
+        type: String
     },
     Name: {
         type: String,
@@ -584,9 +587,6 @@ const notifSchema = mongoose.Schema({
     }
 });
 
-notifSchema.virtual('formattedTimestamp').get(function() {
-    return this.Timestamp.toLocaleString(); 
-});
 
 userSchema.statics.hashPass = (password) => {
     return bcrypt.hashSync(password, 10);
