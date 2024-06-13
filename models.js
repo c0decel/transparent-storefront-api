@@ -197,8 +197,14 @@ const postSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    LikedBy: [],
-    DislikedBy: [],
+    Reactions: [{
+        Username: String,
+        Type: {
+            type: String,
+            enum: ['Like', 'Dislike', 'Useful', 'Funny', 'Dumb'],
+            default: 'Like'
+        }
+    }],
     ReactionScore: {
         type: Number,
         default: 0

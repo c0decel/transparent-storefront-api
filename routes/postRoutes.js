@@ -216,10 +216,11 @@ router.put('/:id/toggle-highlight', passport.authenticate('jwt', { session: fals
     }
 });
 
-//Like or unlike post
-router.put('/:id/like/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+//React to post
+router.put('/:id/react/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const Username = req.params.Username;
+        const { Type } = req.body;
         const post = await Post.findById(req.params.id);
 
         if (!post) {
@@ -230,55 +231,60 @@ router.put('/:id/like/:Username', passport.authenticate('jwt', { session: false 
             return res.status(403).send(`Error: you can't like posts on another user's behalf.`);
         }
 
-        let alreadyLikedIndex = post.LikedBy ? post.LikedBy.indexOf(Username) : -1;
-        let alreadyDislikedIndex = post.DislikedBy ? post.DislikedBy.indexOf(Username) : -1;
+        const existingReactionIndex = post.Reactions.findIndex(reaction => reaction.Username === Username);
 
-        if (alreadyDislikedIndex === -1) {
-            post.DislikedBy.pull(Username)
-        }
+        if (existingReactionIndex !== -1) {
+            const existingReactionType = post.Reactions[existingReactionIndex].Type;
+            switch (existingReactionType) {
+                case 'Like':
+                    post.ReactionScore -= 1;
+                    break;
+                case 'Dislike':
+                    post.ReactionScore += 1;
+                    break;
+                case 'Useful':
+                    post.ReactionScore -= 2;
+                    break;
+                case 'Funny':
+                    post.ReactionScore -= 1;
+                    break;
+                case 'Dumb':
+                    post.ReactionScore += 2;
+                    break;
+                default:
+                    break;
+            }
 
-        if (alreadyLikedIndex === -1) {
-            post.LikedBy.push(Username);
+            post.Reactions.splice(existingReactionIndex, 1);
         } else {
-            post.LikedBy.pull(Username);
+
+            switch (Type) {
+                case 'Like':
+                    post.ReactionScore += 1;
+                    break;
+                case 'Dislike':
+                    post.ReactionScore -= 1;
+                    break;
+                case 'Useful':
+                    post.ReactionScore += 2;
+                    break;
+                case 'Funny':
+                    post.ReactionScore += 1;
+                    break;
+                case 'Dumb':
+                    post.ReactionScore -= 2;
+                    break;
+                default:
+                    post.ReactionScore += 1;
+                    break;
+
+            }
+
+            post.Reactions.push({
+                Username,
+                Type
+            });
         }
-
-        const updatedPost = await post.save();
-        res.status(200).json(updatedPost);
-
-    } catch (err) {
-        console.error(`Error liking post: ${err.toString()}`);
-        res.status(500).send(`Error: ${err}`);
-    }
-});
-
-//Dislike or undislike thread
-router.put('/:id/dislike/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    try {
-        const Username = req.params.Username;
-        const post = await Post.findById(req.params.id);
-
-        if (!post) {
-            return res.status(404).send(`Error: post not found.`);
-        }
-
-        if (Username !== req.user.Username) {
-            return res.status(403).send(`Error: you can't like posts on another user's behalf.`);
-        }
-
-        let alreadyLikedIndex = post.LikedBy ? post.LikedBy.indexOf(Username) : -1;
-        let alreadyDislikedIndex = post.DislikedBy ? post.DislikedBy.indexOf(Username) : -1;
-
-        if (alreadyLikedIndex === -1) {
-            post.LikedBy.pull(Username)
-        }
-
-        if (alreadyDislikedIndex === -1) {
-            post.DislikedBy.push(Username)
-        } else {
-            post.DislikedBy.pull(Username)
-        }
-
 
         const updatedPost = await post.save();
         res.status(200).json(updatedPost);
