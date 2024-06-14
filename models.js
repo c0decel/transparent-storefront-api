@@ -426,6 +426,10 @@ const userSchema = mongoose.Schema({
             ref: 'Post',
             required: true
         }
+    }],
+    ProfileComments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
     }]
 });
 
@@ -545,7 +549,7 @@ const notifSchema = mongoose.Schema({
     },
     Type: {
         type: String,
-        enum: ['Mention', 'NewPurchase', 'PurchaseUpdate', 'ThreadReply', 'PostReply', 'Threadban', 'SponsorPromotion', 'AdminPromotion', 'PostToggle'],
+        enum: ['Mention', 'NewPurchase', 'PurchaseUpdate', 'ThreadReply', 'ProfileComment', 'PostReply', 'Threadban', 'SponsorPromotion', 'AdminPromotion', 'PostToggle'],
         required: true
     },
     UserLink: {

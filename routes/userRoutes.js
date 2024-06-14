@@ -3,6 +3,7 @@ const router = express.Router();
 const Models = require('../models.js');
 const Product = Models.Product;
 const User = Models.User;
+const Post = Models.Post;
 const Purchase = Models.Purchase;
 const Notification = Models.Notification;
 const checkBroom = require('../utils/appFunctions.js');
@@ -264,6 +265,62 @@ router.put('/:id/status', passport.authenticate('jwt', { session: false}), async
     }
 });
 
+//Comment on user profile 
+router.post('/:Username/wall', async (req, res) => {
+    const { Content } = req.body;
+
+    try {
+        const username = req.params.Username;
+        const user = await User.findOne({ Username: username });
+        const userId = req.user.id;
+        const currentUser = await User.findById(userId);
+
+        const currentDate = new Date();
+        const formattedDate = formatDate(currentDate);
+        const formattedTime = formatTime(currentDate);
+
+        if (!user) {
+            return res.status(404).send(`Error: ${username} not found.`);
+        }
+
+        if (!currentUser) {
+            return res.status(404).send(`Error: user not found.`);
+        }
+
+        const post = await Post.create({
+            User: userId,
+            Username: currentUser.Username,
+            Content,
+            PostedAtDate: formattedDate,
+            PostedAtTime: formattedTime
+        });
+
+        await post.save();
+
+        const notif = Notification.create({
+            Type: 'ProfileComment',
+            Content,
+            NotifDate: formattedDate,
+            NotifTime: formattedTime,
+            UserLink: {
+                UserID: userId,
+                Username: currentUser.Username
+            }
+        });
+
+        await notif.save();
+
+        user.Notifications.push(notif);
+        user.ProfileComments.push(post);
+
+        await user.save();
+
+    } catch (err) {
+        console.error(`Error fetching list: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    }
+});
+
 
 //Get wishlist items
 router.get('/:Username/wishlist', async (req, res) => {
@@ -341,6 +398,17 @@ router.get('/:Username/posts', async (req, res) => {
     try {
         const user = await User.findOne({ Username: req.params.Username }).populate('Posts', '-_id -__v');
         res.status(200).json(user.Posts);
+    } catch (err) {
+        console.error(`Error fetching list: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    }
+});
+
+//Get user profile comments
+router.get('/:Username/wall', async (req, res) => {
+    try {
+        const user = await User.findOne({ Username: req.params.Username }).populate('ProfileComments', '-_id -__v');
+        res.status(200).json(user.ProfileComments);
     } catch (err) {
         console.error(`Error fetching list: ${err.toString()}`);
         res.status(500).send(`Error: ${err.toString()}`);
