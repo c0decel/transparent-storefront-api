@@ -3,6 +3,8 @@ const router = express.Router();
 const Models = require('../models.js');
 const Product = Models.Product;
 const User = Models.User;
+const Purchase = Models.Purchase;
+const Notification = Models.Notification;
 const checkBroom = require('../utils/appFunctions.js');
 const { formatDate, formatTime } = require('./../utils/dateUtils.js');
 
@@ -248,7 +250,7 @@ router.put('/:id/status', passport.authenticate('jwt', { session: false}), async
         }
 
         if (userId !== req.user.id) {
-            return res.status(403).send(`You can't edit someone else's bio.`);
+            return res.status(403).send(`You can't edit someone else's status.`);
         }
 
         user.Status = newStatus;
@@ -505,6 +507,47 @@ router.patch('/:id/toggle-posting', passport.authenticate('jwt', { session: fals
             console.error(`Error updating permissions: ${err.toString()}`);
             res.status(500).send(`Error: ${err.toString()}`);
         });
+});
+
+//Change user order status
+router.put('/:Username/purchases/:purchaseId', passport.authenticate('jwt', {session: false}), checkBroom, async (req, res) => {
+    const { newStatus } = req.body;
+
+    try {
+        const Username = req.params.Username;
+        const purchaseId = req.params.purchaseId;
+        const user = await User.findOne({ Username: Username });
+        const purchase = await Purchase.findById(purchaseId);
+
+        if (!user) {
+            return res.status(404).send(`Error: ${Username} not found`);
+        }
+
+        if (!purchase) {
+            return res.status(404).send(`Error: ${purchaseId} not found`);
+        } 
+
+        purchase.Status = newStatus;
+
+        const updatedPurchase = await purchase.save();
+
+        const statusNotif = Notification.create({
+            Type: 'PurchaseUpdate',
+            Header: 'Update on your order',
+            Content: `Order #${purchaseId} status has been changed to ${newStatus}.`
+        });
+
+        await statusNotif.save();
+
+        user.Notifications.push(statusNotif);
+
+        await user.save();
+
+        return res.status(200).json(updatedPurchase);
+
+    } catch (err) {
+
+    }
 });
 
 module.exports = router;

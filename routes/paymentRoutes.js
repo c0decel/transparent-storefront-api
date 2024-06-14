@@ -13,6 +13,7 @@ const Purchase = Models.Purchase;
 const Discount = Models.Discount;
 
 const passport = require('passport');
+const checkBroom = require('../utils/appFunctions.js');
 require('../passport.js');
 
 router.get('/', (req, res) => {
