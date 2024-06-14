@@ -536,6 +536,7 @@ router.put('/:Username/purchases/:purchaseId', passport.authenticate('jwt', {ses
 
         const statusNotif = Notification.create({
             Type: 'PurchaseUpdate',
+            Content: newStatus
         });
 
         await statusNotif.save();

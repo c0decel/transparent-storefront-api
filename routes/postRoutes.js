@@ -103,7 +103,8 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
                 ThreadName: thread.Title,
                 ThreadID: ThreadID
             },
-            Type: 'ThreadReply'
+            Type: 'ThreadReply',
+            Content: Content
         });
 
         const mentioningUsers = [];
@@ -135,7 +136,8 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
                     ThreadLink: {
                         ThreadName: thread.Title,
                         ThreadID: ThreadID
-                    }
+                    },
+                    Content: Content
                 });
 
                 await mentionNotif.save();

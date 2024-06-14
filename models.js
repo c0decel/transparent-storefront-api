@@ -599,6 +599,21 @@ const notifSchema = mongoose.Schema({
             required: false
         }
     },
+    BanLink: {
+        BanID: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Ban',
+            required: false
+        },
+        Reason: {
+            type: String,
+            required: false
+        },
+        ExpiresOn: {
+            type: Date,
+            required: false
+        }
+    },
     NotifDate: {
         type: String,
         required: false
@@ -607,7 +622,10 @@ const notifSchema = mongoose.Schema({
         type: String,
         required: false
     },
-    Content: []
+    Content: {
+        type: String,
+        required: false
+    }
 });
 
 

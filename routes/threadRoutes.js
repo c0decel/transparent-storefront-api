@@ -192,7 +192,11 @@ router.post('/:id/bans/:Username/:Post', passport.authenticate('jwt', { session:
                 ThreadName: thread.Title,
                 ThreadID: threadId
             },
-            Content: [Reason, ExpiresOn]
+            BanLink: {
+                BanID: ban._id,
+                Reason: Reason,
+                ExpiresOn: expiryDate
+            }
         });
 
         await notif.save();
