@@ -266,13 +266,13 @@ router.put('/:id/status', passport.authenticate('jwt', { session: false}), async
 });
 
 //Comment on user profile 
-router.post('/:Username/wall', async (req, res) => {
+router.post('/:Username/wall', passport.authenticate('jwt', {session: false}), async (req, res) => {
     const { Content } = req.body;
 
     try {
         const username = req.params.Username;
-        const user = await User.findOne({ Username: username });
         const userId = req.user.id;
+        const user = await User.findOne({ Username: username });
         const currentUser = await User.findById(userId);
 
         const currentDate = new Date();
@@ -297,7 +297,7 @@ router.post('/:Username/wall', async (req, res) => {
 
         await post.save();
 
-        const notif = Notification.create({
+        const notif = new Notification({
             Type: 'ProfileComment',
             Content,
             NotifDate: formattedDate,

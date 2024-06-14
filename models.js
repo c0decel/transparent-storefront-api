@@ -166,7 +166,7 @@ const postSchema = mongoose.Schema({
     Thread: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Thread',
-        required: true 
+        required: false 
     }, 
     User: {
         type: mongoose.Schema.Types.ObjectId,
