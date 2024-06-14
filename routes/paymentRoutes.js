@@ -11,6 +11,7 @@ const Product = Models.Product;
 const Sale = Models.Sale;
 const Purchase = Models.Purchase;
 const Discount = Models.Discount;
+const Notification = Models.Notification;
 
 const passport = require('passport');
 const checkBroom = require('../utils/appFunctions.js');
