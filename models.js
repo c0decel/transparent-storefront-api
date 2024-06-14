@@ -560,9 +560,15 @@ const notifSchema = mongoose.Schema({
         }
     },
     PostLink: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post',
-        required: false 
+        PostID: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post',
+            required: false 
+        },
+        PostBody: {
+            type: String,
+            required: false
+        }
     },
     ThreadLink: {
         ThreadID: {
@@ -600,7 +606,8 @@ const notifSchema = mongoose.Schema({
     NotifTime: {
         type: String,
         required: false
-    }
+    },
+    Content: []
 });
 
 
