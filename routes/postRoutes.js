@@ -93,9 +93,6 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
         await thread.save();
 
         const replyNotif = await Notification.create({
-            Header: `New reply in thread`,
-            Content: `${username} said: "${Content}"`,
-            Type: 'ThreadReply',
             NotifDate: formattedDate,
             NotifTime: formattedTime,
             UserLink: {
@@ -105,7 +102,8 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
             ThreadLink: {
                 ThreadName: thread.Title,
                 ThreadID: ThreadID
-            }
+            },
+            Type: 'ThreadReply'
         });
 
         const mentioningUsers = [];
@@ -127,8 +125,6 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
 
             if (validUsers.length > 0) {
                 const mentionNotif = await Notification.create({
-                    Header: `You were mentioned in`,
-                    Content: `mentioned you in their post.`,
                     Type: 'Mention',
                     NotifDate: formattedDate,
                     NotifTime: formattedTime,

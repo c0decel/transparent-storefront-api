@@ -181,8 +181,6 @@ router.post('/:id/bans/:Username/:Post', passport.authenticate('jwt', { session:
         await ban.save();
 
         const notif = await Notification.create({
-            Header: `You can't behave! Because of this, you have been banned by until ${formattedExpiryDate} by`,
-            Content: `${Reason}`,
             Type: 'Threadban',
             NotifDate: formattedDate,
             NotifTime: formattedTime,

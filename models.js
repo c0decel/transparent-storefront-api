@@ -548,10 +548,6 @@ const notifSchema = mongoose.Schema({
         enum: ['Mention', 'NewPurchase', 'PurchaseUpdate', 'ThreadReply', 'PostReply', 'Threadban', 'SponsorPromotion', 'AdminPromotion', 'PostToggle'],
         required: true
     },
-    Header: {
-        type: String,
-        required: true
-    },
     UserLink: {
         UserID: {
             type: mongoose.Schema.Types.ObjectId,
@@ -579,9 +575,23 @@ const notifSchema = mongoose.Schema({
             requried: false
         }
     },
-    Content: {
-        type: String,
-        required: true
+    ProductLink: {
+        ProductID: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Product',
+            required: false
+        },
+        ProductName: {
+            type: String,
+            required: false
+        }
+    },
+    PurchaseLink: {
+        PurchaseID: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Purchase',
+            required: false
+        }
     },
     NotifDate: {
         type: String,

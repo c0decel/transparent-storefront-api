@@ -437,8 +437,6 @@ router.patch('/:id/toggle-sponsor', passport.authenticate('jwt', { session: fals
         user.isSponsor = !user.isSponsor;
 
         const notif = await Notification.create({
-            Header: `You've been promoted!`,
-            Content: `You have been promoted to sponsor.`,
             Type: `SponsorPromotion`,
         });
 
@@ -468,8 +466,6 @@ router.patch('/:id/toggle-admin', passport.authenticate('jwt', { session: false 
         user.hasBroom = !user.hasBroom;
 
         const notif = await Notification.create({
-            Header: `You've been promoted!`,
-            Content: user.hasBroom,
             Type: `AdminPromotion`
         })
 
@@ -499,8 +495,6 @@ router.patch('/:userId/toggle-posting', passport.authenticate('jwt', { session: 
 
         const newNotif = await Notification.create({
             Type: 'PostToggle',
-            Header: 'Your posting permissions have changed',
-            Content: user.canPost
         });
 
         await newNotif.save();
@@ -542,8 +536,6 @@ router.put('/:Username/purchases/:purchaseId', passport.authenticate('jwt', {ses
 
         const statusNotif = Notification.create({
             Type: 'PurchaseUpdate',
-            Header: 'Update on your order',
-            Content: `Order #${purchaseId} status has been changed to ${newStatus}.`
         });
 
         await statusNotif.save();
