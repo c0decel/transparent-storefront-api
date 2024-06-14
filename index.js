@@ -49,7 +49,7 @@ const checkBroom = require('./utils/appFunctions.js');
 
 
 //Replace with your Mongo API key
-const mongoURI = 'mongodb://127.0.0.1:27017/Storefront-API';
+const mongoURI = process.env.MONGO_API_KEY;
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -144,6 +144,6 @@ app.use('/payment', paymentRoutes);
 //Port to listen on
 const port = process.env.PORT || 8080;
 
-app.listen(8080, () => {
-  console.log('Listening on port 8080.');
-});
+app.listen(port, '0.0.0.0',() => {
+  console.log('Listening on Port ' + port);
+  });
