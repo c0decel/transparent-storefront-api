@@ -435,22 +435,20 @@ router.patch('/:id/toggle-sponsor', passport.authenticate('jwt', { session: fals
         }
 
         user.isSponsor = !user.isSponsor;
-        await user.save();
 
         const notif = await Notification.create({
             Header: `You've been promoted!`,
             Content: `You have been promoted to sponsor.`,
-            Type: `Promotion`,
-            Timestamp: Date.now()
-        })
+            Type: `SponsorPromotion`,
+        });
 
         await notif.save();
 
         user.Notifications.push(notif);
 
+        await user.save();
+
         res.status(200).json(user);
-
-
     } catch(err) {
         res.status(500).send(`Error: ${err.toString()}`);
     }
@@ -468,45 +466,56 @@ router.patch('/:id/toggle-admin', passport.authenticate('jwt', { session: false 
         }
 
         user.hasBroom = !user.hasBroom;
-        await user.save();
 
         const notif = await Notification.create({
             Header: `You've been promoted!`,
-            Content: `You have been promoted to admin.`,
-            Type: `Promotion`,
-            Timestamp: Date.now()
+            Content: user.hasBroom,
+            Type: `AdminPromotion`
         })
 
         await notif.save();
 
         user.Notifications.push(notif);
 
+        await user.save();
+
         res.status(200).json(user);
-
-
     } catch(err) {
         res.status(500).send(`Error: ${err.toString()}`);
     }
 });
 
 //Allow or deny a user to interact with forum posts
-router.patch('/:id/toggle-posting', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
+router.patch('/:userId/toggle-posting', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = User.findById(userId);
 
-    User.findById(req.params.id)
-        .then((user) => {
-            if (!user) {
-                return res.status(404).send(`User not found.`);
-            }
-            user.canPost = !user.canPost;
-            return user.save();
-        })
-        .then((updatedUser) => {
-            res.status(200).json(updatedUser);
-        })
-        .catch((err) => {
-            console.error(`Error updating permissions: ${err.toString()}`);
-            res.status(500).send(`Error: ${err.toString()}`);
+        if (!user) {
+            return res.status(404).send(`User not found.`);
+        }
+
+        user.canPost = !user.canPost;
+
+        const newNotif = await Notification.create({
+            Type: 'PostToggle',
+            Header: 'Your posting permissions have changed',
+            Content: user.canPost
         });
+
+        await newNotif.save();
+
+        user.Notifications.push(newNotif);
+
+        await user.save();
+
+        res.status(200).json(user);
+
+
+    } catch (err) {
+        console.error(`Error updating permissions: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    }
 });
 
 //Change user order status
@@ -546,7 +555,8 @@ router.put('/:Username/purchases/:purchaseId', passport.authenticate('jwt', {ses
         return res.status(200).json(updatedPurchase);
 
     } catch (err) {
-
+        console.error(`Error: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
     }
 });
 

@@ -121,6 +121,16 @@ router.post('/create-checkout-session', passport.authenticate('jwt', {session: f
 
             await purchase.save();
 
+            const purchaseNotif = await Notification.create({
+                Type: 'NewPurchase',
+                Header: 'Thank you for your purchase',
+                Content: `Thank you for purchasing ${product.Name}.`
+            });
+
+            await purchaseNotif.save();
+
+            user.Notifications.push(purchaseNotif);
+
             user.Purchases.push(purchase);
 
             user.Cart.pull({ProductID: ProductID});

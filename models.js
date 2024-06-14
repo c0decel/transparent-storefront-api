@@ -545,7 +545,7 @@ const notifSchema = mongoose.Schema({
     },
     Type: {
         type: String,
-        enum: ['Mention', 'PurchaseUpdate', 'ThreadReply', 'PostReply', 'Threadban', 'Promotion'],
+        enum: ['Mention', 'NewPurchase', 'PurchaseUpdate', 'ThreadReply', 'PostReply', 'Threadban', 'SponsorPromotion', 'AdminPromotion', 'PostToggle'],
         required: true
     },
     Header: {
