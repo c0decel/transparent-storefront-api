@@ -315,6 +315,8 @@ router.post('/:Username/wall', async (req, res) => {
 
         await user.save();
 
+        return res.status(201).send(post);
+
     } catch (err) {
         console.error(`Error fetching list: ${err.toString()}`);
         res.status(500).send(`Error: ${err.toString()}`);
