@@ -5,6 +5,21 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 
 require('dotenv').config();
 
+const router = express.Router();
+const Models = require('../models.js');
+const Product = Models.Product;
+const User = Models.User;
+const Post = Models.Post;
+const Purchase = Models.Purchase;
+const Notification = Models.Notification;
+const checkBroom = require('../utils/appFunctions.js');
+const { formatDate, formatTime } = require('./../utils/dateUtils.js');
+
+const { validationResult, check } = require('express-validator');
+
+const passport = require('passport');
+require('../passport.js');
+
 const bucketName = process.env.BUCKET_NAME;
 const bucketRegion = process.env.BUCKET_REGION;
 const accessKey = process.env.ACCESS_KEY;
@@ -20,22 +35,6 @@ const s3 = new S3Client({
 
 const storage = multer.memoryStorage();
 const upload = multer();
-
-
-const router = express.Router();
-const Models = require('../models.js');
-const Product = Models.Product;
-const User = Models.User;
-const Post = Models.Post;
-const Purchase = Models.Purchase;
-const Notification = Models.Notification;
-const checkBroom = require('../utils/appFunctions.js');
-const { formatDate, formatTime } = require('./../utils/dateUtils.js');
-
-const { validationResult, check } = require('express-validator');
-
-const passport = require('passport');
-require('../passport.js');
 
 /**
  * Basic user permissions

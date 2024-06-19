@@ -145,6 +145,6 @@ app.use('/payment', paymentRoutes);
 //Port to listen on
 const port = process.env.PORT || 8080;
 
-app.listen(8080, () => {
-  console.log('Listening on port 8080.');
+app.listen(port, '0.0.0.0',() => {
+  console.log('Listening on Port ' + port);
 });
