@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
 
+
 const app = express();
 
 const Models = require('./models.js');
@@ -144,6 +145,6 @@ app.use('/payment', paymentRoutes);
 //Port to listen on
 const port = process.env.PORT || 8080;
 
-app.listen(port, '0.0.0.0',() => {
-  console.log('Listening on Port ' + port);
-  });
+app.listen(8080, () => {
+  console.log('Listening on port 8080.');
+});

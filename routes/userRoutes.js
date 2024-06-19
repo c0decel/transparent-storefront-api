@@ -1,4 +1,27 @@
 const express = require('express');
+const multer = require('multer');
+
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+
+require('dotenv').config();
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+const accessKey = process.env.ACCESS_KEY;
+const secretAccessKey = process.env.SECRET_ACCESS_KEY;
+
+const s3 = new S3Client({
+    credentials: {
+        accessKeyId: accessKey,
+        secretAccessKey: secretAccessKey,
+    },
+    region: bucketRegion
+});
+
+const storage = multer.memoryStorage();
+const upload = multer();
+
+
 const router = express.Router();
 const Models = require('../models.js');
 const Product = Models.Product;
@@ -374,7 +397,7 @@ router.put('/:Username/wishlist/:id', passport.authenticate('jwt', { session: fa
 router.delete('/:Username/wishlist/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const productId = req.params.id;
-       const user = await User.findOne({ Username: req.params.Username });
+        const user = await User.findOne({ Username: req.params.Username });
 
         if (!user) {
             return res.status(404).send(`User not found.`);
@@ -392,6 +415,48 @@ router.delete('/:Username/wishlist/:id', passport.authenticate('jwt', { session:
     } catch (err) {
         console.error(`Error removing from list: ${err.toString()}`);
         res.status(500).send(`Error: ${err.toString()}`);
+    }
+});
+
+//Upload new profile photo
+router.post('/:Username/profile-pic', upload.single('image'), passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const user = await User.findOne({ Username: req.params.Username });
+
+        if (!user) {
+            return res.status(404).send(`User not found.`);
+        }
+
+        if (user.Username !== req.user.Username) {
+            return res.status(403).send(`You can't remove from other user's wishlist.`);
+        }
+
+        if (!req.file) {
+            return res.status(400).send(`No file uploaded.`);
+        }
+
+        const folderPath = 'profile-pics/';
+        const key = `${folderPath}${req.file.originalname}`;
+        const params = {
+            Bucket: bucketName,
+            Key: key,
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype,
+            ACL: 'public-read'
+        }
+    
+        const command = new PutObjectCommand(params);
+        await s3.send(command);
+
+        const imageUrl = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${key}`;
+
+        user.ProfileImage = imageUrl;
+        const updatedUser = await user.save();
+    
+        res.send({message: 'done', imageUrl, updatedUser});
+    } catch (err) {
+        console.error('Error uploading file:', err);
+        res.status(500).send({ error: 'Error uploading file' });
     }
 });
 

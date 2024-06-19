@@ -313,7 +313,7 @@ const userSchema = mongoose.Schema({
     },
     ProfileImage: {
         type: String,
-        //Set default profile pic
+        default: 'https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic.png'
     },
     Password: {
         type: String,
