@@ -436,7 +436,7 @@ router.post('/:Username/profile-pic', upload.single('image'), passport.authentic
         const newFileName = randomImageName();
         const key = `${folderPath}${newFileName}`;
 
-        const buffer = await sharp(req.file.buffer).resize({ height: 400, width: 400, fit: 'outside'}).toBuffer();
+        const buffer = await sharp(req.file.buffer).resize({ height: 400, width: 400, fit: 'cover'}).toBuffer();
 
         const params = {
             Bucket: bucketName,
