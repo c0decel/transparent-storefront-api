@@ -1,5 +1,7 @@
 const express = require('express');
 const multer = require('multer');
+const crypto = require('crypto');
+const sharp = require('sharp');
 
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 
@@ -14,16 +16,12 @@ const Purchase = Models.Purchase;
 const Notification = Models.Notification;
 const checkBroom = require('../utils/appFunctions.js');
 const { formatDate, formatTime } = require('./../utils/dateUtils.js');
+const { accessKey, secretAccessKey, bucketName, bucketRegion, randomImageName } = require('./../utils/s3Utils.js');
 
 const { validationResult, check } = require('express-validator');
 
 const passport = require('passport');
 require('../passport.js');
-
-const bucketName = process.env.BUCKET_NAME;
-const bucketRegion = process.env.BUCKET_REGION;
-const accessKey = process.env.ACCESS_KEY;
-const secretAccessKey = process.env.SECRET_ACCESS_KEY;
 
 const s3 = new S3Client({
     credentials: {
@@ -435,11 +433,15 @@ router.post('/:Username/profile-pic', upload.single('image'), passport.authentic
         }
 
         const folderPath = 'profile-pics/';
-        const key = `${folderPath}${req.file.originalname}`;
+        const newFileName = randomImageName();
+        const key = `${folderPath}${newFileName}`;
+
+        const buffer = await sharp(req.file.buffer).resize({ height: 400, width: 400, fit: 'contain'}).toBuffer();
+
         const params = {
             Bucket: bucketName,
             Key: key,
-            Body: req.file.buffer,
+            Body: buffer,
             ContentType: req.file.mimetype,
             ACL: 'public-read'
         }
