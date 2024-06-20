@@ -143,7 +143,7 @@ router.post('/:id/bans/:Username/:Post', passport.authenticate('jwt', { session:
         const toBanId = toBan._id;
         const threadId = req.params.id;
         const postId = post._id;
-        const thread = Thread.findById(threadId);
+        const thread = await Thread.findById(threadId);
 
         const currentDate = new Date();
 
