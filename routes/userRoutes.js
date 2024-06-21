@@ -64,10 +64,10 @@ router.post('/', [
     let defaultNum = parseInt(req.body.defaultNum); 
     try {
 
-        if (req.body.image) {
+        if (req.file) {
             const folderPath = 'profile-pics/';
             const imageDimension = { height: 400, width: 400, fit: 'cover'};
-            const file = req.body.image;
+            const file = req.file;
             profilePic = await uploadToS3(file, folderPath, imageDimension, s3);
         } else {
             if (defaultNum === 0 || isNaN(defaultNum) || defaultNum > 3) {
