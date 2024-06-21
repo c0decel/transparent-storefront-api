@@ -53,11 +53,13 @@ router.get('/:id/replies', async (req, res) => {
     try {
 
         const thread = await Thread.findById(req.params.id).populate('Replies');
-        
+
         if (!thread) {
             return res.status(404).send(`Not found.`)
         }
-        const replies = thread.Replies;
+
+        const replies = await Post.find({ Thread: thread._id }).populate('User');
+
         return res.status(200).json(replies);
 
 
