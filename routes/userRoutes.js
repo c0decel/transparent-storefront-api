@@ -61,7 +61,7 @@ router.post('/', [
     check('Email', 'Invalid email').isEmail()
     ], uploadSingleFile, async (req, res, next) => {
     let profilePic;
-    let defaultNum = req.body.defaultNum;
+    let defaultNum = parseInt(req.body.defaultNum); 
     try {
 
         if (req.file) {
@@ -69,18 +69,17 @@ router.post('/', [
             const imageDimension = { height: 400, width: 400, fit: 'cover'};
             const file = req.file;
             profilePic = await uploadToS3(file, folderPath, imageDimension, s3);
-        } else {
-            if ((!req.file && !req.body.ProfileImage) || defaultNum > 3 || defaultNum === 0 || isNaN(defaultNum)) {
-                function pickRandomPic() {
-                    // 3 for number of default profile pics
-                    defaultNum = Math.floor(Math.random() * 3) + 1;
-                    return defaultNum;
-                }
-                profilePic = `https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic-${pickRandomPic()}.png`;
-            } else {
-                profilePic = `https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic-${defaultNum}.png`;
+        } else if ((!req.file && req.body.defaultNum === null) || (!req.file && req.body.defaultNum > 3)) {
+            function pickRandomPic() {
+                // 3 for number of default profile pics
+                defaultNum = Math.floor(Math.random() * 3) + 1;
+                return defaultNum;
             }
+            profilePic = `https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic-${pickRandomPic()}.png`;
+        } else {
+            profilePic = `https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic-${defaultNum}.png`;
         }
+
 
         const currentDate = new Date();
         const formattedDate = formatDate(currentDate);
