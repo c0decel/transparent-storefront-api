@@ -70,7 +70,7 @@
             </tbody>
 
             <tbody>
-                <td>Get purchases</td>
+                <td>Get last purchase</td>
                 <td>/users/:Username/purchases/last</td>
                 <td>GET</td>
                 <td>Username</td>
@@ -106,15 +106,6 @@
             </tbody>
 
             <tbody>
-                <td>Edit status</td>
-                <td>/users/:id/status</td>
-                <td>PUT</td>
-                <td>Username</td>
-                <td>Logged in</td>
-                <td>Updates user status</td>
-            </tbody>
-
-            <tbody>
                 <td>Get wishlist items</td>
                 <td>/users/:Username/wishlist</td>
                 <td>GET</td>
@@ -142,12 +133,57 @@
             </tbody>
 
             <tbody>
+                <td>Edit bio</td>
+                <td>/users/:id/bio</td>
+                <td>PUT</td>
+                <td>Username</td>
+                <td>Logged in</td>
+                <td>Updates user status</td>
+            </tbody>
+
+            <tbody>
+                <td>Edit status</td>
+                <td>/users/:id/status</td>
+                <td>PUT</td>
+                <td>Username</td>
+                <td>Logged in</td>
+                <td>Updates user status</td>
+            </tbody>
+
+            <tbody>
+                <td>Change profile photo</td>
+                <td>/users/:Username/profile-pic</td>
+                <td>POST</td>
+                <td>Username</td>
+                <td>Logged in</td>
+                <td>Uploads and changes new profile photo</td>
+            </tbody>
+
+            <tbody>
                 <td>Get all posts from user</td>
                 <td>/users/:Username/posts</td>
                 <td>GET</td>
                 <td>Username</td>
                 <td>None</td>
                 <td>JSON of all posts from searched user</td>
+            </tbody>
+
+            <tbody>
+                <td>Get user's profile comments</td>
+                <td>/users/:Username/wall</td>
+                <td>GET</td>
+                <td>Username</td>
+                <td>None</td>
+                <td>JSON of all comments on searched user's wall</td>
+            </tbody>
+
+            <tbody>
+                <td>Comment on user's profile</td>
+                <td>/users/:Username/wall</td>
+                <td>POST</td>
+                <td>Username</td>
+                <td>Logged in</td>
+                <td>Leaves comment on user's wall</td>
             </tbody>
 
             <tbody>
@@ -211,6 +247,15 @@
                 <td>User ID</td>
                 <td>Admin</td>
                 <td>Allow or ban a user from making forum posts</td>
+            </tbody>
+
+            <tbody>
+                <td>Update user's order status</td>
+                <td>/users/:Username/purchases/:purchaseId</td>
+                <td>PUT</td>
+                <td>Username, purchase ID</td>
+                <td>Admin</td>
+                <td>Update user's order status</td>
             </tbody>
         </table>
 

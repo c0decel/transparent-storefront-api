@@ -16,7 +16,7 @@ const Purchase = Models.Purchase;
 const Notification = Models.Notification;
 const checkBroom = require('../utils/appFunctions.js');
 const { formatDate, formatTime } = require('./../utils/dateUtils.js');
-const { accessKey, secretAccessKey, bucketName, bucketRegion, randomImageName } = require('./../utils/s3Utils.js');
+const { accessKey, secretAccessKey, bucketName, bucketRegion, randomImageName, upload, uploadToS3 } = require('./../utils/s3Utils.js');
 
 const { validationResult, check } = require('express-validator');
 
@@ -32,57 +32,87 @@ const s3 = new S3Client({
 });
 
 const storage = multer.memoryStorage();
-const upload = multer();
+
+const validateUserInput = [
+    check('Username', 'Username must be at least 5 characters.').isLength({ min: 5 }),
+    check('Username', 'Non alphanumeric characters not allowed.').isAlphanumeric(),
+    check('Password', 'Add a password').not().isEmpty(),
+    check('Email', 'Invalid email').isEmail(),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
+        next();
+    }
+];
+
+const uploadSingleFile = upload.single('image');
+
 
 /**
  * Basic user permissions
  */
 //Upload new user
 router.post('/', [
-    check('Username', 'Username must be at least 5 characters.').isLength({min: 5}),
+    check('Username', 'Username must be at least 5 characters.').isLength({ min: 5 }),
     check('Username', 'Non alphanumeric characters not allowed.').isAlphanumeric(),
     check('Password', 'Add a password').not().isEmpty(),
     check('Email', 'Invalid email').isEmail()
-], (req, res) => {
-    let errors = validationResult(req);
+    ], uploadSingleFile, async (req, res, next) => {
+    let profilePic;
+    let defaultNum = req.body.defaultNum;
+    try {
 
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-
-    const currentDate = new Date();
-    const formattedDate = formatDate(currentDate);
-    const formattedTime = formatTime(currentDate);
-    
-    let hashedPass = User.hashPass(req.body.Password);
-    User.findOne({ Username: req.body.Username })
-    .then((user) => {
-        if (user) {
-            return res.status(400).send(`${req.body.Username} already exists.`);
+        if (req.file) {
+            const folderPath = 'profile-pics/';
+            const imageDimension = { height: 400, width: 400, fit: 'cover'};
+            const file = req.file;
+            profilePic = await uploadToS3(file, folderPath, imageDimension, s3);
         } else {
-            User.create({
-                Username: req.body.Username,
-                Password: hashedPass,
-                Email: req.body.Email,
-                Birthday: req.body.Birthday,
-                JoinDate: formattedDate,
-                JoinTime: formattedTime,
-                Bio: req.body.Bio,
-                Status: req.body.Status
-            })
-            .then((user) => {
-                res.status(201).json(user)
-            })
-            .catch((err) => {
-                console.error(err);
-                res.status(500).send(`Error: ${err.toString()}`);
-            })
+            if ((!req.file && !req.body.ProfileImage) || defaultNum > 3 || isNaN(defaultNum)) {
+                function pickRandomPic() {
+                    // 3 for number of default profile pics
+                    defaultNum = Math.floor(Math.random() * 3) + 1;
+                    return defaultNum;
+                }
+                profilePic = `https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic-${pickRandomPic()}.png`;
+            } else {
+                profilePic = `https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic-${defaultNum}.png`;
+            }
         }
-    })
-    .catch((err) => {
-        console.error(`Error creating account: ${err.toString()}`);
+
+        const currentDate = new Date();
+        const formattedDate = formatDate(currentDate);
+        const formattedTime = formatTime(currentDate);  
+        const hashedPass = User.hashPass(req.body.Password);
+
+        const existingUser = await User.findOne({ Username: req.body.Username });
+
+        if (existingUser) {
+            return res.status(400).send(`${req.body.Username} already exists.`);
+        }
+        
+
+        const newUser = await User.create({
+            Username: req.body.Username,
+            Password: hashedPass,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
+            JoinDate: formattedDate,
+            JoinTime: formattedTime,
+            Bio: req.body.Bio,
+            Status: req.body.Status,
+            ProfileImage: profilePic
+        });
+
+        res.status(201).json(newUser);
+
+    } catch (err) {
+        console.error(`Error fetching list: ${err.toString()}`);
         res.status(500).send(`Error: ${err.toString()}`);
-    });
+    }
+    
 });
 
 /**
@@ -233,117 +263,6 @@ router.delete('/:Username/cart/:id', passport.authenticate('jwt', { session: fal
     }
 });
 
-//Edit bio
-router.put('/:id/bio', passport.authenticate('jwt', { session: false}), async (req, res) => {
-    try {
-        const { newBio } = req.body;
-        const userId = req.params.id;
-        const user = await User.findById(userId);
-
-        if (!user) {
-            return res.status(404).send(`User not found.`);
-        }
-
-        if (userId !== req.user.id) {
-            return res.status(403).send(`You can't edit someone else's bio.`);
-        }
-
-        user.Bio = newBio;
-
-        const updatedUser = await user.save();
-
-        return res.status(200).json(updatedUser);
-    } catch(err) {
-        console.error(`Error updating bio: ${err.toString()}`);
-        res.status(500).send(`Error: ${err.toString()}`);
-    }
-});
-
-//Edit status
-router.put('/:id/status', passport.authenticate('jwt', { session: false}), async (req, res) => {
-    try {
-        const { newStatus } = req.body;
-        const userId = req.params.id;
-        const user = await User.findById(req.params.id);
-
-        if (!user) {
-            return res.status(404).send(`User not found.`);
-        }
-
-        if (userId !== req.user.id) {
-            return res.status(403).send(`You can't edit someone else's status.`);
-        }
-
-        user.Status = newStatus;
-
-        const updatedUser = await user.save();
-
-        return res.status(200).json(updatedUser);
-    } catch(err) {
-        console.error(`Error updating status: ${err.toString()}`);
-        res.status(500).send(`Error: ${err.toString()}`);
-    }
-});
-
-//Comment on user profile 
-router.post('/:Username/wall', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    const { Content } = req.body;
-
-    try {
-        const username = req.params.Username;
-        const userId = req.user.id;
-        const user = await User.findOne({ Username: username });
-        const currentUser = await User.findById(userId);
-
-        const currentDate = new Date();
-        const formattedDate = formatDate(currentDate);
-        const formattedTime = formatTime(currentDate);
-
-        if (!user) {
-            return res.status(404).send(`Error: ${username} not found.`);
-        }
-
-        if (!currentUser) {
-            return res.status(404).send(`Error: user not found.`);
-        }
-
-        const post = await Post.create({
-            User: userId,
-            Username: currentUser.Username,
-            Content,
-            PostedAtDate: formattedDate,
-            PostedAtTime: formattedTime
-        });
-
-        await post.save();
-
-        const notif = new Notification({
-            Type: 'ProfileComment',
-            Content,
-            NotifDate: formattedDate,
-            NotifTime: formattedTime,
-            UserLink: {
-                UserID: userId,
-                Username: currentUser.Username
-            }
-        });
-
-        await notif.save();
-
-        user.Notifications.push(notif);
-        user.ProfileComments.push(post);
-
-        await user.save();
-
-        return res.status(201).send(post);
-
-    } catch (err) {
-        console.error(`Error fetching list: ${err.toString()}`);
-        res.status(500).send(`Error: ${err.toString()}`);
-    }
-});
-
-
 //Get wishlist items
 router.get('/:Username/wishlist', async (req, res) => {
     try {
@@ -415,8 +334,60 @@ router.delete('/:Username/wishlist/:id', passport.authenticate('jwt', { session:
     }
 });
 
+//Edit bio
+router.put('/:id/bio', passport.authenticate('jwt', { session: false}), async (req, res) => {
+    try {
+        const { newBio } = req.body;
+        const userId = req.params.id;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).send(`User not found.`);
+        }
+
+        if (userId !== req.user.id) {
+            return res.status(403).send(`You can't edit someone else's bio.`);
+        }
+
+        user.Bio = newBio;
+
+        const updatedUser = await user.save();
+
+        return res.status(200).json(updatedUser);
+    } catch(err) {
+        console.error(`Error updating bio: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    }
+});
+
+//Edit status
+router.put('/:id/status', passport.authenticate('jwt', { session: false}), async (req, res) => {
+    try {
+        const { newStatus } = req.body;
+        const userId = req.params.id;
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).send(`User not found.`);
+        }
+
+        if (userId !== req.user.id) {
+            return res.status(403).send(`You can't edit someone else's status.`);
+        }
+
+        user.Status = newStatus;
+
+        const updatedUser = await user.save();
+
+        return res.status(200).json(updatedUser);
+    } catch(err) {
+        console.error(`Error updating status: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    }
+});
+
 //Upload new profile photo
-router.post('/:Username/profile-pic', upload.single('image'), passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.put('/:Username/profile-pic', upload.single('image'), passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const user = await User.findOne({ Username: req.params.Username });
 
@@ -433,31 +404,20 @@ router.post('/:Username/profile-pic', upload.single('image'), passport.authentic
         }
 
         const folderPath = 'profile-pics/';
-        const newFileName = randomImageName();
-        const key = `${folderPath}${newFileName}`;
-
-        const buffer = await sharp(req.file.buffer).resize({ height: 400, width: 400, fit: 'cover'}).toBuffer();
-
-        const params = {
-            Bucket: bucketName,
-            Key: key,
-            Body: buffer,
-            ContentType: req.file.mimetype,
-            ACL: 'public-read'
-        }
-    
-        const command = new PutObjectCommand(params);
-        await s3.send(command);
-
-        const imageUrl = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${key}`;
+        const imageDimension = { height: 400, width: 400, fit: 'cover'};
+        const file = req.file;
+        const imageUrl = await uploadToS3(file, folderPath, imageDimension, s3)
 
         user.ProfileImage = imageUrl;
         const updatedUser = await user.save();
+
+        console.log(user.ProfileImage)
+        console.log(imageUrl)
     
-        res.send({message: 'done', imageUrl, updatedUser});
+        res.status(200).send(`Profile picture updates: ${updatedUser}`);
     } catch (err) {
-        console.error('Error uploading file:', err);
-        res.status(500).send({ error: 'Error uploading file' });
+        console.error(`Error fetching list: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
     }
 });
 
@@ -477,6 +437,64 @@ router.get('/:Username/wall', async (req, res) => {
     try {
         const user = await User.findOne({ Username: req.params.Username }).populate('ProfileComments', '-_id -__v');
         res.status(200).json(user.ProfileComments);
+    } catch (err) {
+        console.error(`Error fetching list: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    }
+});
+
+//Comment on user profile 
+router.post('/:Username/wall', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    const { Content } = req.body;
+
+    try {
+        const username = req.params.Username;
+        const userId = req.user.id;
+        const user = await User.findOne({ Username: username });
+        const currentUser = await User.findById(userId);
+
+        const currentDate = new Date();
+        const formattedDate = formatDate(currentDate);
+        const formattedTime = formatTime(currentDate);
+
+        if (!user) {
+            return res.status(404).send(`Error: ${username} not found.`);
+        }
+
+        if (!currentUser) {
+            return res.status(404).send(`Error: user not found.`);
+        }
+
+        const post = await Post.create({
+            User: userId,
+            Username: currentUser.Username,
+            Content,
+            PostedAtDate: formattedDate,
+            PostedAtTime: formattedTime
+        });
+
+        await post.save();
+
+        const notif = new Notification({
+            Type: 'ProfileComment',
+            Content,
+            NotifDate: formattedDate,
+            NotifTime: formattedTime,
+            UserLink: {
+                UserID: userId,
+                Username: currentUser.Username
+            }
+        });
+
+        await notif.save();
+
+        user.Notifications.push(notif);
+        user.ProfileComments.push(post);
+
+        await user.save();
+
+        return res.status(201).send(post);
+
     } catch (err) {
         console.error(`Error fetching list: ${err.toString()}`);
         res.status(500).send(`Error: ${err.toString()}`);

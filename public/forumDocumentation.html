@@ -77,6 +77,24 @@
                 <td>Logged in</td>
                 <td>JSON of threads including searched tag</td>
             </tbody>
+
+            <tbody>
+                <td>Delete a thread</td>
+                <td>/threads/:id</td>
+                <td>DELETE</td>
+                <td>ID of thread</td>
+                <td>Admin</td>
+                <td>Deletes thread</td>
+            </tbody>
+
+            <tbody>
+                <td>Threadban a user</td>
+                <td>/threads/:id/bans/:Username/:Post</td>
+                <td>POST</td>
+                <td>ID of thread, username of user to ban, ID of post to cite in ban</td>
+                <td>Admin</td>
+                <td>Bans user from thread until specified expiration date</td>
+            </tbody>
         </table>
 
         <h1>Posts</h1>
@@ -130,21 +148,12 @@
             </tbody>
 
             <tbody>
-                <td>Like post</td>
-                <td>/posts/:id/like/:Username</td>
+                <td>React to post</td>
+                <td>/posts/:id/react/:Username</td>
                 <td>PUT</td>
                 <td>Post ID and username</td>
                 <td>Logged in</td>
                 <td>Likes or unlikes post</td>
-            </tbody>
-
-            <tbody>
-                <td>Dislike post</td>
-                <td>/posts/:id/dislike/:Username</td>
-                <td>PUT</td>
-                <td>Post ID and username</td>
-                <td>Logged in</td>
-                <td>Dislikes or undislikes post</td>
             </tbody>
 
             <tbody>

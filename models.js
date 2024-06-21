@@ -50,12 +50,12 @@ const productSchema = mongoose.Schema({
     },
     Description: {
         type: String,
-        required: true
+        required: false
     },
-    Image: {
+    ProductImages: [{
         type: String,
-        default: 'https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg'
-    },
+        required: false
+    }],
     Sales: {
         type: Number,
         default: 0

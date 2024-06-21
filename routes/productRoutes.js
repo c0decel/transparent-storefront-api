@@ -1,4 +1,13 @@
 const express = require('express');
+
+const multer = require('multer');
+const crypto = require('crypto');
+const sharp = require('sharp');
+
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+
+require('dotenv').config();
+
 const checkBroom = require('../utils/appFunctions.js');
 const mongoose = require('mongoose');
 const router = express.Router();
@@ -7,9 +16,20 @@ const Tag = Models.Tag;
 const Product = Models.Product;
 const Supply = Models.Supply;
 const Discount = Models.Discount;
+const { accessKey, secretAccessKey, bucketName, bucketRegion, randomImageName, upload, uploadToS3 } = require('./../utils/s3Utils.js');
 
 const passport = require('passport');
 require('../passport.js');
+
+const s3 = new S3Client({
+    credentials: {
+        accessKeyId: accessKey,
+        secretAccessKey: secretAccessKey,
+    },
+    region: bucketRegion
+});
+
+const storage = multer.memoryStorage();
 
 /**
  * Basic user permissions
@@ -90,7 +110,7 @@ router.get('/:id/supplies', async (req, res) => {
  * Admin permissions
  */
 // Upload new product
-router.post('/', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
+router.post('/', upload.array('productImages', 5), passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
     try {
         const { Name, Price, Description, Stock, Image, Tags, Supplies, Upcharge } = req.body;
 
@@ -98,6 +118,17 @@ router.post('/', passport.authenticate('jwt', { session: false }), checkBroom, a
 
         if (existingProduct) {
             return res.status(400).send(`${Name} already exists.`);
+        }
+
+        const folderPath = 'product-images/';
+        const imageDimension = { width: undefined, height: undefined };
+        const uploadPromises = req.files.map(file => uploadToS3(file, folderPath, imageDimension, s3));
+        let imageUrls = [];
+
+        if (uploadPromises.length < 1) {
+            imageUrls.push('https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg');
+        } else {
+            imageUrls = await Promise.all(uploadPromises);
         }
 
         const newProduct = await Product.create({
@@ -108,11 +139,43 @@ router.post('/', passport.authenticate('jwt', { session: false }), checkBroom, a
             Image,
             Tags,
             Supplies,
-            Upcharge
+            Upcharge,
+            ProductImages: imageUrls
         });
         res.status(201).json(newProduct);
     } catch (err) {
         console.error(`Error posting product: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    }
+});
+
+//Change product images
+router.put('/:productId/images', upload.array('productImages', 5), passport.authenticate('jwt', {session: false}), checkBroom, async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return res.status(404).send(`Product not found.`);
+        }
+
+        const uploadPromises = req.files.map(file => uploadToS3(file));
+        let imageUrls = [];
+
+        if (uploadPromises.length < 1) {
+            imageUrls.push('https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg');
+        } else {
+            imageUrls = await Promise.all(uploadPromises);
+        }
+
+        product.ProductImages = imageUrls;
+
+        const updatedProduct = await product.save();
+
+        return res.status(200).json(updatedProduct);
+
+    } catch (err){
+        console.error(`Error: ${err.toString()}`);
         res.status(500).send(`Error: ${err.toString()}`);
     }
 });
