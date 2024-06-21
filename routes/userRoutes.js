@@ -69,15 +69,17 @@ router.post('/', [
             const imageDimension = { height: 400, width: 400, fit: 'cover'};
             const file = req.file;
             profilePic = await uploadToS3(file, folderPath, imageDimension, s3);
-        } else if ((!req.file && req.body.defaultNum === 0) || (!req.file && req.body.defaultNum > 3)) {
-            function pickRandomPic() {
-                // 3 for number of default profile pics
-                defaultNum = Math.floor(Math.random() * 3) + 1;
-                return defaultNum;
-            }
-            profilePic = `https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic-${pickRandomPic()}.png`;
         } else {
-            profilePic = `https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic-${defaultNum}.png`;
+            if (defaultNum === 0 || isNaN(defaultNum) || defaultNum > 3) {
+                function pickRandomPic() {
+                    // 3 for number of default profile pics
+                    defaultNum = Math.floor(Math.random() * 3) + 1;
+                    return defaultNum;
+                }
+                profilePic = `https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic-${pickRandomPic()}.png`;
+            } else {
+                profilePic = `https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic-${defaultNum}.png`;
+            }
         }
 
 
