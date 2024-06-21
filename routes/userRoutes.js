@@ -70,7 +70,7 @@ router.post('/', [
             const file = req.file;
             profilePic = await uploadToS3(file, folderPath, imageDimension, s3);
         } else {
-            if ((!req.file && !req.body.ProfileImage) || defaultNum > 3 || isNaN(defaultNum)) {
+            if ((!req.file && !req.body.ProfileImage) || defaultNum > 3 || defaultNum === 0 || isNaN(defaultNum)) {
                 function pickRandomPic() {
                     // 3 for number of default profile pics
                     defaultNum = Math.floor(Math.random() * 3) + 1;
