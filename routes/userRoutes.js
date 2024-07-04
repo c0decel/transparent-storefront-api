@@ -512,6 +512,8 @@ router.get('/', (req, res) => {
 
     if (!hasPerms) {
         query = query.select('-Password -Cart -Email -Birthday');
+    } else {
+        query = query.select('-Password');
     }
     query
     .then((User) => {
@@ -530,6 +532,8 @@ router.get('/name/:Username', passport.authenticate('jwt', { session: false }), 
 
     if (!hasPerms) {
         query = query.select('-Password -Cart -Email -Birthday');
+    } else {
+        query = query.select('-Password');
     }
     query
     .then((User) => {
