@@ -1,8 +1,14 @@
 const express = require('express');
 const checkBroom = require('./../utils/appFunctions.js');
 const router = express.Router();
-const Models = require('../models.js');
-const Sale = Models.Sale;
+
+//Models
+const forumModels = require('../models/forumModels.js');
+const userModels = require('../models/userModels.js');
+const storeModels = require('../models/storeModels.js');
+
+//Store models
+const Sale = storeModels.Sale;
 
 const passport = require('passport');
 require('../passport.js');

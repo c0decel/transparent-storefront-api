@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Documentation
+        </title>
+        <style type="text/css">
+            body {
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                font-size: 20px;
+                align-items: center;
+            }
+    
+            table {
+                border-style: solid;
+                border-color: black;
+                padding: 20px;
+                margin: 20px;
+
+                td {
+                    padding: 5px;
+                }
+            }
+
+            .get_method {
+                color: rgb(0, 207, 0);
+                font-weight: bold;
+            }
+
+            .post_method {
+                color: rgb(221, 133, 0);
+                font-weight: bold;
+            }
+
+            .put_method {
+                color: rgb(0, 0, 231);
+                font-weight: bold;
+            }
+
+            .patch_method {
+                color: rgb(0, 204, 255);
+                font-weight: bold;
+            }
+
+            .delete_method {
+                color: rgb(248, 0, 0);
+                font-weight: bold;
+            }
+
+            .tag {
+                padding: 4px;
+                border-radius: 5px;
+            }
+
+            .product_category {
+                background-color: rgb(98, 98, 255);
+            }
+
+            .user_category {
+                background-color: rgb(111, 255, 98);
+            }
+
+            .financial_category {
+                background-color: rgb(220, 255, 64);
+            }
+
+            .forum_category {
+                background-color: rgb(255, 107, 230);
+            }
+
+            .moderation_category {
+                background-color: rgb(255, 154, 107);
+            }
+
+            .table-contents {
+                display: grid;
+                grid-gap: 20px;
+            }
+
+            @media screen and (max-width: 800px) {
+                .table-contents {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            @media screen and (min-width: 801px) {
+                .table-contents {
+                    grid-template-columns: 1fr 1fr;
+                }
+            }
+
+            .type_string {
+                color: aqua;
+                font-weight: bold;
+            }
+
+            .type_array {
+                color: rgb(255, 217, 0);
+                font-weight: bold;
+            }
+
+            .type_boolean {
+                color: rgb(255, 0, 98);
+                font-weight: bold;
+            }
+
+            .type_number {
+                color: rgb(0, 255, 76);
+                font-weight: bold;
+            }
+
+            .type_date {
+                color: rgb(153, 0, 255);
+                font-weight: bold;
+            }
+
+            .required_true {
+                color: rgb(247, 0, 0);
+                font-weight: bold;
+            }
+
+            .required_false {
+                color: rgb(0, 223, 0);
+                font-weight: bold;
+            }
+
+            .schema_container {
+                display: flex;
+                flex-direction: row;
+
+                p {
+                    padding: 5px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="table-contents">
+            <div class="route-documentation-container">
+                <h2>
+                    Routes
+                </h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Routes</th>
+                            <th>Filename</th>
+                            <th>Category</th>
+                            <th>Scroll to</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <td>Users</td>
+                        <td>userRoutes.js</td>
+                        <td>
+                            <span class="user_category tag">
+                                Users
+                            </span>
+                        </td>
+                        <td><a href="#user-routes">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Products</td>
+                        <td>productRoutes.js</td>
+                        <td>
+                            <span class="product_category tag">
+                                Products
+                            </span>
+                        </td>
+                        <td><a href="#product-routes">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Payment</td>
+                        <td>paymentRoutes.js</td>
+                        <td>
+                            <span class="financial_category tag">
+                                Financial
+                            </span>
+                            <span class="product_category tag">
+                                Products
+                            </span>
+                        </td>
+                        <td><a href="#payment-routes">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Sales</td>
+                        <td>salesRoutes.js</td>
+                        <td>
+                            <span class="financial_category tag">
+                                Financial
+                            </span>
+                        </td>
+                        <td><a href="#sales-routes">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Expenses</td>
+                        <td>expenseRoutes.js</td>
+                        <td>
+                            <span class="financial_category tag">
+                                Financial
+                            </span>
+                        </td>
+                        <td><a href="#expense-routes">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Supplies</td>
+                        <td>supplyRoutes.js</td>
+                        <td>
+                            <span class="product_category tag">
+                                Products
+                            </span>
+                        </td>
+                        <td><a href="#supply-routes">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Tags</td>
+                        <td>tagRoutes.js</td>
+                        <td>
+                            <span class="product_category tag">
+                                Products
+                            </span>
+                        </td>
+                        <td><a href="#tag-routes">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Reviews</td>
+                        <td>reviewRoutes.js</td>
+                        <td>
+                            <span class="product_category tag">
+                                Products
+                            </span>
+                            <span class="user_category tag">
+                                Users
+                            </span>
+                        </td>
+                        <td><a href="#review-routes">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Threads</td>
+                        <td>threadRoutes.js</td>
+                        <td>
+                            <span class="forum_category tag">
+                                Forum
+                            </span>
+                            <span class="moderation_category tag">
+                                Moderation
+                            </span>
+                        </td>
+                        <td><a href="#thread-routes">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Posts</td>
+                        <td>postRoutes.js</td>
+                        <td>
+                            <span class="forum_category tag">
+                                Forum
+                            </span>
+                            <span class="moderation_category tag">
+                                Moderation
+                            </span>
+                        </td>
+                        <td><a href="#post-routes">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Bans</td>
+                        <td>banRoutes.js</td>
+                        <td>
+                            <span class="forum_category tag">
+                                Forum
+                            </span>
+                            <span class="moderation_category tag">
+                                Moderation
+                            </span>
+                        </td>
+                        <td><a href="#ban-routes">Documentation</a></td>
+                    </tbody>
+                </table>
+            </div>
+            <div class="model-documentation-container">
+                <h2>
+                    Models
+                </h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Filename</th>
+                            <th>Category</th>
+                            <th>Scroll to</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <td>Users</td>
+                        <td>userModels.js</td>
+                        <td>
+                            <span class="user_category tag">
+                                Users
+                            </span>
+                        </td>
+                        <td><a href="#user-models">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Store</td>
+                        <td>storeModels.js</td>
+                        <td>
+                            <span class="product_category tag">
+                                Products
+                            </span>
+                            <span class="financial_category tag">
+                                Financial
+                            </span>
+                            <span class="user_category tag">
+                                Users
+                            </span>
+                        </td>
+                        <td><a href="#store-models">Documentation</a></td>
+                    </tbody>
+
+                    <tbody>
+                        <td>Forum</td>
+                        <td>forumModels.js</td>
+                        <td>
+                            <span class="forum_category tag">
+                                Forum
+                            </span>
+                            <span class="moderation_category tag">
+                                Moderation
+                            </span>
+                            <span class="user_category tag">
+                                Users
+                            </span>
+                        </td>
+                        <td><a href="#forum-models">Documentation</a></td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="route-documentation">
+            <div id="user-routes">
+                <h2>
+                    User Routes
+                </h2>
+                <p>
+                    userRoutes.js
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Logic</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Query Params</th>
+                            <th>Permissions</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <td>Post new user</td>
+                        <td>/users</td>
+                        <td class="post_method">POST</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of new user</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get notifications</td>
+                        <td>/users/notifications</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>Logged in</td>
+                        <td>Get all user notifications</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Mark notifications as read</td>
+                        <td>/users/notifications</td>
+                        <td class="put_method">PUT</td>
+                        <td>None</td>
+                        <td>Logged in</td>
+                        <td>Mark all user notifications as read</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get purchases</td>
+                        <td>/users/:Username/purchases</td>
+                        <td class="get_method">GET</td>
+                        <td>Username</td>
+                        <td>Logged in</td>
+                        <td>Get user purchase history</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get last purchase</td>
+                        <td>/users/:Username/purchases/last</td>
+                        <td class="get_method">GET</td>
+                        <td>Username</td>
+                        <td>Logged in</td>
+                        <td>Get user's last purchase'</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get cart items</td>
+                        <td>/users/:Username/cart</td>
+                        <td class="get_method">GET</td>
+                        <td>Username</td>
+                        <td>Logged in</td>
+                        <td>Returns cart items</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Add item to cart</td>
+                        <td>/users/:Username/cart/:id</td>
+                        <td class="put_method">PUT</td>
+                        <td>Username and ID of product</td>
+                        <td>Logged in</td>
+                        <td>Adds product to cart</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Remove item from cart</td>
+                        <td>/users/:Username/cart/:id</td>
+                        <td class="delete_method">DELETE</td>
+                        <td>Username and ID of product</td>
+                        <td>Logged in</td>
+                        <td>Removes product from cart</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get wishlist items</td>
+                        <td>/users/:Username/wishlist</td>
+                        <td class="get_method">GET</td>
+                        <td>Username</td>
+                        <td>Logged in</td>
+                        <td>Returns wishlist items</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Add item to wishlist</td>
+                        <td>/users/:Username/wishlist/:id</td>
+                        <td class="put_method">PUT</td>
+                        <td>Username and ID of product</td>
+                        <td>Logged in</td>
+                        <td>Adds product to wishlist</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Remove item from wishlist</td>
+                        <td>/users/:Username/wishlist/:id</td>
+                        <td class="delete_method">DELETE</td>
+                        <td>Username and ID of product</td>
+                        <td>Logged in</td>
+                        <td>Removes product from wishlist</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Edit bio</td>
+                        <td>/users/:id/bio</td>
+                        <td class="put_method">PUT</td>
+                        <td>Username</td>
+                        <td>Logged in</td>
+                        <td>Updates user status</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Edit status</td>
+                        <td>/users/:id/status</td>
+                        <td class="put_method">PUT</td>
+                        <td>Username</td>
+                        <td>Logged in</td>
+                        <td>Updates user status</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Change profile photo</td>
+                        <td>/users/:Username/profile-pic</td>
+                        <td class="post_method">POST</td>
+                        <td>Username</td>
+                        <td>Logged in</td>
+                        <td>Uploads and changes new profile photo</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get all posts from user</td>
+                        <td>/users/:Username/posts</td>
+                        <td class="get_method">GET</td>
+                        <td>Username</td>
+                        <td>None</td>
+                        <td>JSON of all posts from searched user</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get user's profile comments</td>
+                        <td>/users/:Username/wall</td>
+                        <td class="get_method">GET</td>
+                        <td>Username</td>
+                        <td>None</td>
+                        <td>JSON of all comments on searched user's wall</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Comment on user's profile</td>
+                        <td>/users/:Username/wall</td>
+                        <td class="post_method">POST</td>
+                        <td>Username</td>
+                        <td>Logged in</td>
+                        <td>Leaves comment on user's wall</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get all users</td>
+                        <td>/users</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>Admin</td>
+                        <td>JSON of all users</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get one user by name</td>
+                        <td>/users/:Username</td>
+                        <td class="get_method">GET</td>
+                        <td>Username</td>
+                        <td>Admin</td>
+                        <td>JSON of one user</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get one user by id</td>
+                        <td>/users/:id</td>
+                        <td class="get_method">GET</td>
+                        <td>User ID</td>
+                        <td>Admin</td>
+                        <td>JSON of one user</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Delete one user</td>
+                        <td>/users/:id</td>
+                        <td class="delete_method">DELETE</td>
+                        <td>User ID</td>
+                        <td>Admin</td>
+                        <td>Delete one user</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Toggle user's sponsor status</td>
+                        <td>/users/:id/toggle-sponsor</td>
+                        <td class="patch_method">PATCH</td>
+                        <td>User ID</td>
+                        <td>Admin</td>
+                        <td>Update user's sponsor status</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Toggle user's admin status</td>
+                        <td>/users/:id/toggle-admin</td>
+                        <td class="patch_method">PATCH</td>
+                        <td>User ID</td>
+                        <td>Admin</td>
+                        <td>Update user's admin status</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Toggle user's posting ability</td>
+                        <td>/users/:id/toggle-posting</td>
+                        <td class="patch_method">PATCH</td>
+                        <td>User ID</td>
+                        <td>Admin</td>
+                        <td>Allow or ban a user from making forum posts</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Update user's order status</td>
+                        <td>/users/:Username/purchases/:purchaseId</td>
+                        <td class="put_method">PUT</td>
+                        <td>Username, purchase ID</td>
+                        <td>Admin</td>
+                        <td>Update user's order status</td>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="product-routes">
+                <h2>
+                    Product Routes
+                </h2>
+                <p>
+                    productRoutes.js
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Logic</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Query Params</th>
+                            <th>Permissions</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <td>Get all products</td>
+                        <td>/products</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of all products</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get one product</td>
+                        <td>/products/:id</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of product</td>
+                        <td>None</td>
+                        <td>JSON of one product</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get tags from one product</td>
+                        <td>/products/:id/tags</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of product</td>
+                        <td>None</td>
+                        <td>Array of product's tags</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get product by tag</td>
+                        <td>/products/tags/:id</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of product</td>
+                        <td>None</td>
+                        <td>Array of products containing searched tag</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get supplies from one product</td>
+                        <td>/products/:id/supplies</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of supply</td>
+                        <td>None</td>
+                        <td>Array of product's supplies</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Post new product</td>
+                        <td>/products</td>
+                        <td class="post_method">POST</td>
+                        <td>None</td>
+                        <td>Admin</td>
+                        <td>JSON of new product</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Update product images</td>
+                        <td>/:productId/images</td>
+                        <td class="put_method">PUT</td>
+                        <td>ID of product</td>
+                        <td>Admin</td>
+                        <td>JSON of updated product</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Create discount code</td>
+                        <td>/products/:id</td>
+                        <td class="post_method">POST</td>
+                        <td>None</td>
+                        <td>Admin</td>
+                        <td>JSON of new discount</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Update stock quantity</td>
+                        <td>/products/:id</td>
+                        <td class="put_method">PUT</td>
+                        <td>ID of product</td>
+                        <td>Admin</td>
+                        <td>JSON of new stock quantity</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Add tag to product</td>
+                        <td>/products/:id/tags/:tagId</td>
+                        <td class="put_method">PUT</td>
+                        <td>ID of product and ID of tag</td>
+                        <td>Admin</td>
+                        <td>Array of product's tags</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Remove tag from product</td>
+                        <td>/products/:id/tags/:tagId</td>
+                        <td class="delete_method">DELETE</td>
+                        <td>ID of product and ID of tag</td>
+                        <td>Admin</td>
+                        <td>Array of product's tags</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Add supply to product</td>
+                        <td>/products/:id/supplies/:supplyId</td>
+                        <td class="put_method">PUT</td>
+                        <td>ID of product and ID of supply</td>
+                        <td>Admin</td>
+                        <td>Array of product's supplies</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Remove supply from product</td>
+                        <td>/products/:id/supplies/:supplyId</td>
+                        <td class="delete_method">DELETE</td>
+                        <td>ID of product and ID of supply</td>
+                        <td>Admin</td>
+                        <td>Array of product's supplies</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Delete a product</td>
+                        <td>/products/:id</td>
+                        <td class="delete_method">DELETE</td>
+                        <td>ID of product</td>
+                        <td>Admin</td>
+                        <td>Deletes a product</td>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="payment-routes">
+                <h2>
+                    Payment Routes
+                </h2>
+                <p>
+                    paymentRoutes.js
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Logic</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Query Params</th>
+                            <th>Permissions</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <td>Get all purchases</td>
+                        <td>/payment</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of all purchases</td>
+                    </tbody>
+    
+                    <tbody>
+                        <td>Get one purchase</td>
+                        <td>/payment/all/:id</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of purchase</td>
+                        <td>None</td>
+                        <td>JSON of all purchase</td>
+                    </tbody>
+    
+                    <tbody>
+                        <td>Checkout item</td>
+                        <td>/payment/create-checkout-session</td>
+                        <td class="post_method">POST</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>Creates Stripe payment session</td>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div id="sales-routes">
+                <h2>
+                    Sales Routes
+                </h2>
+                <p>
+                    salesRoutes.js
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Logic</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Query Params</th>
+                            <th>Permissions</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <td>Get all sales</td>
+                        <td>/sales</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of all sales</td>
+                    </tbody>
+    
+                    <tbody>
+                        <td>Post new sale</td>
+                        <td>/sales</td>
+                        <td class="post_method">POST</td>
+                        <td>None</td>
+                        <td>Admin</td>
+                        <td>POST new sale</td>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="expense-routes">
+                <h2>
+                    Expense Routes
+                </h2>
+                <p>
+                    expenseRoutes.js
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Logic</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Query Params</th>
+                            <th>Permissions</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <td>Get all expenses</td>
+                        <td>/expenses</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of all expenses</td>
+                    </tbody>
+    
+                    <tbody>
+                        <td>Post new expense</td>
+                        <td>/expenses</td>
+                        <td class="post_method">POST</td>
+                        <td>None</td>
+                        <td>Admin</td>
+                        <td>POST new expense</td>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div id="supply-routes">
+                <h2>
+                    Supply Routes
+                </h2>
+                <p>
+                    supplyRoutes.js
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Logic</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Query Params</th>
+                            <th>Permissions</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <td>Get all supplies</td>
+                        <td>/supplies</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of all supplies</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get one supply</td>
+                        <td>/supplies/:id</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of supply</td>
+                        <td>None</td>
+                        <td>JSON of one supply</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Post new supply</td>
+                        <td>/supplies</td>
+                        <td class="post_method">POST</td>
+                        <td>None</td>
+                        <td>Admin</td>
+                        <td>JSON of new supply</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Delete a supply</td>
+                        <td>/supplies/:id</td>
+                        <td class="delete_method">DELETE</td>
+                        <td>ID of supply</td>
+                        <td>Admin</td>
+                        <td>Deletes a supply</td>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div id="tag-routes">
+                <h2>
+                    Tag Routes
+                </h2>
+                <p>
+                    tagRoutes.js
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Logic</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Query Params</th>
+                            <th>Permissions</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <td>Get all tags</td>
+                        <td>/tags</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of all tags</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get one tag</td>
+                        <td>/tags/:id</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of tag</td>
+                        <td>None</td>
+                        <td>JSON of one tag</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Post tag</td>
+                        <td>/tags</td>
+                        <td class="post_method">POST</td>
+                        <td>None</td>
+                        <td>Admin</td>
+                        <td>JSON of new tag</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Delete tag</td>
+                        <td>/tags/:id</td>
+                        <td class="delete_method">DELETE</td>
+                        <td>ID of tag</td>
+                        <td>Admin</td>
+                        <td>Deletes tag</td>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="review-routes">
+                <h2>
+                    Review Routes
+                </h2>
+                <p>
+                    reviewRoutes.js
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Logic</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Query Params</th>
+                            <th>Permissions</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <td>Get all reviews</td>
+                        <td>/reviews</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of all reviews</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get one review</td>
+                        <td>/reviews/:id</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of review</td>
+                        <td>None</td>
+                        <td>JSON of one review</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Post a review</td>
+                        <td>/reviews</td>
+                        <td class="post_method">POST</td>
+                        <td>None</td>
+                        <td>Logged in</td>
+                        <td>JSON of new review</td>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div id="thread-routes">
+                <h2>
+                    Thread Routes
+                </h2>
+                <p>
+                    threadRoutes.js
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Logic</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Query Params</th>
+                            <th>Permissions</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <td>Get all threads</td>
+                        <td>/threads</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of all thread OP posts</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get one thread</td>
+                        <td>/threads/:id</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of thread</td>
+                        <td>None</td>
+                        <td>JSON of one thread OP post</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get replies from one thread</td>
+                        <td>/threads/:id/replies</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of thread</td>
+                        <td>None</td>
+                        <td>JSON of all responses to one thread</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Post new thread OP</td>
+                        <td>/threads</td>
+                        <td class="post_method">POST</td>
+                        <td>None</td>
+                        <td>Logged in</td>
+                        <td>JSON of new thread OP</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get threads by tag</td>
+                        <td>/threads/tags/:id</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of tag to search</td>
+                        <td>Logged in</td>
+                        <td>JSON of threads including searched tag</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Delete a thread</td>
+                        <td>/threads/:id</td>
+                        <td class="delete_method">DELETE</td>
+                        <td>ID of thread</td>
+                        <td>Admin</td>
+                        <td>Deletes thread</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Threadban a user</td>
+                        <td>/threads/:id/bans/:Username/:Post</td>
+                        <td class="post_method">POST</td>
+                        <td>ID of thread, username of user to ban, ID of post to cite in ban</td>
+                        <td>Admin</td>
+                        <td>Bans user from thread until specified expiration date</td>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="post-routes">
+                <h2>
+                    Post Routes
+                </h2>
+                <p>
+                    postRoutes.js
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Logic</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Query Params</th>
+                            <th>Permissions</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <td>Get all posts</td>
+                        <td>/posts</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of all posts</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Get one post</td>
+                        <td>/posts/:id</td>
+                        <td class="get_method">GET</td>
+                        <td>Post ID</td>
+                        <td>None</td>
+                        <td>JSON of post</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Post new reply</td>
+                        <td>/posts</td>
+                        <td class="post_method">POST</td>
+                        <td>None</td>
+                        <td>Logged in</td>
+                        <td>JSON of new post</td>
+                    </tbody>
+    
+                    <tbody>
+                        <td>React to post</td>
+                        <td>/posts/:id/react/:Username</td>
+                        <td class="put_method">PUT</td>
+                        <td>Post ID and username</td>
+                        <td>Logged in</td>
+                        <td>Likes or unlikes post</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Edit post</td>
+                        <td>/posts/:id</td>
+                        <td class="patch_method">PATCH</td>
+                        <td>Post ID</td>
+                        <td>Admin</td>
+                        <td>JSON of edited post</td>
+                    </tbody>
+    
+                    <tbody>
+                        <td>Toggle post highlight</td>
+                        <td>/posts/:id/toggle-highlight</td>
+                        <td class="put_method">PUT</td>
+                        <td>Post ID</td>
+                        <td>Admin</td>
+                        <td>Toggles highlight on post</td>
+                    </tbody>
+        
+                    <tbody>
+                        <td>Delete post</td>
+                        <td>/posts/:id</td>
+                        <td class="delete_method">DELETE</td>
+                        <td>Post ID</td>
+                        <td>Admin</td>
+                        <td>Deletes post</td>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="ban-routes">
+                <h2>
+                    Ban Routes
+                </h2>
+                <p>
+                    banRoutes.js
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Business Logic</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>Query Params</th>
+                            <th>Permissions</th>
+                            <th>Response</th>
+                        </tr>
+                    </thead>
+    
+    
+                    <tbody>
+                        <td>Get all reports</td>
+                        <td>/bans/reports</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of all reports</td>
+                    </tbody>
+    
+                    <tbody>
+                        <td>Get one report</td>
+                        <td>/bans/reports/:reportId</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of report</td>
+                        <td>None</td>
+                        <td>JSON of report</td>
+                    </tbody>
+    
+                    <tbody>
+                        <td>Get all bans</td>
+                        <td>/bans</td>
+                        <td class="get_method">GET</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>JSON of all bans</td>
+                    </tbody>
+    
+                    <tbody>
+                        <td>Get one ban</td>
+                        <td>/bans/:id</td>
+                        <td class="get_method">GET</td>
+                        <td>ID of ban</td>
+                        <td>None</td>
+                        <td>JSON of ban</td>
+                    </tbody>
+    
+                    <tbody>
+                        <td>Report a post</td>
+                        <td>/bans/reports/:id/report/:postId</td>
+                        <td class="post_method">POST</td>
+                        <td>ID of thread, ID of post</td>
+                        <td>Logged in</td>
+                        <td>POST new report</td>
+                    </tbody>
+    
+                    <tbody>
+                        <td>Deny report</td>
+                        <td>/bans/reports/:reportId/deny-report</td>
+                        <td class="put_method">PUT</td>
+                        <td>ID of report</td>
+                        <td>Admin</td>
+                        <td>PUT report update</td>
+                    </tbody>
+                </table>
+            </div>
+    
+        </div>
+
+        <div id="model-documentation">
+            <div id="user-models">
+                <h2>
+                    User models
+                </h2>
+                <p>
+                    userModels.js
+                </p>
+                <div>
+                    <h3>
+                        Schemas
+                    </h3>
+                    <div class="schema_container">
+                        <p><a href="#user-schema">User</a></p>
+                        <p><a href="#notification-schema">Notification</a></p>
+                    </div>
+                </div>
+
+                <div id="user-schema">
+                    <h3>
+                        User schema
+                    </h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>Username</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>ProfileImage</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td><a href="https://ts-demo-bucket-img.s3.amazonaws.com/profile-pics/default-profile-pic.png">Default image</a></td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Password</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Email</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Birthday</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>JoinDate</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current date UTC</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>JoinTime</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current time UTC</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Cart</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Wishlist</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Purchases</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Reviews</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Posts</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>PostCount</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_false">False</td>
+                            <td>0</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Threads</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>ThreadCount</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_false">False</td>
+                            <td>0</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>hasBroom</td>
+                            <td class="type_boolean">Boolean</td>
+                            <td class="required_true">True</td>
+                            <td>False</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>isSponsor</td>
+                            <td class="type_boolean">Boolean</td>
+                            <td class="required_true">True</td>
+                            <td>False</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>canPost</td>
+                            <td class="type_boolean">Boolean</td>
+                            <td class="required_true">True</td>
+                            <td>False</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Threadbans</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Status</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>I'm NEW!!!</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Bio</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>No bio.</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Notifications</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>SavedPosts</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>ProfileComments</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="notification-schema">
+                    <h3>
+                        Notification schema
+                    </h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>Status</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>Unread</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>UserLink UserID</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>UserLink Username</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>ThreadLink ThreadID</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>ThreadLink ThreadName</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>PurchaseLink PurchaseID</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>BanLink BanID</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>BanLink Reason</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>BanLink ExpiresOn</td>
+                            <td class="type_date">Date</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>NotifDate</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current date UTC</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>NotifTime</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current time UTC</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Content</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="store-models">
+                <h2>
+                    Store models
+                </h2>
+                <p>
+                    storeModels.js
+                </p>
+                <div>
+                    <h3>
+                        Schemas
+                    </h3>
+                    <div class="schema_container">
+                        <p><a href="#product-schema">Product</a></p>
+                        <p><a href="#review-schema">Review</a></p>
+                        <p><a href="#supply-schema">Supply</a></p>
+                        <p><a href="#tag-schema">Tag</a></p>
+                        <p><a href="#expense-schema">Expense</a></p>
+                        <p><a href="#sale-schema">Sale</a></p>
+                        <p><a href="#discount-schema">Discount</a></p>
+                        <p><a href="#purchase-schema">Purchase</a></p>
+                    </div>
+                </div>
+
+                <div id="product-schema">
+                    <h3>
+                        Product schema
+                    </h3>
+    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+    
+                        <tbody>
+                            <td>Name</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Price</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Description</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>No description.</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ProductImages</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+                        
+                        <tbody>
+                            <td>Sales</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_false">False</td>
+                            <td>0</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Stock</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_true">True</td>
+                            <td>0</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Reviews</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>IsFeatured</td>
+                            <td class="type_boolean">Boolean</td>
+                            <td class="required_true">True</td>
+                            <td>False</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Tags</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Supplies</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Upcharge</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_false">False</td>
+                            <td>0</td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="review-schema">
+                    <h3>
+                        Review schema
+                    </h3>
+    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+    
+                        <tbody>
+                            <td>Rating</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>User</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Username</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ReviewDate</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ReviewTime</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Product</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Content</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="supply-schema">
+                    <h3>
+                        Supply schema
+                    </h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+    
+                        <tbody>
+                            <td>Name</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>New Supply</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Description</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>No description.</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Cost</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_true">True</td>
+                            <td>0</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>CostOz</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Quantity</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Measurement</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Supplier</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None specified.</td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="tag-schema">
+                    <h3>
+                        Tag schema
+                    </h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>Tag</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Description</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>No description.</td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="expense-schema">
+                    <h3>
+                        Expense schema
+                    </h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>Expense</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Amount</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_false">False</td>
+                            <td>0</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Description</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>No description.</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>ExpenseDate</td>
+                            <td class="type_date">Date</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="sale-schema">
+                    <h3>
+                        Sale schema
+                    </h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>Sale</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Amount</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_false">False</td>
+                            <td>0</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Description</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>No description.</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>SaleDate</td>
+                            <td class="type_date">Date</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="discount-schema">
+                    <h3>
+                        Discount schema
+                    </h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>Name</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Type</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Dollar</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Amount</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Description</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>No description.</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>ExpiresOn</td>
+                            <td class="type_date">Date</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>IsActive</td>
+                            <td class="type_boolean">Boolean</td>
+                            <td class="required_false">False</td>
+                            <td>True</td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="purchase-schema">
+                    <h3>
+                        Purchase schema
+                    </h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>ProductID</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>PurchaseDate</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current date UTC</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>PurchaseTime</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current time UTC</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Name</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Image</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Price</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Status</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Active</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>DiscountUsed</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="forum-models">
+                <h2>
+                    Forum models
+                </h2>
+                <p>
+                    forumModels.js
+                </p>
+
+                <div>
+                    <h3>
+                        Schemas
+                    </h3>
+                    <div class="schema_container">
+                        <p><a href="#thread-schema">Thread</a></p>
+                        <p><a href="#post-schema">Post</a></p>
+                        <p><a href="#report-schema">Report</a></p>
+                        <p><a href="#ban-schema">Ban</a></p>
+                    </div>
+                </div>
+
+                <div id="thread-schema">
+                    <h3>
+                        Thread schema
+                    </h3>
+    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>Title</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>User</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Username</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Content</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>ReplyCount</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>PostedAtDate</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current date UTC</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>PostedAtTime</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current time UTC</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Replies</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Tags</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Highlighted</td>
+                            <td class="type_boolean">Boolean</td>
+                            <td class="required_true">True</td>
+                            <td>True</td>
+                        </tbody>
+
+                        <tbody>
+                            <td>Bans</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="post-schema">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>Thread</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>User</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Username</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Content</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ReplyNumber</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_false">False</td>
+                            <td>0</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>PostedAtDate</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current date UTC</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>PostedAtTime</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current time UTC</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Highlighted</td>
+                            <td class="type_boolean">Boolean</td>
+                            <td class="required_false">False</td>
+                            <td>False</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Reactions</td>
+                            <td class="type_array">Array</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ReactionScore</td>
+                            <td class="type_number">Number</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>PostBan</td>
+                            <td class="type_boolean">Boolean</td>
+                            <td class="required_false">False</td>
+                            <td>False</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ReplyingTo</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="report-schema">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>UserID</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>PostID</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ThreadID</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ReportedAtTime</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current time UTC</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ReportedAtDate</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Current date UTC</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ReportStatus</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Active</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ModResponse</td>
+                            <td class="type_string">String</td>
+                            <td class="required_false">False</td>
+                            <td>Waiting on mod response.</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ModID</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ReportReason</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="ban-schema">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <td>BannedBy</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>BannedFrom</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>BannedForPost</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>Reason</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>IssuedOn</td>
+                            <td class="type_date">Date</td>
+                            <td class="required_false">False</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>ExpiresOn</td>
+                            <td class="type_date">Date</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>IsActive</td>
+                            <td class="type_boolean">Boolean</td>
+                            <td class="required_true">True</td>
+                            <td>True</td>
+                        </tbody>
+    
+                        <tbody>
+                            <td>BannedUser</td>
+                            <td class="type_string">String</td>
+                            <td class="required_true">True</td>
+                            <td>None</td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -2,20 +2,31 @@ const express = require('express');
 const multer = require('multer');
 const crypto = require('crypto');
 const sharp = require('sharp');
+const checkBroom = require('../utils/appFunctions.js');
+const { formatDate, formatTime } = require('./../utils/dateUtils.js');
 
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 
 require('dotenv').config();
 
 const router = express.Router();
-const Models = require('../models.js');
-const Product = Models.Product;
-const User = Models.User;
-const Post = Models.Post;
-const Purchase = Models.Purchase;
-const Notification = Models.Notification;
-const checkBroom = require('../utils/appFunctions.js');
-const { formatDate, formatTime } = require('./../utils/dateUtils.js');
+
+//Models
+const forumModels = require('../models/forumModels.js');
+const userModels = require('../models/userModels.js');
+const storeModels = require('../models/storeModels.js');
+
+//User models
+const User = userModels.User;
+const Notification = userModels.Notification;
+
+//Product models
+const Product = storeModels.Product;
+const Purchase = storeModels.Purchase;
+
+//Forum models
+const Post = forumModels.Post;
+
 const { accessKey, secretAccessKey, bucketName, bucketRegion, randomImageName, upload, uploadToS3 } = require('./../utils/s3Utils.js');
 
 const { validationResult, check } = require('express-validator');

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
-    Models = require('./models.js'),
+    Models = require('./models/forumModels.js'),
     passportJWT = require('passport-jwt');
 
 let Users = Models.User,

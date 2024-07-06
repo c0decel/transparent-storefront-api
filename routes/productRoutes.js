@@ -11,12 +11,18 @@ require('dotenv').config();
 const checkBroom = require('../utils/appFunctions.js');
 const mongoose = require('mongoose');
 const router = express.Router();
-const Models = require('../models.js');
-const Tag = Models.Tag;
-const Product = Models.Product;
-const Supply = Models.Supply;
-const Discount = Models.Discount;
 const { accessKey, secretAccessKey, bucketName, bucketRegion, randomImageName, upload, uploadToS3 } = require('./../utils/s3Utils.js');
+
+//Models
+const forumModels = require('../models/forumModels.js');
+const userModels = require('../models/userModels.js');
+const storeModels = require('../models/storeModels.js');
+
+//Store models
+const Tag = storeModels.Tag;
+const Product = storeModels.Product;
+const Supply = storeModels.Supply;
+const Discount = storeModels.Discount;
 
 const passport = require('passport');
 require('../passport.js');

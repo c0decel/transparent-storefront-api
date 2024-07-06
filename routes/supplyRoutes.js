@@ -1,9 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const checkBroom = require('./../utils/appFunctions.js');
-const Models = require('../models.js');
-const Supply = Models.Supply;
-const User = Models.User;
+
+//Models
+const forumModels = require('../models/forumModels.js');
+const userModels = require('../models/userModels.js');
+const storeModels = require('../models/storeModels.js');
+
+//User models
+const User = userModels.User;
+
+//Store models
+const Supply = storeModels.Supply;
 
 const { validationResult, check } = require('express-validator');
 

@@ -1,14 +1,24 @@
 const express = require('express');
 const checkBroom = require('../utils/appFunctions.js');
 const router = express.Router();
-const Models = require('../models.js');
-const Tag = Models.Tag;
-const Thread = Models.Thread;
-const Post = Models.Post;
-const User = Models.User;
-const Ban = Models.Ban;
-const Notification = Models.Notification;
 const { formatDate, formatTime } = require('./../utils/dateUtils.js');
+
+//Models
+const forumModels = require('../models/forumModels.js');
+const userModels = require('../models/userModels.js');
+const storeModels = require('../models/storeModels.js');
+
+//User models
+const User = userModels.User;
+const Notification = userModels.Notification;
+
+//Forum models
+const Thread = forumModels.Thread;
+const Post = forumModels.Post;
+const Ban = forumModels.Ban;
+
+//Store models
+const Tag = storeModels.Tag;
 
 const passport = require('passport');
 require('../passport.js');
@@ -194,26 +204,6 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
     }
 });
 
-
-//Toggle highlighted post
-router.put('/:id/toggle-highlight', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
-    try {
-        const post = await Post.findById(req.params.id);
-
-        if (!post) {
-            return console.error(`Post does not exist.`);
-        } else {
-            post.Highlighted = !post.Highlighted;
-            await post.save();
-        }
-
-        res.status(200).json(post);
-    } catch (err) {
-        console.error(`Error highlighting post: ${err.toString()}`);
-        res.status(500).send(`Error: ${err.toString()}`);
-    }
-});
-
 //React to post
 router.put('/:id/react/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
@@ -317,6 +307,25 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), checkBroo
     }
 });
 
+//Toggle highlighted post
+router.put('/:id/toggle-highlight', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+
+        if (!post) {
+            return console.error(`Post does not exist.`);
+        } else {
+            post.Highlighted = !post.Highlighted;
+            await post.save();
+        }
+
+        res.status(200).json(post);
+    } catch (err) {
+        console.error(`Error highlighting post: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    }
+});
+
 //Delete post
 router.delete('/:id', passport.authenticate('jwt', { session: false }), checkBroom, (req, res) => {
     Post.findByIdAndDelete(req.params.id)
@@ -332,5 +341,7 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), checkBro
         res.status(500).send(`Error: ${err.toString()}`);
     });
 });
+
+
 
 module.exports = router;

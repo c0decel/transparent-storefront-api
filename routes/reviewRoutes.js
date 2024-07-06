@@ -1,11 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const Models = require('../models.js');
-const Tag = Models.Tag;
-const Product = Models.Product;
-const Review = Models.Review;
-const User = Models.User;
 const { formatDate, formatTime } = require('./../utils/dateUtils.js');
+
+//Models
+const forumModels = require('../models/forumModels.js');
+const userModels = require('../models/userModels.js');
+const storeModels = require('../models/storeModels.js');
+
+//User models
+const User = userModels.User;
+
+//Store models
+const Tag = storeModels.Tag;
+const Product = storeModels.Product;
+const Review = storeModels.Review;
+
 
 const passport = require('passport');
 require('../passport.js');

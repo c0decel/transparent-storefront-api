@@ -1,18 +1,28 @@
 const express = require('express');
 const checkBroom = require('../utils/appFunctions.js');
+const { formatDate, formatTime } = require('./../utils/dateUtils.js');
 const mongoose = require('mongoose');
 const router = express.Router();
-const Models = require('../models.js');
-const Tag = Models.Tag;
-const Product = Models.Product;
-const Supply = Models.Supply;
-const Thread = Models.Thread;
-const Post = Models.Post;
-const User = Models.User;
-const Ban = Models.Ban;
-const Notification = Models.Notification;
-const { formatDate, formatTime } = require('./../utils/dateUtils.js');
 
+//Models
+const forumModels = require('../models/forumModels.js');
+const userModels = require('../models/userModels.js');
+const storeModels = require('../models/storeModels.js');
+
+//User models
+const User = userModels.User;
+const Notification = userModels.Notification;
+
+//Product models
+const Tag = storeModels.Tag;
+const Product = storeModels.Product;
+const Supply = storeModels.Supply;
+
+//Forum models
+const Thread = forumModels.Thread;
+const Post = forumModels.Post;
+const Ban = forumModels.Ban;
+const Report = forumModels.Report;
 
 const passport = require('passport');
 require('../passport.js');
@@ -113,6 +123,7 @@ router.get('/tags/:id', async (req, res) => {
         res.status(500).send(`Error: ${err.toString()}`);
       }
 });
+
 
 /**
  * Admin permissions

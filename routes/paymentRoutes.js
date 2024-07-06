@@ -1,22 +1,31 @@
 const express = require('express');
 const router = express.Router();
 const { formatDate, formatTime } = require('./../utils/dateUtils.js');
-const Models = require('../models.js');
+
+//Models
+const forumModels = require('../models/forumModels.js');
+const userModels = require('../models/userModels.js');
+const storeModels = require('../models/storeModels.js');
+
+//User models
+const User = userModels.User;
+const Notification = userModels.Notification;
+
+//Store models
+const Product = storeModels.Product;
+const Sale = storeModels.Sale;
+const Purchase = storeModels.Purchase;
+const Discount = storeModels.Discount;
+
 
 //Replace with Stripe secret key
 const stripe = require('stripe')(process.env.STRIPE_PRIV_KEY);
-
-const User = Models.User;
-const Product = Models.Product;
-const Sale = Models.Sale;
-const Purchase = Models.Purchase;
-const Discount = Models.Discount;
-const Notification = Models.Notification;
 
 const passport = require('passport');
 const checkBroom = require('../utils/appFunctions.js');
 require('../passport.js');
 
+//Get all purchases
 router.get('/', (req, res) => {
     Purchase.find()
     .then((Purchase) => {
@@ -28,6 +37,25 @@ router.get('/', (req, res) => {
     });
 });
 
+//Get one purchase
+router.get('/all/:id', (req, res) => {
+    Purchase.findOne(req.params.id)
+    .then((Purchase) => {
+        if (!Purchase) {
+            return res.status(404).send(`Purchase not found.`);
+        }
+        res.json({Purchase});
+    })
+    .catch((err) => {
+        console.error(`Error fetching purchase: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    });
+});
+
+/**
+ * Logged in user permissions
+ */
+//Checkout cart
 router.post('/create-checkout-session', passport.authenticate('jwt', {session: false}), async (req, res) => {
     const {token, UserID, ProductID, successUrl, cancelUrl, discountCode} = req.body;
 
@@ -150,23 +178,6 @@ router.post('/create-checkout-session', passport.authenticate('jwt', {session: f
         res.status(500).send(`Error: ${err.toString()}`);
     }
 });
-
-//Get one purchase
-router.get('/all/:id', (req, res) => {
-    Purchase.findOne(req.params.id)
-    .then((Purchase) => {
-        if (!Purchase) {
-            return res.status(404).send(`Purchase not found.`);
-        }
-        res.json({Purchase});
-    })
-    .catch((err) => {
-        console.error(`Error fetching purchase: ${err.toString()}`);
-        res.status(500).send(`Error: ${err.toString()}`);
-    });
-});
-
-
 
 module.exports = router;
 

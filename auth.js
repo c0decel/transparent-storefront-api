@@ -1,10 +1,14 @@
 const jwtSecret = 'sneeds_feed_and_seed'; 
 
-const Models = require('./models.js');
+//Models
+const forumModels = require('./models/forumModels.js');
+const userModels = require('./models/userModels.js');
+const storeModels = require('./models/storeModels.js');
+
 const jwt = require('jsonwebtoken'),
     passport = require('passport');
 
-const User = Models.User;
+const User = userModels.User;
 
 let generateJWTToken = (user) => {
     const userForToken = {

@@ -8,7 +8,10 @@ const passport = require('passport');
 
 const app = express();
 
-const Models = require('./models.js');
+//Models
+const forumModels = require('./models/forumModels.js');
+const userModels = require('./models/userModels.js');
+const storeModels = require('./models/storeModels.js');
 
 const productRoutes = require('./routes/productRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
@@ -65,24 +68,9 @@ app.get('/', (req, res) => {
     res.send(`Transparent Storefront API`);
 });
 
-//Get product documentation
-app.get('/product-documentation', (req, res) => {
-    res.sendFile('public/productDocumentation.html', {root: __dirname});
-});
-
-//Get forum documentation
-app.get('/forum-documentation', (req, res) => {
-  res.sendFile('public/forumDocumentation.html', {root: __dirname});
-});
-
-//Get user documentation
-app.get('/user-documentation', (req, res) => {
-  res.sendFile('public/userDocumentation.html', {root: __dirname});
-});
-
-//Get financial documentation
-app.get('/financial-documentation', (req, res) => {
-  res.sendFile('public/financialDocumentation.html', {root: __dirname});
+//Get documentation
+app.get('/documentation', (req, res) => {
+    res.sendFile('public/documentation.html', {root: __dirname});
 });
 
 
@@ -145,6 +133,6 @@ app.use('/payment', paymentRoutes);
 //Port to listen on
 const port = process.env.PORT || 8080;
 
-app.listen(port, '0.0.0.0',() => {
-  console.log('Listening on Port ' + port);
+app.listen(8080, () => {
+  console.log('Listening on port 8080.');
 });
