@@ -184,7 +184,7 @@ const banSchema = mongoose.Schema({
     BanID: String,
     BannedBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Thread',
+        ref: 'User',
         required: true
     },
     BannedFrom: {
