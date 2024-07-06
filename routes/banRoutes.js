@@ -54,6 +54,10 @@ router.get('/reports/:reportId', (req, res) => {
 //Get all threadbans
 router.get('/', (req, res) => {
     Ban.find()
+    .populate('BannedBy')
+    .populate('BannedFrom')
+    .populate('BannedForPost')
+    .populate('BannedUser')
     .then((Ban) => {
         res.status(201).json(Ban);
     })
@@ -66,6 +70,10 @@ router.get('/', (req, res) => {
 //Get one threadban
 router.get('/:id', (req, res) => {
     Ban.findById(req.params.id)
+    .populate('BannedBy')
+    .populate('BannedFrom')
+    .populate('BannedForPost')
+    .populate('BannedUser')
     .then((Ban) => {
         if(!Ban) {
             return res.status(404).send(`Ban does not exist`);
