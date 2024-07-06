@@ -27,6 +27,10 @@ require('../passport.js');
 //Get all reports
 router.get('/reports', (req, res) => {
     Report.find()
+    .populate('UserID')
+    .populate('PostID')
+    .populate('ThreadID')
+    .populate('ModID')
     .then((Report) => {
         res.status(200).json(Report)
     })
@@ -39,6 +43,10 @@ router.get('/reports', (req, res) => {
 //Get one report
 router.get('/reports/:reportId', (req, res) => {
     Report.findById(req.params.reportId)
+    .populate('UserID')
+    .populate('PostID')
+    .populate('ThreadID')
+    .populate('ModID')
     .then((Report) => {
         if(!Report) {
             return res.status(404).send(`Report does not exist`);
