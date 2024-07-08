@@ -492,10 +492,7 @@ router.post('/:Username/wall', passport.authenticate('jwt', {session: false}), a
             Content,
             NotifDate: formattedDate,
             NotifTime: formattedTime,
-            UserLink: {
-                UserID: userId,
-                Username: currentUser.Username
-            }
+            UserLink: userId,
         });
 
         await notif.save();
@@ -527,6 +524,9 @@ router.get('/', (req, res) => {
         query = query.select('-Password');
     }
     query
+    .populate('Reviews')
+    .populate('Posts')
+    .populate('Threads')
     .then((User) => {
         res.status(201).json(User);
     })

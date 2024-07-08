@@ -105,14 +105,8 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
         const replyNotif = await Notification.create({
             NotifDate: formattedDate,
             NotifTime: formattedTime,
-            UserLink: {
-                UserID: UserID,
-                Username: username
-            },
-            ThreadLink: {
-                ThreadName: thread.Title,
-                ThreadID: ThreadID
-            },
+            UserLink: UserID,
+            ThreadLink: ThreadID,
             Type: 'ThreadReply',
             Content: Content
         });
@@ -139,14 +133,8 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
                     Type: 'Mention',
                     NotifDate: formattedDate,
                     NotifTime: formattedTime,
-                    UserLink: {
-                        UserID: UserID,
-                        Username: username
-                    },
-                    ThreadLink: {
-                        ThreadName: thread.Title,
-                        ThreadID: ThreadID
-                    },
+                    UserLink: UserID,
+                    ThreadLink: ThreadID,
                     Content: Content
                 });
 

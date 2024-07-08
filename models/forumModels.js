@@ -15,16 +15,13 @@ const threadSchema = mongoose.Schema({
         ref: 'User',
         required: true
     },
-    Username: {
-        type: String,
-        required: true
-    },
     Content: {
         type: String,
         required: true
     },
     ReplyCount: {
         type: Number,
+        required: false,
         default: 0
     },
     PostedAtDate: {
@@ -69,16 +66,13 @@ const postSchema = mongoose.Schema({
         ref: 'User',
         required: true
     },
-    Username: {
-        type: String,
-        required: true
-    },
     Content: {
         type: String,
         required: true
     },
     ReplyNumber: {
         type: Number,
+        required: false,
         default: 0
     },
     PostedAtDate: {
@@ -103,6 +97,7 @@ const postSchema = mongoose.Schema({
     }],
     ReactionScore: {
         type: Number,
+        required: false,
         default: 0
     },
     PostBan: {
@@ -121,10 +116,6 @@ const postSchema = mongoose.Schema({
         Post: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Post',
-            required: false
-        },
-        Section: {
-            type: String,
             required: false
         }
     }]
@@ -169,6 +160,7 @@ const reportSchema = mongoose.Schema({
     },
     ModID: {
         type: mongoose.Schema.Types.ObjectId,
+        required: false,
         ref: 'User'
     },
     ReportReason: {

@@ -27,10 +27,12 @@ const productSchema = mongoose.Schema({
     }],
     Sales: {
         type: Number,
+        required: false,
         default: 0
     },
     Stock: {
         type: Number,
+        required: false,
         default: 0
     },
     Reviews: [{
@@ -81,6 +83,7 @@ const productSchema = mongoose.Schema({
     }],
     Upcharge: {
         type: Number,
+        required: false,
         default: 0
     }
     // Upcharge is a %
@@ -102,7 +105,6 @@ const reviewSchema = mongoose.Schema({
         ref: 'User', 
         required: true
     },
-    Username: String,
     ReviewDate: {
         type: String,
         required: true
@@ -253,7 +255,8 @@ const discountSchema = mongoose.Schema({
  */
 const purchaseSchema = mongoose.Schema({
     ProductID: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
         required: true
     },
     PurchaseDate: {

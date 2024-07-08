@@ -136,14 +136,8 @@ router.post('/reports/:id/report/:postId', passport.authenticate('jwt', { sessio
         const modNotif = await Notification.create({
             NotifDate: formattedDate,
             NotifTime: formattedTime,
-            UserLink: {
-                UserID: userId,
-                Username: user.Username
-            },
-            ThreadLink: {
-                ThreadName: thread.Title,
-                ThreadID: threadId
-            },
+            UserLink: userId,
+            ThreadLink: threadId,
             Type: 'NewReport',
             Content: ReportReason
         });
@@ -195,17 +189,9 @@ router.put('/reports/:reportId/deny-report', passport.authenticate('jwt', { sess
         const reportingUserNotif = await Notification.create({
             NotifDate: formattedDate,
             NotifTime: formattedTime,
-            UserLink: {
-                UserID: report.UserID,
-                Username: reportingUser.Username
-            },
-            ThreadLink: {
-                ThreadName: reportingThread.Title,
-                ThreadID: report.ThreadID
-            },
-            PostLink: {
-                PostID: report.PostID
-            },
+            UserLink: report.UserID,
+            ThreadLink: report.ThreadID,
+            PostLink: report.PostID,
             Type: 'ReportDenied',
             Content: ModResponse,
             ModID: modHandling

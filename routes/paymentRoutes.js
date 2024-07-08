@@ -153,10 +153,7 @@ router.post('/create-checkout-session', passport.authenticate('jwt', {session: f
             const purchaseNotif = await Notification.create({
                 Type: 'NewPurchase',
                 PurchaseLink: purchase._id,
-                ProductLink: {
-                    ProductID: ProductID,
-                    ProductName: product.Name
-                },
+                ProductLink: ProductID,
                 NotifDate: formattedDate,
                 NotifTime: formattedTime
             });

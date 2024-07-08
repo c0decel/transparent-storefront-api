@@ -78,18 +78,10 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
     }],
-    PostCount: {
-        type: Number,
-        default: 0
-    },
     Threads: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Thread'
     }],
-    ThreadCount: {
-        type: Number,
-        default: 0
-    },
     hasBroom: {
         type: Boolean,
         default: false
@@ -117,18 +109,17 @@ const userSchema = mongoose.Schema({
     Notifications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notification',
-        required: true
+        required: false
     }],
     SavedPosts: [{
-        PostID: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Post',
-            required: true
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post',
+        required: false
     }],
     ProfileComments: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post'
+        ref: 'Post',
+        required: false
     }]
 });
 
@@ -143,74 +134,51 @@ const notifSchema = mongoose.Schema({
     },
     Type: {
         type: String,
-        enum: ['Mention', 'NewPurchase', 'PurchaseUpdate', 'ThreadReply', 'ProfileComment', 'PostReply', 'Threadban', 'SponsorPromotion', 'AdminPromotion', 'PostToggle', 'NewReport', 'ReportDenied', 'ReportResolved'],
+        enum: [
+            'Mention',
+            'NewPurchase',
+            'PurchaseUpdate',
+            'ThreadReply',
+            'ProfileComment',
+            'PostReply',
+            'Threadban',
+            'SponsorPromotion',
+            'AdminPromotion',
+            'PostToggle',
+            'NewReport',
+            'ReportDenied',
+            'ReportResolved'],
         required: true
     },
     UserLink: {
-        UserID: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-            required: false
-        },
-        Username: {
-            type: String,
-            required: false
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: false
     },
     PostLink: {
-        PostID: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Post',
-            required: false 
-        },
-        PostBody: {
-            type: String,
-            required: false
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post',
+        required: false 
     },
     ThreadLink: {
-        ThreadID: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Thread',
-            required: false
-        },
-        ThreadName: {
-            type: String,
-            requried: false
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Thread',
+        required: false
     },
     ProductLink: {
-        ProductID: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product',
-            required: false
-        },
-        ProductName: {
-            type: String,
-            required: false
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: false
     },
     PurchaseLink: {
-        PurchaseID: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Purchase',
-            required: false
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Purchase',
+        required: false
     },
     BanLink: {
-        BanID: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Ban',
-            required: false
-        },
-        Reason: {
-            type: String,
-            required: false
-        },
-        ExpiresOn: {
-            type: Date,
-            required: false
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Ban',
+        required: false
     },
     NotifDate: {
         type: String,

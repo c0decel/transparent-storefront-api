@@ -197,19 +197,9 @@ router.post('/:id/bans/:Username/:Post', passport.authenticate('jwt', { session:
             Type: 'Threadban',
             NotifDate: formattedDate,
             NotifTime: formattedTime,
-            UserLink: {
-                UserID: BannedBy,
-                Username: bannedByUser.Username
-            },
-            ThreadLink: {
-                ThreadName: thread.Title,
-                ThreadID: threadId
-            },
-            BanLink: {
-                BanID: ban._id,
-                Reason: Reason,
-                ExpiresOn: expiryDate
-            }
+            UserLink: BannedBy,
+            ThreadLink: threadId,
+            BanLink: ban._id
         });
 
         await notif.save();
