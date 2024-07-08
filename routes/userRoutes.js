@@ -233,12 +233,7 @@ router.put('/:Username/cart/:id', passport.authenticate('jwt', { session: false 
             return res.status(404).send(`Product not found.`);
         }
 
-        user.Cart.push({
-            ProductID: product._id,
-                Name: product.Name,
-                Price: product.Price,
-                Image: product.Image
-        });
+        user.Cart.push(product._id);
 
         const updatedCart = await user.save();
 
@@ -305,12 +300,7 @@ router.put('/:Username/wishlist/:id', passport.authenticate('jwt', { session: fa
             return res.status(404).send(`Product not found.`);
         }
 
-        user.Wishlist.push({
-            ProductID: product._id,
-            Name: product.Name,
-            Price: product.Price,
-            Image: product.Image
-        });
+        user.Wishlist.push(product._id);
 
         const updatedWishlist = await user.save();
 
