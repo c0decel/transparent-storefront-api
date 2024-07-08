@@ -206,7 +206,7 @@ router.get('/:Username/purchases/last', async (req, res) => {
 //Get cart items
 router.get('/:Username/cart', async (req, res) => {
     try {
-        const user = await User.findOne({ Username: req.params.Username }).populate('Cart.ProductID');
+        const user = await User.findOne({ Username: req.params.Username }).populate('Cart');
         res.status(200).json(user.Cart);
     } catch (err) {
         console.error(`Error fetching cart: ${err.toString()}`);
@@ -278,7 +278,7 @@ router.delete('/:Username/cart/:id', passport.authenticate('jwt', { session: fal
 //Get wishlist items
 router.get('/:Username/wishlist', async (req, res) => {
     try {
-        const user = await User.findOne({ Username: req.params.Username }).populate('Wishlist.ProductID');
+        const user = await User.findOne({ Username: req.params.Username }).populate('Wishlist');
         res.status(200).json(user.Wishlist);
     } catch (err) {
         console.error(`Error fetching list: ${err.toString()}`);
