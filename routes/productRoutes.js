@@ -128,12 +128,12 @@ router.post('/', upload.array('productImages', 5), passport.authenticate('jwt', 
 
         const folderPath = 'product-images/';
         const imageDimension = { width: undefined, height: undefined };
-        const uploadPromises = req.files.map(file => uploadToS3(file, folderPath, imageDimension, s3));
         let imageUrls = [];
 
-        if (uploadPromises.length < 1) {
+        if (!req.files || req.files.length === 0) {
             imageUrls.push('https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg');
         } else {
+            const uploadPromises = req.files.map(file => uploadToS3(file, folderPath, imageDimension, s3));
             imageUrls = await Promise.all(uploadPromises);
         }
 
