@@ -35,16 +35,12 @@ const userSchema = mongoose.Schema({
         required: false
     },
     Cart: [{
-        ProductID: String,
-        Name: String,
-        Price: String,
-        Image: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
     }],
     Wishlist: [{
-        ProductID: String,
-        Name: String,
-        Price: String,
-        Image: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
     }],
     Purchases: [{
         ProductID: String,
