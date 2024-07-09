@@ -15,6 +15,11 @@ const threadSchema = mongoose.Schema({
         ref: 'User',
         required: true
     },
+    ModID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: false
+    },
     Content: {
         type: String,
         required: true

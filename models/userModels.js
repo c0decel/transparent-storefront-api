@@ -143,7 +143,10 @@ const notifSchema = mongoose.Schema({
             'PostToggle',
             'NewReport',
             'ReportDenied',
-            'ReportResolved'],
+            'ReportResolved',
+            'ThreadMoved',
+            'PostMoved'    
+        ],
         required: true
     },
     UserLink: {

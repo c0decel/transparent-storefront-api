@@ -295,6 +295,59 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), checkBroo
     }
 });
 
+//Create new thread from selected post
+router.post('/:id/make-thread', passport.authenticate('jew', { session: false}), checkBroom, async (req, res) => {
+    try { 
+        const postId = req.params.id;
+        const post = await Post.findById(postId);
+        const { Title, Tags } = req.body;
+
+        if (!post) {
+            return res.status(404).send(`Post not found`);
+        }
+
+        const newThreadContent = post.Content;
+        const newThreadOP = post.User;
+        const postedAtDate = post.PostedAtDate;
+        const postedAtTime = post.PostedAtTime;
+        const modId = req.user.id;
+
+        const newThread = await Thread.create({
+            ModID: modId,
+            User: newThreadOP,
+            Content: newThreadContent,
+            PostedAtDate: postedAtDate,
+            PostedAtTime: postedAtTime,
+            Tags,
+            Title
+        });
+
+        await newThread.save();
+
+        const postOp = await User.findById(post.User);
+
+        if (postOp) {
+            const newNotif = await Notification.create({
+                UserLink: modId,
+                Type: 'ThreadMoved',
+                ThreadLink: newThread._id
+            });
+
+            await newNotif.save();
+
+            postOp.Notifications.push(newNotif._id);
+
+            await postOp.save();
+        }
+
+        res.status(201).send(`Thread created: ${newThread}`);
+    } catch (err) {
+        console.error(`Error posting thread: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    }
+});
+
+
 //Toggle highlighted post
 router.put('/:id/toggle-highlight', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
     try {

@@ -145,6 +145,48 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), checkBro
     });
 });
 
+//Move posts to different thread
+router.put('/:id/relocate-posts', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
+    try {
+        const threadId = req.params.id;
+        const movingToThread = await Thread.find(threadId);
+        const { PostsRelocating } = req.body;
+
+        if (!movingToThread) {
+            return res.status(404).send(`Thread not found.`);
+        }
+
+        const newNotif = await Notification.create({
+            Type: 'PostMoved',
+            UserLink: req.user._id,
+            ThreadLink: threadId
+        });
+
+        await newNotif.save();
+
+        for (const post of PostsRelocating) {
+            const foundPost = await Post.findById(post._id);
+
+            if (foundPost) {
+                const foundPostOp = await User.findById(foundPost.User);
+
+                foundPost.Thread = threadId;
+                await foundPost.save();
+
+                if (foundPostOp) {
+                    foundPostOp.Notifications.push(newNotif._id);
+                    await foundPostOp.save();
+                }
+            }
+        }
+
+        
+    } catch (err) {
+        console.error(`Error relocating posts: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    }
+});
+
 //Ban a user from a thread
 router.post('/:id/bans/:Username/:Post', passport.authenticate('jwt', { session: false }),checkBroom, async (req, res) => {
     try {
