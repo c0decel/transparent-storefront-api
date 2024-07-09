@@ -307,7 +307,7 @@ router.post('/:id/make-thread', passport.authenticate('jew', { session: false}),
         }
 
         const newThreadContent = post.Content;
-        const newThreadOP = post.User;
+        const newThreadOP = post.User._id;
         const postedAtDate = post.PostedAtDate;
         const postedAtTime = post.PostedAtTime;
         const modId = req.user.id;
