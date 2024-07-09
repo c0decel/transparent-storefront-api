@@ -155,39 +155,36 @@ router.post('/', upload.array('productImages', 5), passport.authenticate('jwt', 
 });
 
 //Change product images
-router.put('/:productId/images', upload.array('productImages', 5), passport.authenticate('jwt', {session: false}), checkBroom, async (req, res) => {
+router.put('/:productId/images', upload.array('productImages', 5), passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
     try {
-        const productId = req.params.productId;
-        const product = await Product.findById(productId);
-
-        if (!product) {
-            return res.status(404).send(`Product not found.`);
-        }
-
-        const folderPath = 'product-images/';
-        const imageDimension = { width: undefined, height: undefined };
-        let imageUrls = [];
-
-        console.log(req.files)
-
-        if (!req.files || req.files.length === 0) {
-            imageUrls.push('https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg');
-        } else {
-            const uploadPromises = req.files.map(file => uploadToS3(file, folderPath, imageDimension, s3));
-            imageUrls = await Promise.all(uploadPromises);
-        }
-        console.log(imageUrls)
-        product.ProductImages = imageUrls;
-
-        const updatedProduct = await product.save();
-
-        return res.status(200).json(updatedProduct);
-
-    } catch (err){
-        console.error(`Error: ${err.toString()}`);
-        res.status(500).send(`Error: ${err.toString()}`);
+      const productId = req.params.productId;
+      const product = await Product.findById(productId);
+  
+      if (!product) {
+        return res.status(404).send(`Product not found.`);
+      }
+  
+      const folderPath = 'product-images/';
+      const imageDimension = { width: undefined, height: undefined };
+      let imageUrls = [];
+  
+      if (!req.files || req.files.length === 0) {
+        imageUrls.push('https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg');
+      } else {
+        const uploadPromises = req.files.map(file => uploadToS3(file, folderPath, imageDimension, s3));
+        imageUrls = await Promise.all(uploadPromises);
+      }
+  
+      product.ProductImages = imageUrls;
+      const updatedProduct = await product.save();
+  
+      return res.status(200).json(updatedProduct);
+    } catch (err) {
+      console.error(`Error: ${err.toString()}`);
+      res.status(500).send(`Error: ${err.toString()}`);
     }
-});
+  });
+  
 
 //Create discount code
 router.post('/discount', passport.authenticate('jwt', {session: false}), checkBroom, async (req, res) => {

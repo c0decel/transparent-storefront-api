@@ -391,37 +391,38 @@ router.put('/:id/status', passport.authenticate('jwt', { session: false}), async
 //Upload new profile photo
 router.put('/:Username/profile-pic', upload.single('image'), passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-        const user = await User.findOne({ Username: req.params.Username });
+        const username = req.params.Username;
+        console.log(`Updating profile picture for user: ${username}`);
+
+        const user = await User.findOne({ Username: username });
 
         if (!user) {
+            console.error(`User not found with username: ${username}`);
             return res.status(404).send(`User not found.`);
         }
 
         if (user.Username !== req.user.Username) {
-            return res.status(403).send(`You can't remove from other user's wishlist.`);
-        }
-
-        if (!req.file) {
-            return res.status(400).send(`No file uploaded.`);
+            return res.status(403).send(`You can't update another user's profile picture.`);
         }
 
         const folderPath = 'profile-pics/';
         const imageDimension = { height: 400, width: 400, fit: 'cover'};
         const file = req.file;
-        const imageUrl = await uploadToS3(file, folderPath, imageDimension, s3)
+
+        const imageUrl = await uploadToS3(file, folderPath, imageDimension, s3);
 
         user.ProfileImage = imageUrl;
         const updatedUser = await user.save();
 
-        console.log(user.ProfileImage)
-        console.log(imageUrl)
+        console.log(`Updated profile picture URL: ${updatedUser.ProfileImage}`);
     
-        res.status(200).send(`Profile picture updates: ${updatedUser}`);
+        res.status(200).json(updatedUser);
     } catch (err) {
-        console.error(`Error fetching list: ${err.toString()}`);
+        console.error(`Error updating profile picture: ${err.toString()}`);
         res.status(500).send(`Error: ${err.toString()}`);
     }
 });
+
 
 //Get user posts
 router.get('/:Username/posts', async (req, res) => {

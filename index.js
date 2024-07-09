@@ -135,8 +135,5 @@ const port = process.env.PORT || 8080;
 
 app.listen(port, '0.0.0.0',() => {
   console.log('Listening on Port ' + port);
-<<<<<<< HEAD
   });
-=======
-  });
->>>>>>> 2ad132c1ba6075961f65f88b8935f906f1ab9cd3
+
