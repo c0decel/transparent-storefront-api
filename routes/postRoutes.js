@@ -296,7 +296,7 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), checkBroo
 });
 
 //Create new thread from selected post
-router.post('/:id/make-thread', passport.authenticate('jew', { session: false}), checkBroom, async (req, res) => {
+router.post('/:id/make-thread', passport.authenticate('jwt', { session: false}), checkBroom, async (req, res) => {
     try { 
         const postId = req.params.id;
         const post = await Post.findById(postId).populate('User');
