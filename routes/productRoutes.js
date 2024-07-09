@@ -164,15 +164,19 @@ router.put('/:productId/images', upload.array('productImages', 5), passport.auth
             return res.status(404).send(`Product not found.`);
         }
 
-        const uploadPromises = req.files.map(file => uploadToS3(file));
+        const folderPath = 'product-images/';
+        const imageDimension = { width: undefined, height: undefined };
         let imageUrls = [];
 
-        if (uploadPromises.length < 1) {
+        console.log(req.files)
+
+        if (!req.files || req.files.length === 0) {
             imageUrls.push('https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg');
         } else {
+            const uploadPromises = req.files.map(file => uploadToS3(file, folderPath, imageDimension, s3));
             imageUrls = await Promise.all(uploadPromises);
         }
-
+        console.log(imageUrls)
         product.ProductImages = imageUrls;
 
         const updatedProduct = await product.save();
