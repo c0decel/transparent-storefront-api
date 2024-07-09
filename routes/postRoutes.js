@@ -299,7 +299,7 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), checkBroo
 router.post('/:id/make-thread', passport.authenticate('jew', { session: false}), checkBroom, async (req, res) => {
     try { 
         const postId = req.params.id;
-        const post = await Post.findById(postId);
+        const post = await Post.findById(postId).populate('User');
         const { Title, Tags } = req.body;
 
         if (!post) {
@@ -324,7 +324,7 @@ router.post('/:id/make-thread', passport.authenticate('jew', { session: false}),
 
         await newThread.save();
 
-        const postOp = await User.findById(post.User);
+        const postOp = await User.findById(post.User._id);
 
         if (postOp) {
             const newNotif = await Notification.create({
