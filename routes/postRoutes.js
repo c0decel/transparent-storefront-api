@@ -300,7 +300,7 @@ router.put('/:id/warn-post', passport.authenticate('jwt', { session: false }), c
     try {
         const postId = req.params.id;
         const post = await Post.findById(postId).populate('User');
-        const PostWarning = req.body;
+        const { PostWarning } = req.body;
         const modId = req.user.id;
 
         if (!post) {
