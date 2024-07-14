@@ -109,6 +109,10 @@ const postSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    PostWarning: {
+        type: String,
+        required: false
+    },
     ReplyingTo: [{
         UserID: {
             type: mongoose.Schema.Types.ObjectId,

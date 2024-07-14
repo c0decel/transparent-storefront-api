@@ -145,7 +145,8 @@ const notifSchema = mongoose.Schema({
             'ReportDenied',
             'ReportResolved',
             'ThreadMoved',
-            'PostMoved'    
+            'PostMoved',
+            'PostWarning'    
         ],
         required: true
     },

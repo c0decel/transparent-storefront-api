@@ -295,6 +295,47 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), checkBroo
     }
 });
 
+//Warn user for post
+router.put('/:id/warn-post', passport.authenticate('jwt', { session: false }), checkBroom, async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const post = await Post.findById(postId).populate('User');
+        const PostWarning = req.body;
+        const modId = req.user.id;
+
+        if (!post) {
+            return res.status(404).send(`Post not found`);
+        }
+
+        post.PostWarning = PostWarning;
+
+        await post.save();
+
+        const postOp = await User.findById(post.User._id);
+
+        if (postOp) {
+            const newNotif = await Notification.create({
+                UserLink: modId,
+                Type: 'ThreadMoved',
+                PostLink: postId
+            });
+
+            await newNotif.save();
+
+            postOp.Notifications.push(newNotif._id);
+
+            await postOp.save();
+        }
+
+        res.status(201).send(`Warning created: ${post.PostWarning}`);
+
+
+    } catch(err) {
+        console.error(`Error editing post: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    }
+});
+
 //Create new thread from selected post
 router.post('/:id/make-thread', passport.authenticate('jwt', { session: false}), checkBroom, async (req, res) => {
     try { 
