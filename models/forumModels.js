@@ -197,6 +197,21 @@ const logSchema = mongoose.Schema({
         required: false,
         ref: 'User'
     },
+    UserLink: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: 'User'
+    }, 
+    PostLink: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: 'User'
+    },
+    ThreadLink: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: 'User'
+    },
     Content: {
         type: String,
         required: false

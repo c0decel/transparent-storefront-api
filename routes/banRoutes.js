@@ -29,6 +29,9 @@ require('../passport.js');
 router.get('/logs', (req, res) => {
     Log.find()
     .populate('ModID')
+    .populate('UserLink')
+    .populate('PostLink')
+    .populate('ThreadLink')
     .then((Log) => {
         res.status(200).json(Log)
     })
@@ -42,6 +45,9 @@ router.get('/logs', (req, res) => {
 router.get('/logs/:logId', (req, res) => {
     Log.findById(req.params.logId)
     .populate('ModID')
+    .populate('UserLink')
+    .populate('PostLink')
+    .populate('ThreadLink')
     .then((Log) => {
         if(!Log) {
             return res.status(404).send(`Log does not exist`);

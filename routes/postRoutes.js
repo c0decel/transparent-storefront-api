@@ -321,7 +321,9 @@ router.put('/:id/warn-post', passport.authenticate('jwt', { session: false }), c
             LogTime: formattedTime,
             LogDate: formattedDate,
             Content: PostWarning,
-            ModID: modId
+            ModID: modId,
+            PostLink: postId,
+            ThreadLink: post.Thread
         });
 
         await newLog.save();
@@ -392,7 +394,9 @@ router.post('/:id/make-thread', passport.authenticate('jwt', { session: false}),
             LogTime: formattedTime,
             LogDate: formattedDate,
             Content: Content,
-            ModID: modId
+            ModID: modId,
+            PostLink: postId,
+            ThreadLink: newThread._id
         });
 
         await newLog.save();

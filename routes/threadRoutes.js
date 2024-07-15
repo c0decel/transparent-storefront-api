@@ -240,7 +240,9 @@ router.post('/:id/bans/:Username/:Post', passport.authenticate('jwt', { session:
             LogTime: formattedTime,
             LogDate: formattedDate,
             Content: Reason,
-            ModID: ModID
+            ModID: ModID,
+            ThreadLink: threadId,
+            PostLink: postId
         });
 
         await newLog.save();
