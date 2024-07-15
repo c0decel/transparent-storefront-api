@@ -240,7 +240,7 @@ router.post('/:id/bans/:Username/:Post', passport.authenticate('jwt', { session:
             LogTime: formattedTime,
             LogDate: formattedDate,
             Content: Reason,
-            ModID: BannedBy
+            ModID: ModID
         });
 
         await newLog.save();
@@ -249,20 +249,21 @@ router.post('/:id/bans/:Username/:Post', passport.authenticate('jwt', { session:
             Type: 'Threadban',
             NotifDate: formattedDate,
             NotifTime: formattedTime,
-            UserLink: BannedBy,
+            UserLink: ModID,
             ThreadLink: threadId,
             BanLink: ban._id
         });
 
         await notif.save();
 
-        await User.findByIdAndUpdate(toBanId, { 
-            $push: { 
-                Threadbans: ban._id,
-                Notifications: notif._id
-                }
-            }
-        );
+        if (toBan) {
+            await toBan.Threadbans.push(ban._id);
+            await toBan.Notifications.push(notif._id);
+
+            await toBan.save();
+        }
+
+        
         await Thread.findByIdAndUpdate(threadId, { $push: { Bans: ban._id }});
         await Post.findByIdAndUpdate(postId, {PostBan: true});
 
