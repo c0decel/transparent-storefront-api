@@ -16,6 +16,7 @@ const Notification = userModels.Notification;
 const Thread = forumModels.Thread;
 const Post = forumModels.Post;
 const Ban = forumModels.Ban;
+const Log = forumModels.Log;
 const Report = forumModels.Report;
 
 const passport = require('passport');
@@ -24,6 +25,35 @@ require('../passport.js');
 /**
  * Basic user permissions
  */
+//Get all mod logs
+router.get('/logs', (req, res) => {
+    Log.find()
+    .populate('ModID')
+    .then((Log) => {
+        res.status(200).json(Log)
+    })
+    .catch((err) => {
+        console.error(`Error fetching logs: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    });
+});
+
+//Get one logs
+router.get('/logs/:logId', (req, res) => {
+    Log.findById(req.params.logId)
+    .populate('ModID')
+    .then((Log) => {
+        if(!Log) {
+            return res.status(404).send(`Log does not exist`);
+        }
+        res.json({Log});
+    })
+    .catch((err) => {
+        console.error(`Error fetching log: ${err.toString()}`);
+        res.status(500).send(`Error: ${err.toString()}`);
+    });
+});
+
 //Get all reports
 router.get('/reports', (req, res) => {
     Report.find()
