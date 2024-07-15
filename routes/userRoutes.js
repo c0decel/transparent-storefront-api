@@ -135,7 +135,17 @@ router.post('/', [
 router.get('/notifications', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const userId = req.user.id;
-        const user = await User.findById(userId).populate('Notifications');
+        const user = await User.findById(userId).populate({
+            path: 'Notifications',
+            populate: [
+                { path: 'UserLink', model: 'User' },
+                { path: 'PostLink', model: 'Post' },
+                { path: 'ThreadLink', model: 'Thread' },
+                { path: 'ProductLink', model: 'Product' },
+                { path: 'PurchaseLink', model: 'Purchase' },
+                { path: 'BanLink', model: 'Ban' }
+            ]
+        });
 
         if (!user) {
             return res.status(404).send(`User not found.`);

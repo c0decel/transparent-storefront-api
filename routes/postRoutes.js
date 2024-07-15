@@ -316,8 +316,9 @@ router.put('/:id/warn-post', passport.authenticate('jwt', { session: false }), c
         if (postOp) {
             const newNotif = await Notification.create({
                 UserLink: modId,
-                Type: 'ThreadMoved',
-                PostLink: postId
+                Type: 'PostWarning',
+                PostLink: postId,
+                Content: PostWarning
             });
 
             await newNotif.save();
