@@ -235,6 +235,16 @@ router.post('/:id/bans/:Username/:Post', passport.authenticate('jwt', { session:
 
         await ban.save();
 
+        const newLog = await Log.create({
+            Action: 'UserBan',
+            LogTime: formattedTime,
+            LogDate: formattedDate,
+            Content: Reason,
+            ModID: BannedBy
+        });
+
+        await newLog.save();
+
         const notif = await Notification.create({
             Type: 'Threadban',
             NotifDate: formattedDate,

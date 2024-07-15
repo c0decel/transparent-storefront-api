@@ -16,6 +16,7 @@ const Notification = userModels.Notification;
 const Thread = forumModels.Thread;
 const Post = forumModels.Post;
 const Ban = forumModels.Ban;
+const Log = forumModels.Log;
 
 //Store models
 const Tag = storeModels.Tag;
@@ -307,9 +308,23 @@ router.put('/:id/warn-post', passport.authenticate('jwt', { session: false }), c
             return res.status(404).send(`Post not found`);
         }
 
+        const currentDate = new Date();
+        const formattedDate = formatDate(currentDate);
+        const formattedTime = formatTime(currentDate);
+
         post.PostWarning = PostWarning;
 
         await post.save();
+
+        const newLog = await Log.create({
+            Action: 'PostWarned',
+            LogTime: formattedTime,
+            LogDate: formattedDate,
+            Content: PostWarning,
+            ModID: modId
+        });
+
+        await newLog.save();
 
         const postOp = await User.findById(post.User._id);
 
@@ -318,7 +333,9 @@ router.put('/:id/warn-post', passport.authenticate('jwt', { session: false }), c
                 UserLink: modId,
                 Type: 'PostWarning',
                 PostLink: postId,
-                Content: PostWarning
+                Content: PostWarning,
+                NotifDate: formattedDate,
+                NotifTime: formattedTime
             });
 
             await newNotif.save();
@@ -348,6 +365,10 @@ router.post('/:id/make-thread', passport.authenticate('jwt', { session: false}),
             return res.status(404).send(`Post not found`);
         }
 
+        const currentDate = new Date();
+        const formattedDate = formatDate(currentDate);
+        const formattedTime = formatTime(currentDate);
+
         const newThreadContent = post.Content;
         const newThreadOP = post.User._id;
         const postedAtDate = post.PostedAtDate;
@@ -366,6 +387,16 @@ router.post('/:id/make-thread', passport.authenticate('jwt', { session: false}),
 
         await newThread.save();
 
+        const newLog = await Log.create({
+            Action: 'ThreadFromPostCreated',
+            LogTime: formattedTime,
+            LogDate: formattedDate,
+            Content: Content,
+            ModID: modId
+        });
+
+        await newLog.save();
+
         const postOp = await User.findById(post.User._id);
 
         if (postOp) {
@@ -373,7 +404,9 @@ router.post('/:id/make-thread', passport.authenticate('jwt', { session: false}),
                 UserLink: modId,
                 Type: 'ThreadMoved',
                 ThreadLink: newThread._id,
-                Content: Content
+                Content: Content,
+                NotifDate: formattedDate,
+                NotifTime: formattedTime
             });
 
             await newNotif.save();

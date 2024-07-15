@@ -196,6 +196,18 @@ const logSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: 'User'
+    },
+    Content: {
+        type: String,
+        required: false
+    },
+    LogTime: {
+        type: String,
+        required: false
+    },
+    LogDate: {
+        type: String,
+        required: false
     }
 })
 
