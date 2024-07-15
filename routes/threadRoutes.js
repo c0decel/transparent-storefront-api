@@ -196,7 +196,7 @@ router.post('/:id/bans/:Username/:Post', passport.authenticate('jwt', { session:
         const { Reason, ExpiresOn } = req.body;
         let toBan = await User.findOne({Username: req.params.Username});
         let post = await Post.findById({_id: req.params.Post}); 
-        const BannedBy = req.user.id;
+        const ModID = req.user.id;
         const threadId = req.params.id;
         const postId = post._id;
 
@@ -223,7 +223,7 @@ router.post('/:id/bans/:Username/:Post', passport.authenticate('jwt', { session:
         }
 
         const ban = await Ban.create({
-            BannedBy: BannedBy,
+            ModID: ModID,
             BannedUser: toBan._id,
             Reason,
             IssuedOn: currentDate,
