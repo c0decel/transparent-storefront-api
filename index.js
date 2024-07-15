@@ -25,8 +25,6 @@ const postRoutes = require('./routes/postRoutes.js');
 const banRoutes = require('./routes/banRoutes.js');
 const paymentRoutes = require('./routes/paymentRoutes.js');
 
-
-
 require('dotenv').config();
 
 let allowedOrigins = ['http://localhost:8080', 'http://localhost:4200', 'http://localhost:1234', 'http://localhost:5006', 'https://transparent-storefront-api-7a631c0a8a92.herokuapp.com'];

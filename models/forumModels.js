@@ -179,6 +179,27 @@ const reportSchema = mongoose.Schema({
 });
 
 /**
+ * Log schema
+ */
+const logSchema = mongoose.Schema({
+    Action: {
+        type: String,
+        enum: [
+            'UserBan',
+            'ThreadFromPostCreated',
+            'PostDeleted',
+            'PostWarned'
+        ],
+        required: true
+    },
+    ModID: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: 'User'
+    }
+})
+
+/**
  * Ban schema
  */
 const banSchema = mongoose.Schema({
@@ -223,10 +244,12 @@ const banSchema = mongoose.Schema({
 const Thread = mongoose.model('Thread', threadSchema);
 const Post = mongoose.model('Post', postSchema);
 const Report = mongoose.model('Report', reportSchema);
+const Log = mongoose.model('Log', logSchema);
 const Ban = mongoose.model('Ban', banSchema);
 
 
 module.exports.Thread = Thread;
 module.exports.Post = Post;
 module.exports.Report = Report;
+module.exports.Log = Log;
 module.exports.Ban = Ban;

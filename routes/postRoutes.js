@@ -342,7 +342,7 @@ router.post('/:id/make-thread', passport.authenticate('jwt', { session: false}),
     try { 
         const postId = req.params.id;
         const post = await Post.findById(postId).populate('User');
-        const { Title, Tags } = req.body;
+        const { Title, Tags, Content } = req.body;
 
         if (!post) {
             return res.status(404).send(`Post not found`);
@@ -372,7 +372,8 @@ router.post('/:id/make-thread', passport.authenticate('jwt', { session: false}),
             const newNotif = await Notification.create({
                 UserLink: modId,
                 Type: 'ThreadMoved',
-                ThreadLink: newThread._id
+                ThreadLink: newThread._id,
+                Content: Content
             });
 
             await newNotif.save();
