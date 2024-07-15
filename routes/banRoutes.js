@@ -26,38 +26,35 @@ require('../passport.js');
  * Basic user permissions
  */
 //Get all mod logs
-router.get('/logs', (req, res) => {
-    Log.find()
-    .populate('ModID')
-    .populate('UserLink')
-    .populate('PostLink')
-    .populate('ThreadLink')
-    .then((Log) => {
-        res.status(200).json(Log)
-    })
-    .catch((err) => {
+router.get('/logs', async (req, res) => {
+    try {
+        const logs = await Log.find()
+            .populate('ModID')
+            .populate('UserLink')
+            .populate('PostLink')
+            .populate('ThreadLink')
+            .exec()
+        res.status(200).json(logs);
+    } catch(err){
         console.error(`Error fetching logs: ${err.toString()}`);
         res.status(500).send(`Error: ${err.toString()}`);
-    });
+    }
 });
 
 //Get one logs
-router.get('/logs/:logId', (req, res) => {
-    Log.findById(req.params.logId)
-    .populate('ModID')
-    .populate('UserLink')
-    .populate('PostLink')
-    .populate('ThreadLink')
-    .then((Log) => {
-        if(!Log) {
-            return res.status(404).send(`Log does not exist`);
-        }
-        res.json({Log});
-    })
-    .catch((err) => {
-        console.error(`Error fetching log: ${err.toString()}`);
+router.get('/logs/:logId', async (req, res) => {
+    try {
+        const log = await Log.findById(req.params.logId)
+            .populate('ModID')
+            .populate('UserLink')
+            .populate('PostLink')
+            .populate('ThreadLink')
+            .exec()
+        res.status(200).json(log);
+    } catch(err) {
+        console.error(`Error fetching logs: ${err.toString()}`);
         res.status(500).send(`Error: ${err.toString()}`);
-    });
+    }
 });
 
 //Get all reports
