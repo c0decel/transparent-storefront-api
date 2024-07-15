@@ -23,6 +23,7 @@ const Thread = forumModels.Thread;
 const Post = forumModels.Post;
 const Ban = forumModels.Ban;
 const Report = forumModels.Report;
+const Log = forumModels.Log;
 
 const passport = require('passport');
 require('../passport.js');
@@ -179,6 +180,8 @@ router.put('/:id/relocate-posts', passport.authenticate('jwt', { session: false 
                 }
             }
         }
+
+        
 
         
     } catch (err) {
