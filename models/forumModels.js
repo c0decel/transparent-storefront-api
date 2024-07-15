@@ -216,7 +216,7 @@ const logSchema = mongoose.Schema({
  */
 const banSchema = mongoose.Schema({
     BanID: String,
-    BannedBy: {
+    ModID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
@@ -229,6 +229,11 @@ const banSchema = mongoose.Schema({
     BannedForPost: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
+        required: true
+    },
+    BannedUser: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     Reason: {
@@ -244,11 +249,6 @@ const banSchema = mongoose.Schema({
         type: Boolean,
         required: true,
         default: true
-    },
-    BannedUser: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
     }
 });
 
