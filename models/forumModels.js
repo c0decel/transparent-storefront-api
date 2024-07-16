@@ -207,12 +207,12 @@ const logSchema = mongoose.Schema({
     PostLink: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
-        ref: 'User'
+        ref: 'Post'
     },
     ThreadLink: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
-        ref: 'User'
+        ref: 'Thread'
     },
     Content: {
         type: String,
