@@ -188,7 +188,9 @@ const logSchema = mongoose.Schema({
             'UserBan',
             'ThreadFromPostCreated',
             'PostDeleted',
-            'PostWarned'
+            'PostWarned',
+            'ReportDenied',
+            'ReportResolved'
         ],
         required: true
     },

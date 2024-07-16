@@ -195,6 +195,7 @@ router.post('/reports/:id/report/:postId', passport.authenticate('jwt', { sessio
 /**
  * Admin permissions
  */
+//Deny report
 router.put('/reports/:reportId/deny-report', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const { ModResponse } = req.body;
