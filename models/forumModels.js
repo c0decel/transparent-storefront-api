@@ -225,6 +225,11 @@ const logSchema = mongoose.Schema({
     LogDate: {
         type: String,
         required: false
+    },
+    BanLink: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: 'Ban'
     }
 })
 

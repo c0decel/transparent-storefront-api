@@ -171,6 +171,7 @@ router.post('/reports/:id/report/:postId', passport.authenticate('jwt', { sessio
             NotifTime: formattedTime,
             UserLink: userId,
             ThreadLink: threadId,
+            PostLink: postId,
             Type: 'NewReport',
             Content: ReportReason
         });

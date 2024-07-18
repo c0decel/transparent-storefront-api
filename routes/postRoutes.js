@@ -167,13 +167,6 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
 
         await post.save();
 
-        await User.findByIdAndUpdate(UserID, {
-            $push: {
-                Posts: post._id,
-                Notifications: replyNotif._id
-            }
-        });
-
         await User.findByIdAndUpdate(thread.User, {
             $push: {
                 Notifications: replyNotif._id
