@@ -45,7 +45,9 @@ router.get('/', (req, res) => {
 
 //Get one thread
 router.get('/:id', (req, res) => {
-    Thread.findById(req.params.id).populate('User')
+    Thread.findById(req.params.id)
+    .populate('User')
+    .populate('Replies')
     .then((thread) => {
         if (!thread) {
             return res.status(404).send(`Thread does not exist.`);
